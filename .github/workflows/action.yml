@@ -6,21 +6,22 @@ name: ci
 jobs:
   ci:
     runs-on: ubuntu-latest
-  steps:
-    - name: checkout
-      uses: actions/checkout@v3
 
-    - name: compose
-      uses: docker-practice/actions-setup-docker@master
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
 
-    - name: install
-      shell: bash
-      run: ./backend.sh install
+      - name: compose
+        uses: docker-practice/actions-setup-docker@master
 
-    - name: database
-      shell: bash
-      run: ./backend.sh db start
+      - name: install
+        shell: bash
+        run: ./backend.sh install
 
-    - name: api
-      shell: bash
-      run: ./backend.sh api test
+      - name: database
+        shell: bash
+        run: ./backend.sh db start
+
+      - name: api
+        shell: bash
+        run: ./backend.sh api test
