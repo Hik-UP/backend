@@ -1,0 +1,35 @@
+on:
+  push
+
+name: ci
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: compose
+        uses: docker-practice/actions-setup-docker@master
+
+      - name: install
+        shell: bash
+        run: ./backend.sh install
+
+      - name: test
+        shell: bash
+        run: |
+          touch ./server/ssl/privkey1.pem
+          touch ./server/ssl/cert1.pem
+          touch ./server/ssl/chain1.pem
+          echo $UID
+
+      - name: database
+        shell: bash
+        run: ./backend.sh db start
+
+      - name: api
+        shell: bash
+        run: ./backend.sh api test

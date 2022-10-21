@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 import http from 'http';
 
-import { app } from './app';
-import { logger } from './logger';
+import { app } from '../app';
+import { logger } from '../logger';
 
 interface ErrnoException extends Error {
   errno?: number;
@@ -40,9 +40,6 @@ function createHttpServer(
   return server.listen(normalizePort(port), hostname);
 }
 
-const testHttpServer: http.Server = createHttpServer(
-  process.env.PORT,
-  process.env.HOSTNAME
-);
+const testHttpServer: http.Server = createHttpServer('8080', '127.0.0.1');
 
 export { testHttpServer };

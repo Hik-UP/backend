@@ -42,7 +42,7 @@ prisma_migrate() {
   if [ $1 = 'deploy' ]; then
     npx prisma migrate deploy					\
     --schema /usr/prisma/schema.prisma
-  elif [ $1 = 'dev' ]; then
+  elif [ $1 = 'dev' ] || [ $1 = 'test' ]; then
     npx prisma migrate dev					\
     --schema /usr/prisma/schema.prisma				\
     --name prisma
