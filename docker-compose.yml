@@ -1,0 +1,103 @@
+version: "3.4"
+services:
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./docker/api
+    image: itsm/api
+    volumes:
+      - ./server/api:/usr/app
+      - ./server/db/schema.prisma:/usr/prisma/schema.prisma
+      - prisma:/usr/prisma
+    secrets:
+      - source: api.privkey.pem
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: api.cert.pem
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: api.chain.pem
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: db.user
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: db.passwd
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: db.db
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+    ports:
+      - "8443:8443"
+      - "172.18.0.1:42042:42042"
+    stdin_open: true
+    tty: true
+    networks:
+      backend:
+        ipv4_address: 172.18.0.2
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres:latest
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "172.18.0.1:5432:5432"
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db.user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db.passwd
+      POSTGRES_DB_FILE: /run/secrets/db.db
+    secrets:
+      - source: db.user
+        uid: '999'
+        gid: '999'
+        mode: 0400
+      - source: db.passwd
+        uid: '999'
+        gid: '999'
+        mode: 0400
+      - source: db.db
+        uid: '999'
+        gid: '999'
+        mode: 0400
+    stdin_open: true
+    networks:
+      backend:
+        ipv4_address: 172.18.0.3
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.18.0.0/16"
+          gateway: "172.18.0.1"
+
+volumes:
+  prisma:
+  postgres:
+
+secrets:
+  api.privkey.pem:
+    file: ./server/ssl/privkey1.pem
+  api.cert.pem:
+    file: ./server/ssl/cert1.pem
+  api.chain.pem:
+    file: ./server/ssl/chain1.pem
+  db.user:
+    file: ./server/db/.user
+  db.passwd:
+    file: ./server/db/.passwd
+  db.db:
+    file: ./server/db/.db

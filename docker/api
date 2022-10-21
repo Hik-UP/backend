@@ -1,0 +1,14 @@
+FROM node:latest
+
+RUN apt-get -qy update && apt-get -qy install openssl
+
+WORKDIR /usr/app
+
+COPY ./server/db/schema.prisma /usr/prisma/schema.prisma
+RUN chown -R node:node /usr/prisma
+
+COPY ./server/api /usr/app
+
+EXPOSE 8443
+
+ENTRYPOINT [ "su", "node", "--", "/usr/app/docker-init.sh" ]
