@@ -1,6 +1,6 @@
 import request from 'supertest';
 
-import { testHttpServer } from '../../server.test';
+import { testHttpServer } from '../../server/test';
 
 const User = {
   email: `test@${Math.random().toString(36).substr(2, 8)}.com`,

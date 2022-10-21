@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: ./docker/api
     image: itsm/api
+    command: dev
     volumes:
       - ./server/api:/usr/app
       - ./server/db/schema.prisma:/usr/prisma/schema.prisma
