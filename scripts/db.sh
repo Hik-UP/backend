@@ -84,20 +84,20 @@ parse_gui() {
   case $1 in
     start)
       start_db_gui
-      exit 0
+      exit $?
       ;;
     stop)
       stop_db_gui
-      exit 0
+      exit $?
       ;;
     restart)
       stop_db_gui
       start_db_gui
-      exit 0
+      exit $?
       ;;
     *)
       help
-      exit 0
+      exit 1
       ;;
   esac
 }
@@ -106,50 +106,50 @@ parse_db() {
   case $1 in
     start)
       start_db
-      exit 0
+      exit $?
       ;;
     stop)
       stop_db
-      exit 0
+      exit $?
       ;;
     restart)
       stop_db
       start_db
-      exit 0
+      exit $?
       ;;
     shell)
       shell_db
-      exit 0
+      exit $?
       ;;
     logs)
       logs_db
-      exit 0
+      exit $?
       ;;
     clean)
       clean_db
-      exit 0
+      exit $?
       ;;
     install)
       install_db
-      exit 0
+      exit $?
       ;;
     uninstall)
       uninstall_db
-      exit 0
+      exit $?
       ;;
     reinstall)
       uninstall_db
       install_db
-      exit 0
+      exit $?
       ;;
     gui)
       shift
       parse_gui "$@"
-      exit 0
+      exit $?
       ;;
     *)
       help
-      exit 0
+      exit 1
       ;;
   esac
 }

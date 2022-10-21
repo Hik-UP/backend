@@ -1,12 +1,16 @@
 #!/bin/bash
 
 start_api() {
-  docker compose run --rm --name api -p "8443:8443" -d api "$@"
+  docker compose up -d api
+}
+
+start_api_command() {
+  docker compose run --rm --name api api "$@"
 }
 
 stop_api() {
-  docker stop api
-  docker wait api
+  docker compose stop api
+  docker compose rm -f api
 }
 
 shell_api() {
@@ -38,104 +42,131 @@ reinstall_api() {
   install_api
 }
 
-generate_api_ssl() {
+generate_api_real_ssl() {
   local readonly WORKDIR="$(dirname $(readlink -f "${BASH_SOURCE[0]}"))/.."
   local readonly USERNAME="$(whoami)"
 
   if [ "$#" -ne 1 ]; then
     help
-    exit 0
+    exit 1
   fi
   mkdir "${WORKDIR}/tmp"
-  docker run					\
-  --rm						\
-  -it						\
-  -v "${WORKDIR}/tmp:/etc/letsencrypt/archive"	\
-  -p 80:80					\
-  -p 443:443					\
-  certbot/certbot:latest			\
-  certonly					\
-  -d "$1"					\
+  docker run									\
+  --rm										\
+  -it										\
+  -v "${WORKDIR}/tmp:/etc/letsencrypt/archive"					\
+  -p 80:80									\
+  -p 443:443									\
+  certbot/certbot:latest							\
+  certonly									\
+  -d "$1"									\
   --standalone
   rm -f ${WORKDIR}/server/ssl/*
-  sudo chown -R "${USERNAME}:${USERNAME}"       \
+  sudo chown -R "${USERNAME}:${USERNAME}"       				\
   "${WORKDIR}/tmp"
-  find "${WORKDIR}/tmp"				\
-  -name '*.pem'					\
+  find "${WORKDIR}/tmp"								\
+  -name '*.pem'									\
   -exec cp -rf {} "${WORKDIR}/server/ssl" \;
   rm -rf "${WORKDIR}/tmp"
 }
 
-parse_api_restart() {
-  case $1 in
-    deploy|dev)
-      stop_api
-      start_api "$@"
-      ;;
-    *)
-      help
-      exit 0
-  esac
+generate_api_fake_ssl() {
+  local readonly WORKDIR="$(dirname $(readlink -f "${BASH_SOURCE[0]}"))/.."
+
+  openssl genrsa 4096 > "${WORKDIR}/server/ssl/chain1-key.pem"
+  openssl req									\
+  -new -x509									\
+  -nodes									\
+  -days 365000									\
+  -key "${WORKDIR}/server/ssl/chain1-key.pem"					\
+  -out "${WORKDIR}/server/ssl/chain1.pem"					\
+  -subj "/C=FR/ST=Paris/L=Paris/O=Global Security/OU=IT Department/CN=dev.com"
+  openssl req									\
+  -newkey rsa:4096								\
+  -nodes									\
+  -days 365000									\
+  -keyout "${WORKDIR}/server/ssl/privkey1.pem"					\
+  -out "${WORKDIR}/server/ssl/req1.pem"						\
+  -subj "/C=FR/ST=Paris/L=Paris/O=Global Security/OU=IT Department/CN=dev.com"
+  echo "OK"
+  openssl x509									\
+  -req										\
+  -days 365000									\
+  -set_serial 01								\
+  -in "${WORKDIR}/server/ssl/req1.pem"						\
+  -out "${WORKDIR}/server/ssl/cert1.pem"					\
+  -CA "${WORKDIR}/server/ssl/chain1.pem"					\
+  -CAkey "${WORKDIR}/server/ssl/chain1-key.pem"
+  rm -f "${WORKDIR}/server/ssl/chain1-key.pem"
+  rm -f  "${WORKDIR}/server/ssl/req1.pem"
 }
 
 parse_ssl() {
   case $1 in
     generate)
       shift
-      generate_api_ssl "$@"
-      exit 0
+      generate_api_real_ssl "$@"
+      exit $?
+      ;;
+    fake)
+      generate_api_fake_ssl
+      exit $?
       ;;
     *)
       help
-      exit 0
+      exit 1
       ;;
   esac
 }
 
 parse_api() {
   case $1 in
-    build|deploy|dev|test|prettier)
-      start_api "$@"
-      exit 0
+    start)
+      start_api
+      exit $?
+      ;;
+    build|test|prettier)
+      start_api_command "$@"
+      exit $?
       ;;
     restart)
-      shift
-      parse_api_restart "$@"
-      exit 0
+      stop_api
+      start_api
+      exit $?
       ;;
     stop)
       stop_api
-      exit 0
+      exit $?
       ;;
     shell)
       shell_api
-      exit 0
+      exit $?
       ;;
     logs)
       logs_api
-      exit 0
+      exit $?
       ;;
     install)
       install_api
-      exit 0
+      exit $?
       ;;
     uninstall)
       uninstall_api
-      exit 0
+      exit $?
       ;;
     reinstall)
       uninstall_api
       install_api
-      exit 0
+      exit $?
       ;;
     ssl)
       shift
       parse_ssl "$@"
-      exit 0
+      exit $?
       ;;
     *)
       help
-      exit 0
+      exit 1
       ;;
   esac
 }
