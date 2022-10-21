@@ -1,0 +1,83 @@
+version: "3.4"
+services:
+  api:
+    image: itsm/api
+    volumes:
+      - ./server/api:/usr/app
+      - ./server/db/schema.prisma:/usr/prisma/schema.prisma
+      - prisma:/usr/prisma
+    secrets:
+      - source: api.privkey.pem
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: api.cert.pem
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: api.chain.pem
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: db.user
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: db.passwd
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: db.db
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+    ports:
+      - "8443:8443"
+      - "42042:42042"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db.user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db.passwd
+      POSTGRES_DB_FILE: /run/secrets/db.db
+    secrets:
+      - source: db.user
+        uid: '999'
+        gid: '999'
+        mode: 0400
+      - source: db.passwd
+        uid: '999'
+        gid: '999'
+        mode: 0400
+      - source: db.db
+        uid: '999'
+        gid: '999'
+        mode: 0400
+    stdin_open: true
+
+volumes:
+  prisma:
+  postgres:
+
+secrets:
+  api.privkey.pem:
+    external: true
+  api.cert.pem:
+    external: true
+  api.chain.pem:
+    external: true
+  db.user:
+    external: true
+  db.passwd:
+    external: true
+  db.db:
+    external: true
