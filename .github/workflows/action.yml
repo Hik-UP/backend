@@ -18,6 +18,12 @@ jobs:
         shell: bash
         run: ./backend.sh install
 
+      - name: test
+        shell: bash
+        run: touch ./server/ssl/privkey1.pem
+        run: touch ./server/ssl/cert1.pem
+        run: touch ./server/ssl/chain1.pem
+
       - name: database
         shell: bash
         run: ./backend.sh db start
