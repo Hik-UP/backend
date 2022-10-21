@@ -57,6 +57,7 @@ main() {
   credentials_generator_jwt
   prisma_migrate "$@"
   ls -la
+  echo $UID
   yarn $@
 }
 
