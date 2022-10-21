@@ -26,6 +26,7 @@ jobs:
           touch ./server/ssl/cert1.pem
           touch ./server/ssl/chain1.pem
           touch ./server/api/config/.env.test
+          sudo chown -R 1000:1000 $(pwd)
 
       - name: database
         shell: bash
