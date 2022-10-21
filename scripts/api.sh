@@ -1,6 +1,10 @@
 #!/bin/bash
 
 start_api() {
+  docker compose run --rm --name api -p "8443:8443" api "$@"
+}
+
+start_detach_api() {
   docker compose run --rm --name api -p "8443:8443" -d api "$@"
 }
 
@@ -94,7 +98,11 @@ parse_ssl() {
 
 parse_api() {
   case $1 in
-    build|deploy|dev|test|prettier)
+    deploy|dev)
+      start_detach_api "$@"
+      exit 0
+      ;;
+    build|test|prettier)
       start_api "$@"
       exit 0
       ;;
