@@ -18,9 +18,9 @@ jobs:
 #      - name: compose
 #        uses: docker-practice/actions-setup-docker@master
 
-#      - name: install
-#        shell: bash
-#        run: ./backend.sh install
+      - name: install
+        shell: bash
+        run: ./backend.sh install
 
 #      - name: test
 #        shell: bash
