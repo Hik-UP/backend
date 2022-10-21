@@ -8,6 +8,7 @@ COPY ./server/db/schema.prisma /usr/prisma/schema.prisma
 RUN chown -R node:node /usr/prisma
 
 COPY ./server/api /usr/app
+RUN chown -R node:node /usr/app
 
 EXPOSE 8443
 
