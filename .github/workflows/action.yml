@@ -1,5 +1,8 @@
 on:
-  push
+  push:
+    branches:
+      - master
+      - actions
 
 name: ci
 
@@ -10,10 +13,6 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-
-#      - name: install docker
-#        shell: bash
-#        run: ./scripts/actions.sh
 
       - name: install backend
         shell: bash
