@@ -20,9 +20,10 @@ jobs:
 
       - name: test
         shell: bash
-        run: touch ./server/ssl/privkey1.pem
-        run: touch ./server/ssl/cert1.pem
-        run: touch ./server/ssl/chain1.pem
+        run: |
+          touch ./server/ssl/privkey1.pem
+          touch ./server/ssl/cert1.pem
+          touch ./server/ssl/chain1.pem
 
       - name: database
         shell: bash
