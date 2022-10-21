@@ -24,14 +24,13 @@ jobs:
           touch ./server/ssl/privkey1.pem
           touch ./server/ssl/cert1.pem
           touch ./server/ssl/chain1.pem
-          whoami
+          sudo chown -R 1001:1001 $(pwd)
           ls -l
-          pwd
 
-#      - name: database
-#        shell: bash
-#        run: ./backend.sh db start
+      - name: database
+        shell: bash
+        run: ./backend.sh db start
 
-#      - name: api
-#        shell: bash
-#        run: ./backend.sh api test
+      - name: api
+        shell: bash
+        run: ./backend.sh api test
