@@ -11,15 +11,15 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: docker
+      - name: install docker
         shell: bash
-        run: ./test.sh
+        run: ./scripts/actions.sh
 
-      - name: install
+      - name: install backend
         shell: bash
         run: ./backend.sh install
 
-      - name: test
+      - name: requirements
         shell: bash
         run: |
           touch ./server/ssl/privkey1.pem
@@ -28,10 +28,10 @@ jobs:
           touch ./server/api/config/.env.test
           sudo chown -R 1000:1000 $(pwd)
 
-      - name: database
+      - name: start database
         shell: bash
         run: ./backend.sh db start
 
-      - name: api
+      - name: test api
         shell: bash
         run: ./backend.sh api test
