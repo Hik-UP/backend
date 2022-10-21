@@ -24,7 +24,7 @@ jobs:
           touch ./server/ssl/privkey1.pem
           touch ./server/ssl/cert1.pem
           touch ./server/ssl/chain1.pem
-          chown -R 1001:1001 .
+          sudo chown -R 1001:1001 .
 
       - name: database
         shell: bash
