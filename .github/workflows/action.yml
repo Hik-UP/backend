@@ -25,6 +25,7 @@ jobs:
           touch ./server/ssl/privkey1.pem
           touch ./server/ssl/cert1.pem
           touch ./server/ssl/chain1.pem
+          touch ./server/api/config/.env.test
 
       - name: database
         shell: bash
