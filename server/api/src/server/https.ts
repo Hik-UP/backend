@@ -2,8 +2,8 @@ import https from 'https';
 import fs from 'fs';
 import dotenv from 'dotenv';
 
-import { app } from './app';
-import { logger } from './logger';
+import { app } from '../app';
+import { logger } from '../logger';
 
 interface ErrnoException extends Error {
   errno?: number;
