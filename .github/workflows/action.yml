@@ -11,9 +11,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: install docker
-        shell: bash
-        run: ./scripts/actions.sh
+#      - name: install docker
+#        shell: bash
+#        run: ./scripts/actions.sh
 
       - name: install backend
         shell: bash
