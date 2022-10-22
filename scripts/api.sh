@@ -129,13 +129,13 @@ parse_api() {
       start_api_command "$@"
       exit $?
       ;;
+    stop)
+      stop_api
+      exit $?
+      ;;
     restart)
       stop_api
       start_api
-      exit $?
-      ;;
-    stop)
-      stop_api
       exit $?
       ;;
     shell)
