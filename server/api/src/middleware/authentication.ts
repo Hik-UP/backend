@@ -32,7 +32,7 @@ function authentication(req: Request, res: Response, next: NextFunction): void {
   } catch {
     logger.warn('User authentication failed');
     res.status(401).json({
-      error: new Error('Unauthorized')
+      error: 'Unauthorized'
     });
   }
 }

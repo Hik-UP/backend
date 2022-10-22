@@ -1,26 +1,21 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 
 import { userRoutes } from './routes/user';
-import { logger } from './logger';
+import { rateLimiter } from './middleware/rateLimiter';
 
 function createApp(): Express {
   const app: Express = express();
 
   app.use(express.json());
+  app.disable('x-powered-by');
+  app.use(rateLimiter);
   app.use((req: Request, res: Response, next: NextFunction) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
     );
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET, POST, PUT, DELETE, PATCH, OPTIONS'
-    );
-    next();
-  });
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    logger.info(`${req.method} ${req.url}`);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
     next();
   });
   app.use('/api/auth/', userRoutes);
