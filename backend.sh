@@ -27,9 +27,8 @@ help() {
   echo './backend.sh	db		gui		stop'
   echo './backend.sh	db		gui		restart'
   echo
+  echo './backend.sh	api				start'
   echo './backend.sh	api				build'
-  echo './backend.sh	api				deploy'
-  echo './backend.sh	api				dev'
   echo './backend.sh	api				test'
   echo './backend.sh	api				prettier'
   echo './backend.sh	api				stop'
@@ -68,7 +67,10 @@ parse() {
       exit $?
       ;;
     restart)
-      parse_restart
+      stop_api
+      stop_db
+      start_db
+      start_api
       exit $?
       ;;
     install)
