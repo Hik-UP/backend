@@ -33,14 +33,14 @@ function normalizePort(value: string | undefined): number | undefined {
 
 function getSSLCertificates(): SSLCertificates {
   const privateKey: string = fs.readFileSync(
-    '/run/secrets/api.privkey.pem',
+    '/tmp/.secrets/ssl/privkey1.pem',
     'utf8'
   );
   const certificate: string = fs.readFileSync(
-    '/run/secrets/api.cert.pem',
+    '/tmp/.secrets/ssl/cert1.pem',
     'utf8'
   );
-  const ca: string = fs.readFileSync('/run/secrets/api.chain.pem', 'utf8');
+  const ca: string = fs.readFileSync('/tmp/.secrets/ssl/chain1.pem', 'utf8');
   const certificates: SSLCertificates = {
     key: privateKey,
     cert: certificate,
@@ -56,6 +56,11 @@ function createHttpsServer(
 ): void {
   const server: https.Server = https.createServer(getSSLCertificates(), app);
 
+  process.on('SIGTERM', () => {
+    server.close(() => {
+      logger.info('Https server stopped');
+    });
+  });
   server.on('error', (error: ErrnoException) => {
     logger.error('Https server error');
     throw error;

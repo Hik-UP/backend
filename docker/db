@@ -1,0 +1,5 @@
+FROM postgres:latest
+
+COPY --chown=postgres:postgres ./server/db/.user	/tmp/.secrets/db/user
+COPY --chown=postgres:postgres ./server/db/.passwd	/tmp/.secrets/db/passwd
+COPY --chown=postgres:postgres ./server/db/.db		/tmp/.secrets/db/db
