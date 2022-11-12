@@ -1,83 +1,56 @@
-version: "3.4"
+version: "3.8"
+
 services:
+  db:
+    container_name: db
+    build:
+      context: .
+      dockerfile: ./docker/db
+    image: hikup/db
+    environment:
+      POSTGRES_USER_FILE: /tmp/.secrets/db/user
+      POSTGRES_PASSWORD_FILE: /tmp/.secrets/db/passwd
+      POSTGRES_DB_FILE: /tmp/.secrets/db/db
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "172.18.0.1:5432:5432"
+    networks:
+      network:
+        ipv4_address: 172.18.0.2
+    stdin_open: true
+    tty: true
+
   api:
     container_name: api
     build:
       context: .
       dockerfile: ./docker/api
-    image: itsm/api
-    command: dev
+    image: hikup/api
+    command: [ "${API_CMD}" ]
     volumes:
-      - ./server/api:/usr/app
-      - ./server/db/schema.prisma:/usr/prisma/schema.prisma
-      - prisma:/usr/prisma
-    secrets:
-      - source: api.privkey.pem
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-      - source: api.cert.pem
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-      - source: api.chain.pem
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-      - source: db.user
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-      - source: db.passwd
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-      - source: db.db
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
+      - ./server/api/src:/usr/app/src:ro
+      - ./server/api/dist:/usr/app/dist:rw
+      - ./server/api/config:/usr/app/config:ro
+      - ./server/api/node_modules:/usr/app/node_modules:rw
+
+      - ./server/api/package.json:/usr/app/package.json:rw
+      - ./server/api/yarn.lock:/usr/app/yarn.lock:rw
+
+      - api_prisma:/usr/prisma:rw
     ports:
-      - "8443:8443"
-      - "172.18.0.1:42042:42042"
+      - "127.0.0.1:8443:8443"
+      - "127.0.0.1:42042:42042"
+    networks:
+      network:
+        ipv4_address: 172.18.0.3
     stdin_open: true
     tty: true
-    networks:
-      backend:
-        ipv4_address: 172.18.0.2
     depends_on:
       - db
 
-  db:
-    container_name: db
-    image: postgres:latest
-    volumes:
-      - postgres:/var/lib/postgresql/data
-    ports:
-      - "172.18.0.1:5432:5432"
-    environment:
-      POSTGRES_USER_FILE: /run/secrets/db.user
-      POSTGRES_PASSWORD_FILE: /run/secrets/db.passwd
-      POSTGRES_DB_FILE: /run/secrets/db.db
-    secrets:
-      - source: db.user
-        uid: '999'
-        gid: '999'
-        mode: 0400
-      - source: db.passwd
-        uid: '999'
-        gid: '999'
-        mode: 0400
-      - source: db.db
-        uid: '999'
-        gid: '999'
-        mode: 0400
-    stdin_open: true
-    networks:
-      backend:
-        ipv4_address: 172.18.0.3
-
 networks:
-  backend:
+  network:
     driver: bridge
     ipam:
       driver: default
@@ -86,19 +59,5 @@ networks:
           gateway: "172.18.0.1"
 
 volumes:
-  prisma:
   postgres:
-
-secrets:
-  api.privkey.pem:
-    file: ./server/ssl/privkey1.pem
-  api.cert.pem:
-    file: ./server/ssl/cert1.pem
-  api.chain.pem:
-    file: ./server/ssl/chain1.pem
-  db.user:
-    file: ./server/db/.user
-  db.passwd:
-    file: ./server/db/.passwd
-  db.db:
-    file: ./server/db/.db
+  api_prisma:

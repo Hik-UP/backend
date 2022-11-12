@@ -1,15 +1,20 @@
 FROM node:latest
 
-RUN apt-get -qy update && apt-get -qy install openssl
-
 WORKDIR /usr/app
 
-COPY ./server/db/schema.prisma /usr/prisma/schema.prisma
-RUN chown -R node:node /usr/prisma
+COPY --chown=node:node ./server/db/schema.prisma	/usr/prisma/schema.prisma
 
-COPY ./server/api /usr/app
-RUN chown -R node:node /usr/app
+COPY --chown=node:node ./server/db/.user		/tmp/.secrets/db/user
+COPY --chown=node:node ./server/db/.passwd		/tmp/.secrets/db/passwd
+COPY --chown=node:node ./server/db/.db			/tmp/.secrets/db/db
+
+COPY --chown=node:node ./ssl/cert1.pem			/tmp/.secrets/ssl/cert1.pem
+COPY --chown=node:node ./ssl/chain1.pem			/tmp/.secrets/ssl/chain1.pem
+COPY --chown=node:node ./ssl/privkey1.pem		/tmp/.secrets/ssl/privkey1.pem
+
+COPY ./server/api					/usr/app
+RUN chown -R node:node					/usr/app
 
 EXPOSE 8443
 
-ENTRYPOINT [ "su", "node", "--", "/usr/app/docker-init.sh" ]
+ENTRYPOINT [ "/usr/app/docker-entrypoint.sh" ]

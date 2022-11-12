@@ -1,40 +1,51 @@
 #!/bin/bash
 
-start_api() {
-  docker compose up -d api
+dev_api() {
+  docker compose up --no-build --no-recreate -d api
 }
 
-start_api_command() {
-  docker compose run --rm --name api api "$@"
+start_api_attached() {
+  API_CMD="$@" docker compose up						\
+  --no-build									\
+  --no-recreate									\
+  --exit-code-from api								\
+  api
+
+  local readonly EXIT_CODE=$?
+
+  docker compose rm --stop --force  api
+  exit ${EXIT_CODE}
 }
 
 stop_api() {
-  docker compose stop api
-  docker compose rm -f api
+  docker compose rm --stop --force  api
 }
 
 shell_api() {
-  docker exec -it api su - node
+  docker compose exec --user 'node' api bash
 }
 
 logs_api() {
-  docker logs --follow api
+  docker compose logs --follow api
 }
 
 install_api() {
-  docker compose build --pull api
+  generate_api_fake_ssl
+  docker compose build --no-cache --pull api
+  rm -f "${WORKDIR}/server/db/.user"
+  rm -f "${WORKDIR}/server/db/.passwd"
+  rm -f "${WORKDIR}/server/db/.db"
+  mkdir "${WORKDIR}/server/api/dist"
+  mkdir "${WORKDIR}/server/api/node_modules"
 }
 
 uninstall_api() {
-  local readonly WORKDIR="$(dirname $(readlink -f "${BASH_SOURCE[0]}"))/.."
-
   stop_api
-  rm -rf "${WORKDIR}/server/api/node_modules"
   rm -rf "${WORKDIR}/server/api/dist"
-  rm -rf "${WORKDIR}/server/api/coverage"
-  rm -f "${WORKDIR}/server/api/yarn-error.log"
-  docker volume rm backend_prisma
-  docker rmi itsm/api
+  rm -rf "${WORKDIR}/server/api/node_modules"
+  docker volume rm "${FOLDER_NAME}_api_prisma"
+  docker rmi hikup/api
+  docker builder prune --all --force
 }
 
 reinstall_api() {
@@ -43,7 +54,6 @@ reinstall_api() {
 }
 
 generate_api_real_ssl() {
-  local readonly WORKDIR="$(dirname $(readlink -f "${BASH_SOURCE[0]}"))/.."
   local readonly USERNAME="$(whoami)"
 
   if [ "$#" -ne 1 ]; then
@@ -60,45 +70,52 @@ generate_api_real_ssl() {
   certbot/certbot:latest							\
   certonly									\
   -d "$1"									\
-  --standalone
-  rm -f ${WORKDIR}/server/ssl/*
+  --standalone									\
+  --non-interactive								\
+  --agree-tos									\
+  -m nomail@nomail.com
+  rm -f ${WORKDIR}/ssl/*
   sudo chown -R "${USERNAME}:${USERNAME}"       				\
   "${WORKDIR}/tmp"
   find "${WORKDIR}/tmp"								\
   -name '*.pem'									\
-  -exec cp -rf {} "${WORKDIR}/server/ssl" \;
+  -exec cp -rf {} "${WORKDIR}/ssl" \;
+  chmod 400 ${WORKDIR}/ssl/*
   rm -rf "${WORKDIR}/tmp"
 }
 
 generate_api_fake_ssl() {
-  local readonly WORKDIR="$(dirname $(readlink -f "${BASH_SOURCE[0]}"))/.."
-
-  openssl genrsa 4096 > "${WORKDIR}/server/ssl/chain1-key.pem"
-  openssl req									\
-  -new -x509									\
-  -nodes									\
-  -days 365000									\
-  -key "${WORKDIR}/server/ssl/chain1-key.pem"					\
-  -out "${WORKDIR}/server/ssl/chain1.pem"					\
-  -subj "/C=FR/ST=Paris/L=Paris/O=Global Security/OU=IT Department/CN=dev.com"
-  openssl req									\
-  -newkey rsa:4096								\
-  -nodes									\
-  -days 365000									\
-  -keyout "${WORKDIR}/server/ssl/privkey1.pem"					\
-  -out "${WORKDIR}/server/ssl/req1.pem"						\
-  -subj "/C=FR/ST=Paris/L=Paris/O=Global Security/OU=IT Department/CN=dev.com"
-  echo "OK"
-  openssl x509									\
-  -req										\
-  -days 365000									\
-  -set_serial 01								\
-  -in "${WORKDIR}/server/ssl/req1.pem"						\
-  -out "${WORKDIR}/server/ssl/cert1.pem"					\
-  -CA "${WORKDIR}/server/ssl/chain1.pem"					\
-  -CAkey "${WORKDIR}/server/ssl/chain1-key.pem"
-  rm -f "${WORKDIR}/server/ssl/chain1-key.pem"
-  rm -f  "${WORKDIR}/server/ssl/req1.pem"
+  if ! [ -f "${WORKDIR}/ssl/cert1.pem" ]					||
+  ! [ -f "${WORKDIR}/ssl/chain1.pem" ]						||
+  ! [ -f "${WORKDIR}/ssl/privkey1.pem" ]; then
+    rm -f ${WORKDIR}/ssl/*
+    openssl genrsa 4096 > "${WORKDIR}/ssl/chain1-key.pem"
+    openssl req									\
+    -new -x509									\
+    -nodes									\
+    -days 365000								\
+    -key "${WORKDIR}/ssl/chain1-key.pem"					\
+    -out "${WORKDIR}/ssl/chain1.pem"						\
+    -subj "/C=FR/ST=Paris/L=Paris/O=Global Security/OU=IT Department/CN=dev.com"
+    openssl req									\
+    -newkey rsa:4096								\
+    -nodes									\
+    -days 365000								\
+    -keyout "${WORKDIR}/ssl/privkey1.pem"					\
+    -out "${WORKDIR}/ssl/req1.pem"						\
+    -subj "/C=FR/ST=Paris/L=Paris/O=Global Security/OU=IT Department/CN=dev.com"
+    openssl x509								\
+    -req									\
+    -days 365000								\
+    -set_serial 01								\
+    -in "${WORKDIR}/ssl/req1.pem"						\
+    -out "${WORKDIR}/ssl/cert1.pem"						\
+    -CA "${WORKDIR}/ssl/chain1.pem"						\
+    -CAkey "${WORKDIR}/ssl/chain1-key.pem"
+    chmod 400 ${WORKDIR}/ssl/*
+    rm -f "${WORKDIR}/ssl/chain1-key.pem"
+    rm -f  "${WORKDIR}/ssl/req1.pem"
+  fi
 }
 
 parse_ssl() {
@@ -121,12 +138,12 @@ parse_ssl() {
 
 parse_api() {
   case $1 in
-    start)
-      start_api
+    dev)
+      dev_api
       exit $?
       ;;
     build|test|prettier)
-      start_api_command "$@"
+      start_api_attached "$@"
       exit $?
       ;;
     stop)
@@ -135,7 +152,7 @@ parse_api() {
       ;;
     restart)
       stop_api
-      start_api
+      dev_api
       exit $?
       ;;
     shell)
@@ -144,19 +161,6 @@ parse_api() {
       ;;
     logs)
       logs_api
-      exit $?
-      ;;
-    install)
-      install_api
-      exit $?
-      ;;
-    uninstall)
-      uninstall_api
-      exit $?
-      ;;
-    reinstall)
-      uninstall_api
-      install_api
       exit $?
       ;;
     ssl)

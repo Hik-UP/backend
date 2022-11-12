@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   api:
-    image: itsm/api
+    image: webapp/api
     volumes:
       - ./server/api:/usr/app
       - ./server/db/schema.prisma:/usr/prisma/schema.prisma
