@@ -36,7 +36,7 @@ start_db_gui() {
   api						\
   nohup npx prisma studio			\
    --schema /usr/prisma/schema.prisma		\
-  --hostname 172.18.0.3				\
+  --hostname 172.19.0.3				\
   --port 42042					\
   </dev/null >/dev/null 2>&1 &
 }
