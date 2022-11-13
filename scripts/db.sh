@@ -18,7 +18,8 @@ start_db() {
 }
 
 stop_db() {
-  docker compose rm --stop --force db
+  docker compose stop --timeout 60 db
+  docker compose rm --force db
 }
 
 shell_db() {
