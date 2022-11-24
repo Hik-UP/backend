@@ -15,6 +15,7 @@ help() {
   echo
   echo 'USAGE:'
   echo './server.sh					dev'
+  echo './server.sh					deploy'
   echo './server.sh					stop'
   echo './server.sh					restart'
   echo './server.sh					install'
@@ -32,6 +33,7 @@ help() {
   echo './server.sh	db		gui		restart'
   echo
   echo './server.sh	api				dev'
+  echo './server.sh	api				deploy'
   echo './server.sh	api				build'
   echo './server.sh	api				test'
   echo './server.sh	api				prettier'
@@ -48,6 +50,11 @@ help() {
 dev() {
   start_db
   dev_api
+}
+
+deploy() {
+  start_db
+  deploy_api
 }
 
 stop() {
@@ -91,6 +98,10 @@ parse() {
       ;;
     dev)
       dev
+      exit $?
+      ;;
+    deploy)
+      deploy
       exit $?
       ;;
     stop)

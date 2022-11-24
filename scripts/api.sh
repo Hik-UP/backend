@@ -4,6 +4,10 @@ dev_api() {
   docker compose up --no-build --no-recreate -d api
 }
 
+deploy_api() {
+  API_CMD='deploy' docker compose up --no-build --no-recreate -d api
+}
+
 start_api_attached() {
   API_CMD="$@" docker compose up						\
   --no-build									\
@@ -142,6 +146,10 @@ parse_api() {
   case $1 in
     dev)
       dev_api
+      exit $?
+      ;;
+    deploy)
+      deploy_api
       exit $?
       ;;
     build|test|prettier)
