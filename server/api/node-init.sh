@@ -40,14 +40,18 @@ credentials_generator_jwt() {
 
 prisma_migrate() {
   if [ $1 = 'deploy' ]; then
+    npx prisma migrate dev					\
+    --create-only						\
+    --name 'hikup_pro'						\
+    --schema /usr/prisma/schema.prisma
     npx prisma generate						\
     --schema /usr/prisma/schema.prisma
     npx prisma migrate deploy					\
     --schema /usr/prisma/schema.prisma
   elif [ $1 = 'dev' ] || [ $1 = 'test' ]; then
     npx prisma migrate dev					\
-    --schema /usr/prisma/schema.prisma				\
-    --name prisma
+    --name 'hikup_dev'						\
+    --schema /usr/prisma/schema.prisma
   fi
 }
 
