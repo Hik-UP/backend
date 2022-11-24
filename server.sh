@@ -10,6 +10,7 @@ readonly WORKDIR="$(dirname $(readlink -f "${BASH_SOURCE[0]}"))"
 source "${WORKDIR}/scripts/global.sh"
 source "${WORKDIR}/scripts/db.sh"
 source "${WORKDIR}/scripts/api.sh"
+source "${WORKDIR}/scripts/nginx.sh"
 
 help() {
   echo
@@ -45,19 +46,28 @@ help() {
   echo './server.sh	api		ssl		fake'
   echo './server.sh	api		ssl		generate	{DOMAIN_NAME}'
   echo
+  echo './client.sh	nginx				start'
+  echo './client.sh	nginx				stop'
+  echo './client.sh	nginx				restart'
+  echo './client.sh	nginx				shell'
+  echo './client.sh	nginx				logs'
+  echo
 }
 
 dev() {
   start_db
   dev_api
+  dev_nginx
 }
 
 deploy() {
   start_db
   deploy_api
+  deploy_nginx
 }
 
 stop() {
+  stop_nginx
   stop_api
   stop_db
 }
@@ -79,9 +89,11 @@ restart() {
 install() {
   install_db
   install_api
+  install_nginx
 }
 
 uninstall() {
+  uninstall_nginx
   uninstall_api
   uninstall_db
   docker network rm "${FOLDER_NAME}_network"
@@ -103,6 +115,11 @@ parse() {
     api)
       shift
       parse_api "$@"
+      exit $?
+      ;;
+    nginx)
+      shift
+      parse_nginx "$@"
       exit $?
       ;;
     dev)
