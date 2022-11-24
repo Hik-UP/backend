@@ -40,6 +40,9 @@ function createHttpServer(
   return server.listen(normalizePort(port), hostname);
 }
 
-const testHttpServer: http.Server = createHttpServer('8080', '127.0.0.1');
+const testHttpServer: http.Server = createHttpServer(
+  process.env.PORT,
+  process.env.HOSTNAME
+);
 
 export { testHttpServer };
