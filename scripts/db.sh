@@ -22,6 +22,11 @@ stop_db() {
   docker compose rm --force db
 }
 
+restart_db() {
+  stop_db
+  start_db
+}
+
 shell_db() {
   docker compose exec --user 'postgres' db bash
 }
@@ -106,8 +111,7 @@ parse_db() {
       exit $?
       ;;
     restart)
-      stop_db
-      start_db
+      restart_db
       exit $?
       ;;
     shell)

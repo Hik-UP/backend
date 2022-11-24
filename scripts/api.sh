@@ -27,6 +27,20 @@ stop_api() {
   docker compose rm --force api
 }
 
+restart_api() {
+  local readonly SERVER_MODE="$(docker inspect --format='{{(index .Args 0)}}' api)"
+
+  stop_api
+  if [ "${SERVER_MODE}" = 'dev' ]; then
+    dev_api
+  elif [ "${SERVER_MODE}" = 'deploy' ]; then
+    deploy_api
+  else
+    help
+    exit 1
+  fi
+}
+
 shell_api() {
   docker compose exec --user 'node' api bash
 }
@@ -161,8 +175,7 @@ parse_api() {
       exit $?
       ;;
     restart)
-      stop_api
-      dev_api
+      restart_api
       exit $?
       ;;
     shell)

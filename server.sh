@@ -63,8 +63,17 @@ stop() {
 }
 
 restart() {
+  local readonly SERVER_MODE="$(docker inspect --format='{{(index .Args 0)}}' api)"
+
   stop
-  dev
+  if [ "${SERVER_MODE}" = 'dev' ]; then
+    dev
+  elif [ "${SERVER_MODE}" = 'deploy' ]; then
+    deploy
+  else
+    help
+    exit 1
+  fi
 }
 
 install() {
