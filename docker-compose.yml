@@ -39,7 +39,7 @@ services:
 
       - api_prisma:/usr/prisma:rw
     ports:
-      - "127.0.0.1:8443:8443"
+      - "172.19.0.1:8443:8443"
       - "127.0.0.1:42042:42042"
     networks:
       network:
@@ -48,6 +48,24 @@ services:
     tty: true
     depends_on:
       - db
+
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: ./docker/nginx
+    image: hikup/nginx
+    command: [ "${NGINX_CMD}" ]
+    ports:
+      - "443:443"
+    networks:
+      network:
+        ipv4_address: 172.19.0.4
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+      - api
 
 networks:
   network:
