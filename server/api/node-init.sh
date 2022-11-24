@@ -40,6 +40,8 @@ credentials_generator_jwt() {
 
 prisma_migrate() {
   if [ $1 = 'deploy' ]; then
+    npx prisma generate						\
+    --schema /usr/prisma/schema.prisma
     npx prisma migrate deploy					\
     --schema /usr/prisma/schema.prisma
   elif [ $1 = 'dev' ] || [ $1 = 'test' ]; then
