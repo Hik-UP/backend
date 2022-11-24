@@ -1,5 +1,4 @@
 import http from 'http';
-import dotenv from 'dotenv';
 
 import { app } from '../app';
 import { logger } from '../logger';
@@ -40,5 +39,4 @@ function createHttpServer(
   server.listen(normalizePort(port), hostname);
 }
 
-dotenv.config({ path: '../config/.env' });
 createHttpServer(process.env.PORT, process.env.HOSTNAME);
