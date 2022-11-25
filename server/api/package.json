@@ -2,9 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "HikUp backend",
+  "private": true,
   "main": "src/server/https.ts",
   "scripts": {
-    "build": "npx tsc",
+    "build": "npx env-cmd -f ./config/.env.production npx tsc",
     "deploy": "npx env-cmd -f ./config/.env.production node dist/server/https.js",
     "dev": "npx env-cmd -f ./config/.env.development concurrently \"npx tsc --watch\" \"nodemon --trace-deprecation -q dist/server/https.js\"",
     "test": "npx env-cmd -f ./config/.env.test npx jest",

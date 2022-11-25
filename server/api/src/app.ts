@@ -9,15 +9,6 @@ function createApp(): Express {
   app.use(express.json());
   app.disable('x-powered-by');
   app.use(rateLimiter);
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
-    );
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-    next();
-  });
   app.use('/api/auth/', userRoutes);
   return app;
 }
