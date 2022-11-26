@@ -1,15 +1,16 @@
-import express, { Express, Request, Response, NextFunction } from 'express';
+import express, { Express } from 'express';
 
-import { userRoutes } from './routes/user';
-import { rateLimiter } from './middleware/rateLimiter';
+import { rateLimiter } from './middlewares/rateLimiter.middleware';
+import { authRoutes } from './routes/auth.route';
 
 function createApp(): Express {
   const app: Express = express();
 
   app.use(express.json());
+  app.set('trust proxy', 1);
   app.disable('x-powered-by');
   app.use(rateLimiter);
-  app.use('/api/auth/', userRoutes);
+  app.use('/api/auth/', authRoutes);
   return app;
 }
 
