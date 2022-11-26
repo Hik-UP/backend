@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { logger } from '../logger';
+import { logger } from '../utils/logger';
 import fs from 'fs';
 
 interface JwtPayload {
   userId: string;
 }
 
-function authentication(req: Request, res: Response, next: NextFunction): void {
+function auth(req: Request, res: Response, next: NextFunction): void {
   const publicKey: Buffer = fs.readFileSync('/tmp/jwt.pubkey.pem');
   const verifyOptions: jwt.VerifyOptions = {
     algorithms: ['RS256']
@@ -37,4 +37,4 @@ function authentication(req: Request, res: Response, next: NextFunction): void {
   }
 }
 
-export { authentication };
+export { auth };

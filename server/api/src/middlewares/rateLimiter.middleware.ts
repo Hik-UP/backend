@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { RateLimiterMemory, IRateLimiterOptions } from 'rate-limiter-flexible';
 
-import { logger } from '../logger';
+import { logger } from '../utils/logger';
 
 function createRateLimiterMemory(): RateLimiterMemory {
   const opts: IRateLimiterOptions = {

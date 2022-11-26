@@ -1,7 +1,7 @@
 import http from 'http';
 
 import { app } from '../app';
-import { logger } from '../logger';
+import { logger } from '../utils/logger';
 
 interface ErrnoException extends Error {
   errno?: number;
