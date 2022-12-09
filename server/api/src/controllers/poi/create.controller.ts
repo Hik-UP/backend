@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
 import { logger } from '../../utils/logger.util';
-import { HttpError } from '../../errors';
 import { dbPOI } from '../../models/poi.model';
 
 async function create(req: Request, res: Response): Promise<void> {
@@ -16,17 +15,10 @@ async function create(req: Request, res: Response): Promise<void> {
       message: 'Created'
     });
   } catch (error) {
-    if (error instanceof HttpError) {
-      logger.warn('PointOfInterest creation failed');
-      res.status(error.statusCode).json({
-        error: error.message
-      });
-    } else {
-      logger.error('PointOfInterest creation failed\n' + error);
-      res.status(500).json({
-        error: 'Internal Server Error'
-      });
-    }
+    logger.error('PointOfInterest creation failed\n' + error);
+    res.status(500).json({
+      error: 'Internal Server Error'
+    });
   }
 }
 

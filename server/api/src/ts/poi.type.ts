@@ -4,4 +4,9 @@ interface INewPOI {
   longitude: number;
 }
 
-export { INewPOI };
+interface IPOI {
+  latitude: number;
+  longitude: number;
+}
+
+export { INewPOI, IPOI };

@@ -1,4 +1,4 @@
-import { INewPOI } from '../ts/poi.type';
+import { INewPOI, IPOI } from '../ts/poi.type';
 import { prisma } from './prisma.model';
 
 async function create(newPOI: INewPOI): Promise<void> {
@@ -11,8 +11,18 @@ async function create(newPOI: INewPOI): Promise<void> {
   });
 }
 
+async function retrieve(): Promise<IPOI[] | null> {
+  return await prisma.pointOfInterest.findMany({
+    select: {
+      latitude: true,
+      longitude: true
+    }
+  });
+}
+
 const dbPOI = {
-  create
+  create,
+  retrieve
 };
 
 export { dbPOI };
