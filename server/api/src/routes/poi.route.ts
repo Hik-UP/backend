@@ -7,6 +7,7 @@ function createPOIRoutes(): express.Router {
   const POIRoutes: express.Router = express.Router();
 
   POIRoutes.post('/create', auth, poiCtrl.create);
+  POIRoutes.post('/retrieve', auth, poiCtrl.retrieve);
   return POIRoutes;
 }
 
