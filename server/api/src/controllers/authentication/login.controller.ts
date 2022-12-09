@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import fs from 'fs';
 
 import { dbUserData } from '../../models/user/data.model';
-import { logger } from '../../utils/logger';
+import { logger } from '../../utils/logger.util';
 import { HttpError } from '../../errors';
 
 interface PrivateKeySecrets {
