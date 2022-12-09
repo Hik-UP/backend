@@ -7,7 +7,7 @@ import { dbPOI } from '../../models/poi.model';
 async function create(req: Request, res: Response): Promise<void> {
   try {
     await dbPOI.create({
-      creatorId: req.body.userId,
+      creatorId: req.body.user.id,
       latitude: req.body.poi.latitude,
       longitude: req.body.poi.longitude
     });
