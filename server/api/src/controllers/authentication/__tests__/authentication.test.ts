@@ -7,7 +7,7 @@ const User = {
   password: Math.random().toString(36).substr(2, 64)
 };
 
-describe('POST /signup', () => {
+describe('POST /auth/signup', () => {
   it('should return 201', async () => {
     const res = await request(testHttpServer)
       .post('/api/auth/signup')
@@ -22,7 +22,7 @@ describe('POST /signup', () => {
   });
 });
 
-describe('POST /signup', () => {
+describe('POST /auth/signup', () => {
   it('should return 500', async () => {
     const res = await request(testHttpServer)
       .post('/api/auth/signup')
@@ -37,7 +37,7 @@ describe('POST /signup', () => {
   });
 });
 
-describe('POST /login', () => {
+describe('POST /auth/login', () => {
   it('should return 200', async () => {
     const res = await request(testHttpServer)
       .post('/api/auth/login')
@@ -48,10 +48,12 @@ describe('POST /login', () => {
         }
       });
     expect(res.statusCode).toEqual(200);
+    expect(typeof res.body.user.id).toBe('string');
+    expect(typeof res.body.accessToken).toBe('string');
   });
 });
 
-describe('POST /login', () => {
+describe('POST /auth/login', () => {
   it('should return 401', async () => {
     const res = await request(testHttpServer)
       .post('/api/auth/login')
@@ -66,7 +68,7 @@ describe('POST /login', () => {
   });
 });
 
-describe('POST /login', () => {
+describe('POST /auth/login', () => {
   it('should return 401', async () => {
     const res = await request(testHttpServer)
       .post('/api/auth/login')

@@ -20,8 +20,8 @@ model PointOfInterest {
     id          String                  @id @default(uuid()) @db.VarChar(36)
     creatorId   String                  @db.VarChar(36)
     creator     User                    @relation("Creator", fields: [creatorId], references: [id])
-    latitude    Float
-    longitude   Float
+    latitude    Float                   @db.DoublePrecision
+    longitude   Float                   @db.DoublePrecision
 }
 
 enum Role {
