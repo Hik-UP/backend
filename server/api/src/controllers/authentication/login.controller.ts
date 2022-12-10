@@ -30,7 +30,7 @@ async function login(req: Request, res: Response): Promise<void> {
     if (!(await bcrypt.compare(req.body.user.password, user.password))) {
       throw new HttpError(401, 'Unauthorized');
     }
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       { user: { id: user.id } },
       privateKeySecrets,
       signOptions
@@ -38,7 +38,7 @@ async function login(req: Request, res: Response): Promise<void> {
     logger.info('User login succeed');
     res.status(200).json({
       user: { id: user.id },
-      token: token
+      accessToken: accessToken
     });
   } catch (error) {
     if (error instanceof HttpError) {
