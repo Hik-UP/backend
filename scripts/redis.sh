@@ -28,6 +28,7 @@ install_redis() {
 
 uninstall_redis() {
   stop_redis
+  docker volume rm "${FOLDER_NAME}_redis"
   docker rmi hikup/redis
   docker builder prune --all --force
 }

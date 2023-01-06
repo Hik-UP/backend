@@ -2,7 +2,8 @@ import https from 'https';
 import fs from 'fs';
 
 import { app } from '../app';
-import { logger } from '../utils/logger';
+import { normalizePort } from '../utils/normalizePort.util';
+import { logger } from '../utils/logger.util';
 
 interface ErrnoException extends Error {
   errno?: number;
@@ -16,18 +17,6 @@ interface SSLCertificates {
   key: string;
   cert: string;
   ca: string;
-}
-
-function normalizePort(value: string | undefined): number | undefined {
-  const port: number | undefined = parseInt(value || '', 10);
-
-  if (isNaN(port)) {
-    return undefined;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return undefined;
 }
 
 function getSSLCertificates(): SSLCertificates {
@@ -70,4 +59,4 @@ function createHttpsServer(
   server.listen(normalizePort(port), hostname);
 }
 
-createHttpsServer(process.env.PORT, process.env.HOSTNAME);
+createHttpsServer(process.env.API_PORT, process.env.API_HOSTNAME);
