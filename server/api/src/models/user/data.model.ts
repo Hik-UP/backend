@@ -1,4 +1,4 @@
-import { prisma } from '../prisma.model';
+import { prisma } from '../../utils/prisma.util';
 import { INewUser, IUserSecrets } from '../../ts/user/data.type';
 
 async function create(newUser: INewUser): Promise<void> {

@@ -1,13 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { logger } from '../utils/logger';
+import { logger } from '../utils/logger.util';
 import fs from 'fs';
 
 interface JwtPayload {
   userId: string;
 }
 
-function auth(req: Request, res: Response, next: NextFunction): void {
+async function auth(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
   const publicKey: Buffer = fs.readFileSync('/tmp/jwt.pubkey.pem');
   const verifyOptions: jwt.VerifyOptions = {
     algorithms: ['RS256']
