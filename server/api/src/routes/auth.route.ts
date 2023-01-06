@@ -8,7 +8,7 @@ function createAuthRoutes(): express.Router {
   const authRoutes: express.Router = express.Router();
 
   authRoutes.post('/signup', signupCtrl.signup);
-  authRoutes.post('/login', cache, loginCtrl.login);
+  authRoutes.post('/login', loginCtrl.login);
   return authRoutes;
 }
 
