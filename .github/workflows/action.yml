@@ -19,8 +19,8 @@ jobs:
         with:
           fail-on-severity: moderate
           vulnerability-check: true
-          head_ref: "master"
-          base_ref: "master"
+          head-ref: "master"
+          base-ref: "master"
 
       - name: install backend
         shell: bash
