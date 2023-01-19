@@ -1,6 +1,5 @@
 import express from 'express';
 
-import { cache } from '../middlewares/cache.middleware';
 import { signupCtrl } from '../controllers/authentication/signup.controller';
 import { loginCtrl } from '../controllers/authentication/login.controller';
 
