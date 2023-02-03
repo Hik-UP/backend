@@ -13,13 +13,20 @@ model User {
     email               String              @unique @db.VarChar(256)
     password            String
     picture             String
-    skin                String
+    skinId              String              @db.VarChar(36)
+    skin                Skin                @relation(fields: [skinId], references: [id])
     inbox               Notification[]
     hikes               Hike[]              @relation("Attendee")
     invitations         Hike[]              @relation("Guest")
     stats               Stats[]
-    pointOfInterest     PointOfInterest[]
+    pointOfInterests    PointOfInterest[]
     createdAt           DateTime            @default(now())
+}
+
+model Skin {
+    id                  String              @unique @id @default(uuid()) @db.VarChar(36)
+    users               User[]
+    model               String
 }
 
 model Notification {
@@ -36,7 +43,7 @@ model Trail {
     id                  String              @unique @id @default(uuid()) @db.VarChar(36)
     name                String
     description         String
-    picture             String[]
+    pictures            String[]
     latitude            Float               @db.DoublePrecision
     longitude           Float               @db.DoublePrecision
     difficulty          Int
@@ -44,7 +51,7 @@ model Trail {
     distance            Int
     uphill              Int
     downhill            Int
-    label               String[]
+    labels              String[]
     geoJSON             String
     hikes               Hike[]
     pointOfInterests    PointOfInterest[]
@@ -55,10 +62,8 @@ model Hike {
     creatorId           String              @db.VarChar(36)
     trailId             String              @db.VarChar(36)
     trail               Trail               @relation(fields: [trailId], references: [id])
-    attendeesId         String[]            @db.VarChar(36)
-    attendees           User                @relation("Attendee", fields: [attendeesId], references: [id])
-    guestsId            String[]            @db.VarChar(36)
-    guests              User                @relation("Guest", fields: [guestsId], references: [id])
+    attendees           User[]              @relation("Attendee")
+    guests              User[]              @relation("Guest")
     stats               Stats[]
     schedule            DateTime            @default(now())
 }
