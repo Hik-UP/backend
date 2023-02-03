@@ -7,7 +7,11 @@ interface JwtPayload {
   user: { id: string };
 }
 
-function auth(req: Request, res: Response, next: NextFunction): void {
+async function auth(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
   const publicKey: Buffer = fs.readFileSync('/tmp/jwt.pubkey.pem');
   const verifyOptions: jwt.VerifyOptions = {
     algorithms: ['RS256']

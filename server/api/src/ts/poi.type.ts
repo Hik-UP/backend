@@ -1,5 +1,6 @@
 interface INewPOI {
   creatorId: string;
+  trailId: string;
   latitude: number;
   longitude: number;
 }

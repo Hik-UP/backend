@@ -63,7 +63,7 @@ uninstall_api() {
   stop_api
   rm -rf "${WORKDIR}/server/api/dist"
   rm -rf "${WORKDIR}/server/api/node_modules"
-  docker volume rm "${FOLDER_NAME}_api_prisma"
+  docker volume rm "${FOLDER_NAME}_prisma"
   docker rmi hikup/api
   docker builder prune --all --force
 }

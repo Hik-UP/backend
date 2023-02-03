@@ -7,6 +7,7 @@ async function create(req: Request, res: Response): Promise<void> {
   try {
     await dbPOI.create({
       creatorId: req.body.user.id,
+      trailId: req.body.trail.id,
       latitude: req.body.poi.latitude,
       longitude: req.body.poi.longitude
     });
