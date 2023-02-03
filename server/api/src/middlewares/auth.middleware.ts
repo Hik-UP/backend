@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { logger } from '../utils/logger';
+import { logger } from '../utils/logger.util';
 import fs from 'fs';
 
 interface JwtPayload {
-  userId: string;
+  user: { id: string };
 }
 
 function auth(req: Request, res: Response, next: NextFunction): void {
@@ -18,12 +18,8 @@ function auth(req: Request, res: Response, next: NextFunction): void {
       throw '';
     }
     const token: string = req.headers.authorization.split(' ')[1];
-    const { userId } = jwt.verify(
-      token,
-      publicKey,
-      verifyOptions
-    ) as JwtPayload;
-    if (req.body.userId && req.body.userId !== userId) {
+    const { user } = jwt.verify(token, publicKey, verifyOptions) as JwtPayload;
+    if (req.body.user.id && req.body.user.id !== user.id) {
       throw '';
     } else {
       logger.info('User authentication succeed');

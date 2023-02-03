@@ -2,7 +2,7 @@ import https from 'https';
 import fs from 'fs';
 
 import { app } from '../app';
-import { logger } from '../utils/logger';
+import { logger } from '../utils/logger.util';
 
 interface ErrnoException extends Error {
   errno?: number;

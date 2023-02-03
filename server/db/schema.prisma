@@ -9,12 +9,82 @@ generator client {
 }
 
 model User {
-    id          String        @id @default(uuid())
-    email       String        @unique
-    password    String
-    createdAt   DateTime      @default(now())
+    id                  String              @unique @id @default(uuid()) @db.VarChar(36)
+    email               String              @unique @db.VarChar(256)
+    password            String
+    picture             String
+    skin                String
+    inbox               Notification[]
+    hikes               Hike[]              @relation("Attendee")
+    invitations         Hike[]              @relation("Guest")
+    stats               Stats[]
+    pointOfInterest     PointOfInterest[]
+    createdAt           DateTime            @default(now())
+}
+
+model Notification {
+    id                  String              @unique @id @default(uuid()) @db.VarChar(36)
+    receiverId          String              @db.VarChar(36)
+    receiver            User                @relation(fields: [receiverId], references: [id])
+    title               String
+    message             String
+    read                Boolean             @default(false)
+    date                DateTime            @default(now())
+}
+
+model Trail {
+    id                  String              @unique @id @default(uuid()) @db.VarChar(36)
+    name                String
+    description         String
+    picture             String[]
+    latitude            Float               @db.DoublePrecision
+    longitude           Float               @db.DoublePrecision
+    difficulty          Int
+    duration            Int
+    distance            Int
+    uphill              Int
+    downhill            Int
+    label               String[]
+    geoJSON             String
+    hikes               Hike[]
+    pointOfInterests    PointOfInterest[]
+}
+
+model Hike {
+    id                  String              @unique @id @default(uuid()) @db.VarChar(36)
+    creatorId           String              @db.VarChar(36)
+    trailId             String              @db.VarChar(36)
+    trail               Trail               @relation(fields: [trailId], references: [id])
+    attendeesId         String[]            @db.VarChar(36)
+    attendees           User                @relation("Attendee", fields: [attendeesId], references: [id])
+    guestsId            String[]            @db.VarChar(36)
+    guests              User                @relation("Guest", fields: [guestsId], references: [id])
+    stats               Stats[]
+    schedule            DateTime            @default(now())
+}
+
+model Stats {
+    id                  String              @unique @id @default(uuid()) @db.VarChar(36)
+    userId              String              @db.VarChar(36)
+    user                User                @relation(fields: [userId], references: [id])
+    hikeId              String              @db.VarChar(36)
+    hike                Hike                @relation(fields: [hikeId], references: [id])
+    steps               Int                 @default(0)
+    distanceTravelled   Int                 @default(0)
+    completed           Boolean             @default(false)
+}
+
+model PointOfInterest {
+    id                  String              @unique @id @default(uuid()) @db.VarChar(36)
+    creatorId           String              @db.VarChar(36)
+    creator             User                @relation(fields: [creatorId], references: [id])
+    trailId             String              @db.VarChar(36)
+    trail               Trail               @relation(fields: [trailId], references: [id])
+    latitude            Float               @db.DoublePrecision
+    longitude           Float               @db.DoublePrecision
 }
 
 enum Role {
+    ADMIN
     USER
 }
