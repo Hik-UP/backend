@@ -2,6 +2,7 @@
 import http from 'http';
 
 import { app } from '../app';
+import { normalizePort } from '../utils/normalizePort.util';
 import { logger } from '../utils/logger.util';
 
 interface ErrnoException extends Error {
@@ -10,18 +11,6 @@ interface ErrnoException extends Error {
   path?: string;
   syscall?: string;
   stack?: string;
-}
-
-function normalizePort(value: string | undefined): number | undefined {
-  const port: number | undefined = parseInt(value || '', 10);
-
-  if (isNaN(port)) {
-    return undefined;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return undefined;
 }
 
 function createHttpServer(
@@ -41,8 +30,8 @@ function createHttpServer(
 }
 
 const testHttpServer: http.Server = createHttpServer(
-  process.env.PORT,
-  process.env.HOSTNAME
+  process.env.API_PORT,
+  process.env.API_HOSTNAME
 );
 
 export { testHttpServer };

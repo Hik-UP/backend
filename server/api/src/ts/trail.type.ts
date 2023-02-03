@@ -1,7 +1,7 @@
-interface INewHike {
+interface INewTrail {
   name: string;
   description: string;
-  picture: string[];
+  pictures: string[];
   latitude: number;
   longitude: number;
   difficulty: number;
@@ -9,13 +9,14 @@ interface INewHike {
   distance: number;
   uphill: number;
   downhill: number;
-  label: string[];
+  labels: string[];
+  geoJSON: string;
 }
 
-interface IHike {
+interface ITrail {
   name: string;
   description: string;
-  picture: string[];
+  pictures: string[];
   latitude: number;
   longitude: number;
   difficulty: number;
@@ -23,7 +24,8 @@ interface IHike {
   distance: number;
   uphill: number;
   downhill: number;
-  label: string[];
+  labels: string[];
+  geoJSON: string;
 }
 
-export { INewHike, IHike };
+export { INewTrail, ITrail };

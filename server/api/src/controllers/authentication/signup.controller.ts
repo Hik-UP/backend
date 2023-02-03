@@ -9,6 +9,7 @@ async function signup(req: Request, res: Response): Promise<void> {
     const hash = await bcrypt.hash(req.body.user.password, 12);
 
     await dbUserData.create({
+      username: req.body.user.username,
       email: req.body.user.email,
       password: hash
     });

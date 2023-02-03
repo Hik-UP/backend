@@ -1,11 +1,13 @@
-import { prisma } from '../prisma.model';
+import { prisma } from '../../utils/prisma.util';
 import { INewUser, IUserSecrets } from '../../ts/user/data.type';
 
 async function create(newUser: INewUser): Promise<void> {
   await prisma.user.create({
     data: {
+      username: newUser.username,
       email: newUser.email,
-      password: newUser.password
+      password: newUser.password,
+      picture: ''
     }
   });
 }

@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
 
 import { logger } from '../../utils/logger.util';
-import { dbHike } from '../../models/hike.model';
-import { IHike } from '../../ts/hike.type';
+import { dbTrail } from '../../models/trail.model';
+import { ITrail } from '../../ts/trail.type';
 
 async function retrieve(req: Request, res: Response): Promise<void> {
   try {
-    const hike: IHike[] | null = await dbHike.retrieve();
+    const trail: ITrail[] | null = await dbTrail.retrieve();
 
-    logger.info('hike recovery succeed');
+    logger.info('Trail recovery succeed');
     res.status(200).json({
-      hike: hike
+      trail: trail
     });
   } catch (error) {
-    logger.error('hike recovery failed\n' + error);
+    logger.error('Trail recovery failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

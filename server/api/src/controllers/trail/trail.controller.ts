@@ -1,9 +1,9 @@
 import { create } from './create.controller';
 import { retrieve } from './retrieve.controller';
 
-const hikeCtrl = {
+const trailCtrl = {
   create,
   retrieve
 };
 
-export { hikeCtrl };
+export { trailCtrl };
