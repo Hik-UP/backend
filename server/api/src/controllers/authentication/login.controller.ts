@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import fs from 'fs';
 
 import { dbUserData } from '../../models/user/data.model';
-import { logger } from '../../utils/logger';
+import { logger } from '../../utils/logger.util';
 import { HttpError } from '../../errors';
 
 interface PrivateKeySecrets {
@@ -30,11 +30,15 @@ async function login(req: Request, res: Response): Promise<void> {
     if (!(await bcrypt.compare(req.body.user.password, user.password))) {
       throw new HttpError(401, 'Unauthorized');
     }
-    const token = jwt.sign({ userId: user.id }, privateKeySecrets, signOptions);
+    const accessToken = jwt.sign(
+      { user: { id: user.id } },
+      privateKeySecrets,
+      signOptions
+    );
     logger.info('User login succeed');
     res.status(200).json({
-      userId: user.id,
-      token: token
+      user: { id: user.id },
+      accessToken: accessToken
     });
   } catch (error) {
     if (error instanceof HttpError) {
