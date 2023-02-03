@@ -16,6 +16,7 @@ model User {
     skinId              String              @db.VarChar(36)
     skin                Skin                @relation(fields: [skinId], references: [id])
     inbox               Notification[]
+    comments            Comment[]
     hikes               Hike[]              @relation("Attendee")
     invitations         Hike[]              @relation("Guest")
     stats               Stats[]
@@ -53,8 +54,20 @@ model Trail {
     downhill            Int
     labels              String[]
     geoJSON             String
+    comments            Comment[]
     hikes               Hike[]
     pointOfInterests    PointOfInterest[]
+}
+
+model Comment {
+    id                  String              @unique @id @default(uuid()) @db.VarChar(36)
+    authorId            String              @db.VarChar(36)
+    author              User                @relation(fields: [authorId], references: [id])
+    trailId             String              @db.VarChar(36)
+    trail               Trail               @relation(fields: [trailId], references: [id])
+    pictures            String[]
+    message             String
+    date                DateTime            @default(now())
 }
 
 model Hike {
