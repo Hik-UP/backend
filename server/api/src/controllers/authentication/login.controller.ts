@@ -23,21 +23,26 @@ async function login(req: Request, res: Response): Promise<void> {
       algorithm: 'RS256'
     };
     const user = await dbUserData.findSecrets(req.body.user.email);
-
     if (!user) {
       throw new HttpError(401, 'Unauthorized');
     }
+    const { roles: userRoles } = (await dbUserData.findOne(user.id)) || {};
+    if (!userRoles) {
+      throw new HttpError(401, 'Unauthorized');
+    }
+
     if (!(await bcrypt.compare(req.body.user.password, user.password))) {
       throw new HttpError(401, 'Unauthorized');
     }
+
     const accessToken = jwt.sign(
-      { user: { id: user.id } },
+      { user: { id: user.id, roles: userRoles } },
       privateKeySecrets,
       signOptions
     );
     logger.info('User login succeed');
     res.status(200).json({
-      user: { id: user.id },
+      user: { id: user.id, roles: userRoles },
       accessToken: accessToken
     });
   } catch (error) {
