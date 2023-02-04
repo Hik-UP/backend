@@ -1,13 +1,13 @@
 import express from 'express';
 
-import { auth } from '../middlewares/auth.middleware';
 import { trailCtrl } from '../controllers/trail/trail.controller';
+import { roleCheck } from '../middlewares/rolesCheck.middleware';
 
 function createTrailRoutes(): express.Router {
   const trailRoutes: express.Router = express.Router();
 
-  trailRoutes.post('/create', auth, trailCtrl.create);
-  trailRoutes.post('/retrieve', auth, trailCtrl.retrieve);
+  trailRoutes.post('/create', roleCheck(['ADMIN']), trailCtrl.create);
+  trailRoutes.post('/retrieve', trailCtrl.retrieve);
   return trailRoutes;
 }
 

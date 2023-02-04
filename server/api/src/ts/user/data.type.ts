@@ -4,9 +4,13 @@ interface INewUser {
   password: string;
 }
 
+interface IUserProfile {
+  roles: string[];
+}
+
 interface IUserSecrets {
   id: string;
   password: string;
 }
 
-export { INewUser, IUserSecrets };
+export { INewUser, IUserProfile, IUserSecrets };
