@@ -42,8 +42,7 @@ async function login(req: Request, res: Response): Promise<void> {
     );
     logger.info('User login succeed');
     res.status(200).json({
-      user: { id: user.id, roles: userRoles },
-      accessToken: accessToken
+      user: { id: user.id, roles: userRoles, accessToken: accessToken }
     });
   } catch (error) {
     if (error instanceof HttpError) {
