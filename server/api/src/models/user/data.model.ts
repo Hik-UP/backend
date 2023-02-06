@@ -1,5 +1,5 @@
 import { prisma } from '../../utils/prisma.util';
-import { INewUser, IUserSecrets } from '../../ts/user/data.type';
+import { INewUser, IUserProfile, IUserSecrets } from '../../ts/user/data.type';
 
 async function create(newUser: INewUser): Promise<void> {
   await prisma.user.create({
@@ -8,6 +8,17 @@ async function create(newUser: INewUser): Promise<void> {
       email: newUser.email,
       password: newUser.password,
       picture: ''
+    }
+  });
+}
+
+async function findOne(id: string): Promise<IUserProfile | null> {
+  return await prisma.user.findUnique({
+    where: {
+      id: id
+    },
+    select: {
+      roles: true
     }
   });
 }
@@ -26,6 +37,7 @@ async function findSecrets(email: string): Promise<IUserSecrets | null> {
 
 const dbUserData = {
   create,
+  findOne,
   findSecrets
 };
 
