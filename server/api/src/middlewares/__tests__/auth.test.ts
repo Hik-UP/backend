@@ -5,9 +5,13 @@ import { httpsServer } from '../../server/https';
 import { dbTest } from '../../models/test.model';
 import { crypto } from '../../utils/cryptography.util';
 
+beforeAll(async () => {
+  await dbTest.removeAllUsers();
+});
+
 afterAll(async () => {
   httpsServer.close();
-  await dbTest.removeUser(User.email);
+  await dbTest.removeAllUsers();
 });
 
 const User = {

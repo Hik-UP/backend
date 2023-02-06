@@ -1,21 +1,18 @@
 import request from 'supertest';
-import { randomUUID } from 'crypto';
 
 import { httpsServer } from '../../../server/https';
 import { dbTest } from '../../../models/test.model';
 import { crypto } from '../../../utils/cryptography.util';
 
 beforeAll(async () => {
-  await dbTest.removeAllPOI();
-  await dbTest.removeAllTrails();
   await dbTest.removeAllUsers();
+  await dbTest.removeAllTrails();
 });
 
 afterAll(async () => {
   httpsServer.close();
-  await dbTest.removeAllPOI();
-  await dbTest.removeAllTrails();
   await dbTest.removeAllUsers();
+  await dbTest.removeAllTrails();
 });
 
 const User = {
@@ -40,12 +37,8 @@ const Trail = {
   uphill: 0,
   downhill: 0,
   labels: [`${crypto.randomString(20)}`],
-  geoJSON: `${crypto.randomString(20)}`
-};
-
-const PointOfInterest = {
-  latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
-  longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12))
+  geoJSON: `${crypto.randomString(20)}`,
+  comments: []
 };
 
 describe('POST /auth/signup', () => {
@@ -86,6 +79,39 @@ describe('POST /auth/login', () => {
 });
 
 describe('POST /trail/create', () => {
+  it('should return 401', async () => {
+    const res = await request(httpsServer)
+      .post('/api/trail/create')
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        trail: Trail
+      });
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toMatchObject({ error: 'Unauthorized' });
+  });
+});
+
+describe('POST /trail/create', () => {
+  it('should return 401', async () => {
+    const res = await request(httpsServer)
+      .post('/api/trail/create')
+      .set('Authorization', `Bearer ${User.accessToken}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        trail: Trail
+      });
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toMatchObject({ error: 'Unauthorized' });
+  });
+});
+
+describe('POST /trail/create', () => {
   it('should return 201', async () => {
     await dbTest.setUserAdmin(User.email);
     const res = await request(httpsServer)
@@ -97,6 +123,172 @@ describe('POST /trail/create', () => {
           roles: User.roles
         },
         trail: Trail
+      });
+    expect(res.statusCode).toEqual(201);
+    expect(res.body).toMatchObject({ message: 'Created' });
+  });
+});
+
+describe('POST /trail/create', () => {
+  it('should return 500', async () => {
+    const res = await request(httpsServer)
+      .post('/api/trail/create')
+      .set('Authorization', `Bearer ${User.accessToken}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        trail: Trail
+      });
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+  });
+});
+
+describe('POST /trail/create', () => {
+  it('should return 500', async () => {
+    const res = await request(httpsServer)
+      .post('/api/trail/create')
+      .set('Authorization', `Bearer ${User.accessToken}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        trail: {
+          description: `${crypto.randomString(20)}`,
+          pictures: [`${crypto.randomString(20)}`],
+          latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
+          longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
+          difficulty: 0,
+          duration: 0,
+          distance: 0,
+          uphill: 0,
+          downhill: 0,
+          labels: [`${crypto.randomString(20)}`],
+          geoJSON: `${crypto.randomString(20)}`
+        }
+      });
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+  });
+});
+
+describe('POST /trail/create', () => {
+  it('should return 500', async () => {
+    const res = await request(httpsServer)
+      .post('/api/trail/create')
+      .set('Authorization', `Bearer ${User.accessToken}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        trail: {
+          name: `${crypto.randomString(20)}`,
+          pictures: [`${crypto.randomString(20)}`],
+          latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
+          longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
+          difficulty: 0,
+          duration: 0,
+          distance: 0,
+          uphill: 0,
+          downhill: 0,
+          labels: [`${crypto.randomString(20)}`],
+          geoJSON: `${crypto.randomString(20)}`
+        }
+      });
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+  });
+});
+
+describe('POST /trail/create', () => {
+  it('should return 500', async () => {
+    const res = await request(httpsServer)
+      .post('/api/trail/create')
+      .set('Authorization', `Bearer ${User.accessToken}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        trail: {
+          name: `${crypto.randomString(20)}`,
+          description: `${crypto.randomString(20)}`,
+          pictures: [`${crypto.randomString(20)}`],
+          longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
+          difficulty: 0,
+          duration: 0,
+          distance: 0,
+          uphill: 0,
+          downhill: 0,
+          labels: [`${crypto.randomString(20)}`],
+          geoJSON: `${crypto.randomString(20)}`
+        }
+      });
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+  });
+});
+
+describe('POST /trail/retrieve', () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      .post('/api/trail/retrieve')
+      .set('Authorization', `Bearer ${User.accessToken}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        }
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.trails.length).toBeGreaterThanOrEqual(1);
+    expect(typeof res.body.trails[0].name).toBe('string');
+    expect(typeof res.body.trails[0].description).toBe('string');
+    expect(typeof res.body.trails[0].pictures[0]).toBe('string');
+    expect(typeof res.body.trails[0].latitude).toBe('number');
+    expect(typeof res.body.trails[0].longitude).toBe('number');
+    expect(typeof res.body.trails[0].difficulty).toBe('number');
+    expect(typeof res.body.trails[0].duration).toBe('number');
+    expect(typeof res.body.trails[0].distance).toBe('number');
+    expect(typeof res.body.trails[0].uphill).toBe('number');
+    expect(typeof res.body.trails[0].downhill).toBe('number');
+    expect(typeof res.body.trails[0].labels[0]).toBe('string');
+    expect(typeof res.body.trails[0].geoJSON).toBe('string');
+    Trail.id = res.body.trails[0].id;
+    Trail.comments = res.body.trails[0].comments;
+    expect(res.body.trails).toContainEqual(Trail);
+  });
+});
+
+describe('POST /trail/create', () => {
+  it('should return 201', async () => {
+    await dbTest.setUserAdmin(User.email);
+    const res = await request(httpsServer)
+      .post('/api/trail/create')
+      .set('Authorization', `Bearer ${User.accessToken}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        trail: {
+          name: `${crypto.randomString(20)}`,
+          description: `${crypto.randomString(20)}`,
+          pictures: [`${crypto.randomString(20)}`],
+          latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
+          longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
+          difficulty: 0,
+          duration: 0,
+          distance: 0,
+          uphill: 0,
+          downhill: 0,
+          labels: [`${crypto.randomString(20)}`],
+          geoJSON: `${crypto.randomString(20)}`
+        }
       });
     expect(res.statusCode).toEqual(201);
     expect(res.body).toMatchObject({ message: 'Created' });
@@ -115,168 +307,6 @@ describe('POST /trail/retrieve', () => {
         }
       });
     expect(res.statusCode).toEqual(200);
-    expect(res.body.trails.length).toEqual(1);
-
-    Trail.id = res.body.trails[0].id;
-  });
-});
-
-describe('POST /poi/create', () => {
-  it('should return 401', async () => {
-    const res = await request(httpsServer)
-      .post('/api/poi/create')
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        },
-        trail: {
-          id: Trail.id
-        },
-        poi: PointOfInterest
-      });
-    expect(res.statusCode).toEqual(401);
-    expect(res.body).toMatchObject({ error: 'Unauthorized' });
-  });
-});
-
-describe('POST /poi/create', () => {
-  it('should return 201', async () => {
-    const res = await request(httpsServer)
-      .post('/api/poi/create')
-      .set('Authorization', `Bearer ${User.accessToken}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        },
-        trail: {
-          id: Trail.id
-        },
-        poi: PointOfInterest
-      });
-    expect(res.statusCode).toEqual(201);
-    expect(res.body).toMatchObject({ message: 'Created' });
-  });
-});
-
-describe('POST /poi/create', () => {
-  it('should return 500', async () => {
-    const res = await request(httpsServer)
-      .post('/api/poi/create')
-      .set('Authorization', `Bearer ${User.accessToken}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        },
-        trail: {
-          id: randomUUID()
-        },
-        poi: PointOfInterest
-      });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
-  });
-});
-
-describe('POST /poi/create', () => {
-  it('should return 500', async () => {
-    const res = await request(httpsServer)
-      .post('/api/poi/create')
-      .set('Authorization', `Bearer ${User.accessToken}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        },
-        trail: {
-          id: Trail.id
-        },
-        poi: {
-          latitude: `${PointOfInterest.latitude}`,
-          longitude: `${PointOfInterest.longitude}`
-        }
-      });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
-  });
-});
-
-describe('POST /poi/create', () => {
-  it('should return 500', async () => {
-    const res = await request(httpsServer)
-      .post('/api/poi/create')
-      .set('Authorization', `Bearer ${User.accessToken}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        },
-        trail: {
-          id: Trail.id
-        },
-        poi: {
-          latitude: PointOfInterest.latitude
-        }
-      });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
-  });
-});
-
-describe('POST /poi/create', () => {
-  it('should return 500', async () => {
-    const res = await request(httpsServer)
-      .post('/api/poi/create')
-      .set('Authorization', `Bearer ${User.accessToken}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        },
-        trail: {
-          id: Trail.id
-        },
-        poi: {
-          longitude: PointOfInterest.longitude
-        }
-      });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
-  });
-});
-
-describe('POST /poi/retrieve', () => {
-  it('should return 401', async () => {
-    const res = await request(httpsServer)
-      .post('/api/poi/retrieve')
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        }
-      });
-    expect(res.statusCode).toEqual(401);
-    expect(res.body).toMatchObject({ error: 'Unauthorized' });
-  });
-});
-
-describe('POST /poi/retrieve', () => {
-  it('should return 200', async () => {
-    const res = await request(httpsServer)
-      .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer ${User.accessToken}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        }
-      });
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.poi.length).toBeGreaterThanOrEqual(1);
-    expect(typeof res.body.poi[0].latitude).toBe('number');
-    expect(typeof res.body.poi[0].longitude).toBe('number');
-    expect(res.body.poi).toContainEqual(PointOfInterest);
+    expect(res.body.trails.length).toBeGreaterThanOrEqual(2);
   });
 });

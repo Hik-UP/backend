@@ -37,7 +37,7 @@ model Notification {
     receiverId          String              @db.VarChar(36)
     receiver            User                @relation(fields: [receiverId], references: [id])
     title               String
-    message             String
+    body                String
     read                Boolean             @default(false)
     date                DateTime            @default(now())
 }
@@ -55,7 +55,7 @@ model Trail {
     uphill              Int
     downhill            Int
     labels              String[]
-    geoJSON             String
+    geoJSON             String              @unique
     comments            Comment[]
     hikes               Hike[]
     pointOfInterests    PointOfInterest[]
@@ -67,8 +67,8 @@ model Comment {
     author              User                @relation(fields: [authorId], references: [id])
     trailId             String              @db.VarChar(36)
     trail               Trail               @relation(fields: [trailId], references: [id])
+    body                String
     pictures            String[]
-    message             String
     date                DateTime            @default(now())
 }
 

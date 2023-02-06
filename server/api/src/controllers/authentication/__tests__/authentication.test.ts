@@ -4,9 +4,13 @@ import { httpsServer } from '../../../server/https';
 import { dbTest } from '../../../models/test.model';
 import { crypto } from '../../../utils/cryptography.util';
 
+beforeAll(async () => {
+  await dbTest.removeAllUsers();
+});
+
 afterAll(async () => {
   httpsServer.close();
-  await dbTest.removeUser(User.email);
+  await dbTest.removeAllUsers();
 });
 
 const User = {
@@ -26,21 +30,18 @@ describe('POST /auth/signup', () => {
 });
 
 describe('POST /auth/signup', () => {
-  const email = `test@${crypto.randomString(8)}.com`;
-
   it('should return 201', async () => {
     const res = await request(httpsServer)
       .post('/api/auth/signup')
       .send({
         user: {
           username: crypto.randomString(20),
-          email: email,
+          email: `test@${crypto.randomString(8)}.com`,
           password: User.password
         }
       });
     expect(res.statusCode).toEqual(201);
     expect(res.body).toMatchObject({ message: 'Created' });
-    await dbTest.removeUser(email);
   });
 });
 
