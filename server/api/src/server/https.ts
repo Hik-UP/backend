@@ -41,7 +41,7 @@ function getSSLCertificates(): SSLCertificates {
 function createHttpsServer(
   port: string | undefined,
   hostname: string | undefined
-): void {
+): https.Server {
   const server: https.Server = https.createServer(getSSLCertificates(), app);
 
   process.on('SIGTERM', () => {
@@ -57,6 +57,12 @@ function createHttpsServer(
     logger.info('Https server started');
   });
   server.listen(normalizePort(port), hostname);
+  return server;
 }
 
-createHttpsServer(process.env.API_PORT, process.env.API_HOSTNAME);
+const httpsServer: https.Server = createHttpsServer(
+  process.env.API_PORT,
+  process.env.API_HOSTNAME
+);
+
+export { httpsServer };

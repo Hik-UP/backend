@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { dbUserData } from '../models/user/data.model';
 import { logger } from '../utils/logger.util';
 
-function roleCheck(allowRoles: string[]) {
+function rolesCheck(allowRoles: string[]) {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const { roles: userRoles } =
@@ -27,4 +27,4 @@ function roleCheck(allowRoles: string[]) {
   };
 }
 
-export { roleCheck };
+export { rolesCheck };
