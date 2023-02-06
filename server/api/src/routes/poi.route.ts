@@ -1,13 +1,12 @@
 import express from 'express';
 
-import { auth } from '../middlewares/auth.middleware';
 import { poiCtrl } from '../controllers/poi/poi.controller';
 
 function createPOIRoutes(): express.Router {
   const POIRoutes: express.Router = express.Router();
 
-  POIRoutes.post('/create', auth, poiCtrl.create);
-  POIRoutes.post('/retrieve', auth, poiCtrl.retrieve);
+  POIRoutes.post('/create', poiCtrl.create);
+  POIRoutes.post('/retrieve', poiCtrl.retrieve);
   return POIRoutes;
 }
 
