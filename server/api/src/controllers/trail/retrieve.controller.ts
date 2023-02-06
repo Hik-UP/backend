@@ -6,11 +6,11 @@ import { ITrail } from '../../ts/trail.type';
 
 async function retrieve(req: Request, res: Response): Promise<void> {
   try {
-    const trail: ITrail[] | null = await dbTrail.retrieve();
+    const trails: ITrail[] | null = await dbTrail.retrieve();
 
     logger.info('Trail recovery succeed');
     res.status(200).json({
-      trail: trail
+      trails: trails
     });
   } catch (error) {
     logger.error('Trail recovery failed\n' + error);

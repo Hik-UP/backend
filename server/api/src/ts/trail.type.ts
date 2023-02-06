@@ -1,3 +1,5 @@
+import { IComment } from './comment.type';
+
 interface INewTrail {
   name: string;
   description: string;
@@ -14,6 +16,7 @@ interface INewTrail {
 }
 
 interface ITrail {
+  id: string;
   name: string;
   description: string;
   pictures: string[];
@@ -26,6 +29,7 @@ interface ITrail {
   downhill: number;
   labels: string[];
   geoJSON: string;
+  comments: IComment[];
 }
 
 export { INewTrail, ITrail };

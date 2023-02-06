@@ -23,6 +23,7 @@ async function create(newTrail: INewTrail): Promise<void> {
 async function retrieve(): Promise<ITrail[] | null> {
   return await prisma.trail.findMany({
     select: {
+      id: true,
       name: true,
       description: true,
       pictures: true,
@@ -34,7 +35,21 @@ async function retrieve(): Promise<ITrail[] | null> {
       uphill: true,
       downhill: true,
       labels: true,
-      geoJSON: true
+      geoJSON: true,
+      comments: {
+        select: {
+          id: true,
+          author: {
+            select: {
+              username: true,
+              picture: true
+            }
+          },
+          body: true,
+          pictures: true,
+          date: true
+        }
+      }
     }
   });
 }
