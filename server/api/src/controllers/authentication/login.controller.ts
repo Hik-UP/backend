@@ -35,14 +35,14 @@ async function login(req: Request, res: Response): Promise<void> {
       throw new HttpError(401, 'Unauthorized');
     }
 
-    const accessToken = jwt.sign(
+    const token = jwt.sign(
       { user: { id: user.id, roles: userRoles } },
       privateKeySecrets,
       signOptions
     );
     logger.info('User login succeed');
     res.status(200).json({
-      user: { id: user.id, roles: userRoles, accessToken: accessToken }
+      user: { id: user.id, roles: userRoles, token: token }
     });
   } catch (error) {
     if (error instanceof HttpError) {
