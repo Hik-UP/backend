@@ -6,9 +6,9 @@ afterAll(() => {
   httpsServer.close();
 });
 
-for (let iteration = 0; iteration < 100; iteration += 1) {
-  describe('POST /auth/signup', () => {
-    it('should return 500', async () => {
+describe('POST /auth/signup', () => {
+  it('should return 500', async () => {
+    for (let iteration = 0; iteration < 100; iteration += 1) {
       const res = await request(httpsServer)
         .post('/api/auth/signup')
         .send({
@@ -18,9 +18,9 @@ for (let iteration = 0; iteration < 100; iteration += 1) {
         });
       expect(res.statusCode).toEqual(500);
       expect(res.body).toMatchObject({ error: 'Internal Server Error' });
-    });
+    }
   });
-}
+});
 
 describe('POST /auth/signup', () => {
   it('should return 429', async () => {

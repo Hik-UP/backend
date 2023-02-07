@@ -5,7 +5,7 @@ import fs from 'fs';
 
 import { dbUserData } from '../../models/user/data.model';
 import { logger } from '../../utils/logger.util';
-import { HttpError } from '../../errors';
+import { HttpError } from '../../utils/error.util';
 
 interface PrivateKeySecrets {
   key: Buffer;

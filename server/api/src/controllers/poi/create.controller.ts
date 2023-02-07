@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { logger } from '../../utils/logger.util';
-import { dbPOI } from '../../models/poi.model';
+import { dbPOI } from '../../models/poi/poi.model';
 
 async function create(req: Request, res: Response): Promise<void> {
   try {
