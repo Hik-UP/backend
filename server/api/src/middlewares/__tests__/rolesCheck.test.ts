@@ -1,7 +1,7 @@
 import request from 'supertest';
 
 import { httpsServer } from '../../server/https';
-import { dbTest } from '../../models/test.model';
+import { dbTest } from '../../models/test/test.model';
 import { crypto } from '../../utils/cryptography.util';
 
 beforeAll(async () => {
@@ -98,7 +98,7 @@ describe('POST /trail/create', () => {
 
 describe('POST /auth/login', () => {
   it('should return 200', async () => {
-    await dbTest.setUserAdmin(User.email);
+    await dbTest.setAdmin(User.email);
     const res = await request(httpsServer)
       .post('/api/auth/login')
       .send({
@@ -109,7 +109,7 @@ describe('POST /auth/login', () => {
       });
     expect(res.statusCode).toEqual(200);
     expect(typeof res.body.user.id).toBe('string');
-    expect(res.body.user.roles).toEqual(['USER', 'ADMIN']);
+    expect(res.body.user.roles).toEqual(['ADMIN']);
     expect(typeof res.body.user.accessToken).toBe('string');
 
     User.userId = res.body.user.id;

@@ -1,5 +1,5 @@
-import { INewTrail, ITrail } from '../ts/trail.type';
-import { prisma } from '../utils/prisma.util';
+import { INewTrail, ITrail } from '../../ts/trail.type';
+import { prisma } from '../../utils/prisma.util';
 
 async function create(newTrail: INewTrail): Promise<void> {
   await prisma.trail.create({

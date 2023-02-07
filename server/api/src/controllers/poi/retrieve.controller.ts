@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { logger } from '../../utils/logger.util';
-import { dbPOI } from '../../models/poi.model';
+import { dbPOI } from '../../models/poi/poi.model';
 import { IPOI } from '../../ts/poi.type';
 
 async function retrieve(req: Request, res: Response): Promise<void> {

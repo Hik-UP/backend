@@ -1,5 +1,5 @@
-import { INewPOI, IPOI } from '../ts/poi.type';
-import { prisma } from '../utils/prisma.util';
+import { INewPOI, IPOI } from '../../ts/poi.type';
+import { prisma } from '../../utils/prisma.util';
 
 async function create(newPOI: INewPOI): Promise<void> {
   await prisma.pointOfInterest.create({

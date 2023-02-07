@@ -1,7 +1,7 @@
 import request from 'supertest';
 
 import { httpsServer } from '../../../server/https';
-import { dbTest } from '../../../models/test.model';
+import { dbTest } from '../../../models/test/test.model';
 import { crypto } from '../../../utils/cryptography.util';
 
 beforeAll(async () => {
@@ -113,7 +113,7 @@ describe('POST /trail/create', () => {
 
 describe('POST /trail/create', () => {
   it('should return 201', async () => {
-    await dbTest.setUserAdmin(User.email);
+    await dbTest.setAdmin(User.email);
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.accessToken}`)
@@ -266,7 +266,7 @@ describe('POST /trail/retrieve', () => {
 
 describe('POST /trail/create', () => {
   it('should return 201', async () => {
-    await dbTest.setUserAdmin(User.email);
+    await dbTest.setAdmin(User.email);
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.accessToken}`)
