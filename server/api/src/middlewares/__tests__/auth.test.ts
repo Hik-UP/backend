@@ -20,7 +20,7 @@ const User = {
   email: `test@${crypto.randomString(8)}.com`,
   password: crypto.randomString(64),
   roles: [''],
-  accessToken: ''
+  token: ''
 };
 
 describe('POST /auth/signup', () => {
@@ -52,11 +52,11 @@ describe('POST /auth/login', () => {
     expect(res.statusCode).toEqual(200);
     expect(typeof res.body.user.id).toBe('string');
     expect(res.body.user.roles).toEqual(['USER']);
-    expect(typeof res.body.user.accessToken).toBe('string');
+    expect(typeof res.body.user.token).toBe('string');
 
     User.userId = res.body.user.id;
     User.roles = res.body.user.roles;
-    User.accessToken = res.body.user.accessToken;
+    User.token = res.body.user.token;
   });
 });
 
@@ -64,7 +64,7 @@ describe('POST /poi/retrieve', () => {
   it('should return 200', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer ${User.accessToken}`)
+      .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
           id: User.userId,
@@ -95,7 +95,7 @@ describe('POST /poi/retrieve', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer ${User.accessToken}x`)
+      .set('Authorization', `Bearer ${User.token}x`)
       .send({
         user: {
           id: User.userId,
@@ -111,7 +111,7 @@ describe('POST /poi/retrieve', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer x${User.accessToken}`)
+      .set('Authorization', `Bearer x${User.token}`)
       .send({
         user: {
           id: User.userId,
@@ -127,7 +127,7 @@ describe('POST /poi/retrieve', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer x${User.accessToken}x`)
+      .set('Authorization', `Bearer x${User.token}x`)
       .send({
         user: {
           id: User.userId,
@@ -158,7 +158,7 @@ describe('POST /poi/retrieve', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer ${User.accessToken}`)
+      .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
           roles: User.roles
@@ -173,7 +173,7 @@ describe('POST /poi/retrieve', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer ${User.accessToken}`)
+      .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
           id: User.userId
@@ -188,7 +188,7 @@ describe('POST /poi/retrieve', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer ${User.accessToken}`)
+      .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
           foo: 'bar'
@@ -203,7 +203,7 @@ describe('POST /poi/retrieve', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer ${User.accessToken}`)
+      .set('Authorization', `Bearer ${User.token}`)
       .send({
         foo: 'bar'
       });
@@ -216,7 +216,7 @@ describe('POST /poi/retrieve', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer ${User.accessToken}`)
+      .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
           id: randomUUID(),
@@ -232,7 +232,7 @@ describe('POST /poi/retrieve', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/retrieve')
-      .set('Authorization', `Bearer ${User.accessToken}`)
+      .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
           id: User.userId,

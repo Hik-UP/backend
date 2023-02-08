@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import { rateLimiter } from './middlewares/rateLimiter.middleware';
 import { auth } from './middlewares/auth.middleware';
 import { authRoutes } from './routes/auth.route';
+import { userRoutes } from './routes/user.route';
 import { POIRoutes } from './routes/poi.route';
 import { trailRoutes } from './routes/trail.route';
 
@@ -15,6 +16,8 @@ function createApp(): Express {
   app.use(rateLimiter);
 
   app.use('/api/auth/', authRoutes);
+
+  app.use('/api/user/', auth, userRoutes);
   app.use('/api/poi/', auth, POIRoutes);
   app.use('/api/trail/', auth, trailRoutes);
 
