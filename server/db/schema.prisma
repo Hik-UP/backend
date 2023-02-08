@@ -14,8 +14,8 @@ model User {
     email               String              @unique @db.VarChar(256)
     password            String
     picture             String
-    //skinId            String              @db.VarChar(36)
-    //skin              Skin                @relation(fields: [skinId], references: [id])
+    skinId              String              @db.VarChar(36)
+    skin                Skin                @relation(fields: [skinId], references: [id])
     inbox               Notification[]
     comments            Comment[]
     hikes               Hike[]              @relation("Attendee")
@@ -28,8 +28,11 @@ model User {
 
 model Skin {
     id                  String              @unique @id @default(uuid()) @db.VarChar(36)
-    //users             User[]
+    name                String              @unique @db.VarChar(24)
+    description         String
+    picture             String
     model               String
+    users               User[]
 }
 
 model Notification {
