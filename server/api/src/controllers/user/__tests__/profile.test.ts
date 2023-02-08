@@ -1,8 +1,8 @@
 import request from 'supertest';
 
-import { httpsServer } from '../../server/https';
-import { dbTest } from '../../models/test/test.model';
-import { crypto } from '../../utils/cryptography.util';
+import { httpsServer } from '../../../server/https';
+import { dbTest } from '../../../models/test/test.model';
+import { crypto } from '../../../utils/cryptography.util';
 
 beforeAll(async () => {
   await dbTest.removeAllUsers();
@@ -18,6 +18,7 @@ const User = {
   username: crypto.randomString(20),
   email: `test@${crypto.randomString(8)}.com`,
   password: crypto.randomString(64),
+  picture: '',
   roles: [''],
   token: ''
 };
@@ -59,80 +60,43 @@ describe('POST /auth/login', () => {
   });
 });
 
-describe('POST /trail/create', () => {
+describe('POST /user/profile', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
-      .post('/api/trail/create')
+      .post('/api/user/profile')
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        }
+      });
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toMatchObject({ error: 'Unauthorized' });
+  });
+});
+
+describe('POST /user/profile', () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      .post('/api/user/profile')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
           id: User.userId,
           roles: User.roles
-        },
-        trail: {
-          foo: 'bar'
-        }
-      });
-    expect(res.statusCode).toEqual(401);
-    expect(res.body).toMatchObject({ error: 'Unauthorized' });
-  });
-});
-
-describe('POST /trail/create', () => {
-  it('should return 401', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/create')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId
-        },
-        trail: {
-          foo: 'bar'
-        }
-      });
-    expect(res.statusCode).toEqual(401);
-    expect(res.body).toMatchObject({ error: 'Unauthorized' });
-  });
-});
-
-describe('POST /auth/login', () => {
-  it('should return 200', async () => {
-    await dbTest.setAdmin(User.email);
-    const res = await request(httpsServer)
-      .post('/api/auth/login')
-      .send({
-        user: {
-          email: User.email,
-          password: User.password
         }
       });
     expect(res.statusCode).toEqual(200);
-    expect(typeof res.body.user.id).toBe('string');
-    expect(res.body.user.roles).toEqual(['ADMIN']);
-    expect(typeof res.body.user.token).toBe('string');
+    expect(typeof res.body.user.username).toBe('string');
+    expect(typeof res.body.user.email).toBe('string');
+    expect(typeof res.body.user.picture).toBe('string');
 
-    User.userId = res.body.user.id;
-    User.roles = res.body.user.roles;
-    User.token = res.body.user.token;
-  });
-});
+    User.picture = res.body.user.picture;
 
-describe('POST /trail/create', () => {
-  it('should return 500', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/create')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        },
-        trail: {
-          foo: 'bar'
-        }
-      });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.body.user).toMatchObject({
+      username: User.username,
+      email: User.email,
+      picture: User.picture
+    });
   });
 });

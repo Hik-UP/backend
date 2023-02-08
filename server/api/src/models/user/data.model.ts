@@ -18,6 +18,9 @@ async function findOne(id: string): Promise<IUserProfile | null> {
       id: id
     },
     select: {
+      username: true,
+      email: true,
+      picture: true,
       roles: true
     }
   });

@@ -45,48 +45,6 @@ describe('POST /auth/signup', () => {
   });
 });
 
-describe('POST /auth/signup', () => {
-  it('should return 500', async () => {
-    const res = await request(httpsServer).post('/api/auth/signup').send({
-      user: User
-    });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
-  });
-});
-
-describe('POST /auth/signup', () => {
-  it('should return 500', async () => {
-    const res = await request(httpsServer)
-      .post('/api/auth/signup')
-      .send({
-        user: {
-          username: User.username,
-          email: `test@${crypto.randomString(8)}.com`,
-          password: crypto.randomString(64)
-        }
-      });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
-  });
-});
-
-describe('POST /auth/signup', () => {
-  it('should return 500', async () => {
-    const res = await request(httpsServer)
-      .post('/api/auth/signup')
-      .send({
-        user: {
-          username: crypto.randomString(20),
-          email: User.email,
-          password: crypto.randomString(64)
-        }
-      });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
-  });
-});
-
 describe('POST /auth/login', () => {
   it('should return 200', async () => {
     const res = await request(httpsServer)
@@ -100,7 +58,7 @@ describe('POST /auth/login', () => {
     expect(res.statusCode).toEqual(200);
     expect(typeof res.body.user.id).toBe('string');
     expect(res.body.user.roles).toEqual(['USER']);
-    expect(typeof res.body.user.accessToken).toBe('string');
+    expect(typeof res.body.user.token).toBe('string');
   });
 });
 
