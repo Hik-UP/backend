@@ -14,14 +14,19 @@ model User {
     email               String              @unique @db.VarChar(256)
     password            String
     picture             String
+
     skinId              String              @db.VarChar(36)
-    skin                Skin                @relation(fields: [skinId], references: [id])
+    skin                Skin                @relation("User", fields: [skinId], references: [id])
+    skins               Skin[]              @relation("Owner")
+
     inbox               Notification[]
     comments            Comment[]
+
     hikes               Hike[]              @relation("Attendee")
     invitations         Hike[]              @relation("Guest")
     stats               Stats[]
     pointOfInterests    PointOfInterest[]
+
     roles               Role[]              @default([USER])
     createdAt           DateTime            @default(now())
 }
@@ -30,9 +35,10 @@ model Skin {
     id                  String              @unique @id @default(uuid()) @db.VarChar(36)
     name                String              @unique @db.VarChar(24)
     description         String
-    picture             String
+    pictures            String[]
     model               String
-    users               User[]
+    users               User[]              @relation("User")
+    owners              User[]              @relation("Owner")
 }
 
 model Notification {

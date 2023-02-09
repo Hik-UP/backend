@@ -18,7 +18,7 @@ start_api_attached() {
   local readonly EXIT_CODE=$?
 
   docker compose stop --timeout 60 api
-  docker compose rm --force  api
+  docker compose rm --stop --force  api
   exit ${EXIT_CODE}
 }
 

@@ -1,9 +1,9 @@
 import { create } from './create.controller';
 import { retrieve } from './retrieve.controller';
 
-const poiCtrl = {
+const skinCtrl = {
   create,
   retrieve
 };
 
-export { poiCtrl };
+export { skinCtrl };

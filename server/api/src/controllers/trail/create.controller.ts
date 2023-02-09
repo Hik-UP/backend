@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { logger } from '../../utils/logger.util';
 import { dbTrail } from '../../models/trail/trail.model';
+import { logger } from '../../utils/logger.util';
 
 async function create(req: Request, res: Response): Promise<void> {
   try {

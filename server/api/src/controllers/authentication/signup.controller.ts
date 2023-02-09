@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 
-import { dbUserData } from '../../models/user/data.model';
+import { dbUserData } from '../../models/user/user.model';
 import { logger } from '../../utils/logger.util';
 
 async function signup(req: Request, res: Response): Promise<void> {
