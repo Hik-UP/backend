@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 
-import { dbUserData } from '../../models/user/data.model';
+import { dbUserData } from '../../models/user/user.model';
 import { logger } from '../../utils/logger.util';
 import { HttpError } from '../../utils/error.util';
 

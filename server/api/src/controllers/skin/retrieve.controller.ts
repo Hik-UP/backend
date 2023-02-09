@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
 
-import { dbTrail } from '../../models/trail/trail.model';
-import { ITrail } from '../../ts/trail.type';
+import { dbSkin } from '../../models/skin/skin.model';
+import { ISkin } from '../../ts/skin.type';
 import { logger } from '../../utils/logger.util';
 
 async function retrieve(req: Request, res: Response): Promise<void> {
   try {
-    const trails: ITrail[] | null = await dbTrail.retrieve();
+    const skins: ISkin[] | null = await dbSkin.retrieve();
 
-    logger.info('Trail recovery succeed');
+    logger.info('Skin recovery succeed');
     res.status(200).json({
-      trails: trails
+      skins: skins
     });
   } catch (error) {
-    logger.error('Trail recovery failed\n' + error);
+    logger.error('Skin recovery failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });
