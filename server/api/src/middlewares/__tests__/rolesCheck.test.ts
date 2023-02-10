@@ -6,11 +6,14 @@ import { crypto } from '../../utils/cryptography.util';
 
 beforeAll(async () => {
   await dbTest.removeAllUsers();
+  await dbTest.removeAllSkins();
+  await dbTest.createSkin();
 });
 
 afterAll(async () => {
   httpsServer.close();
   await dbTest.removeAllUsers();
+  await dbTest.removeAllSkins();
 });
 
 const User = {
