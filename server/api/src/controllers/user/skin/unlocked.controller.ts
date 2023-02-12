@@ -13,7 +13,7 @@ async function unlocked(req: Request, res: Response): Promise<void> {
       skins: skins
     });
   } catch (error) {
-    logger.error('User skin unlocked recovery succeed\n' + error);
+    logger.error('User skin unlocked recovery failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });
