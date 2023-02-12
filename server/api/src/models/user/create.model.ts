@@ -12,7 +12,7 @@ async function create(newUser: INewUser): Promise<void> {
       password: newUser.password,
       picture: '',
       skinId: skinId,
-      skinList: {
+      skins: {
         connect: {
           id: skinId
         }

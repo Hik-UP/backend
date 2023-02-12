@@ -132,6 +132,8 @@ generate_api_fake_ssl() {
     -out "${WORKDIR}/ssl/cert1.pem"						\
     -CA "${WORKDIR}/ssl/chain1.pem"						\
     -CAkey "${WORKDIR}/ssl/chain1-key.pem"
+    cat "${WORKDIR}/ssl/cert1.pem"						\
+    "${WORKDIR}/ssl/chain1.pem" > "${WORKDIR}/ssl/fullchain1.pem"
     chmod 400 ${WORKDIR}/ssl/*
     rm -f "${WORKDIR}/ssl/chain1-key.pem"
     rm -f  "${WORKDIR}/ssl/req1.pem"

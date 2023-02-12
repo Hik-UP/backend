@@ -5,7 +5,7 @@ import { logger } from '../../../utils/logger.util';
 
 async function unlocked(req: Request, res: Response): Promise<void> {
   try {
-    const { skinList: skins } =
+    const { skins: skins } =
       (await dbUserData.skin.unlocked(req.body.user.id)) || {};
 
     logger.info('User skin unlocked recovery succeed');

@@ -1,13 +1,13 @@
 import { ISkin } from '../../../ts/skin.type';
 import { prisma } from '../../../utils/prisma.util';
 
-async function unlocked(userId: string): Promise<{ skinList: ISkin[] } | null> {
+async function unlocked(userId: string): Promise<{ skins: ISkin[] } | null> {
   return await prisma.user.findUnique({
     where: {
       id: userId
     },
     select: {
-      skinList: {
+      skins: {
         select: {
           id: true,
           name: true,
