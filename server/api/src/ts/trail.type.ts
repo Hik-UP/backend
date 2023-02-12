@@ -32,4 +32,9 @@ interface ITrail {
   comments: IComment[];
 }
 
-export { INewTrail, ITrail };
+interface ResultWeather {
+  temp: number;
+  url_icon: string;
+}
+
+export { INewTrail, ITrail, ResultWeather };
