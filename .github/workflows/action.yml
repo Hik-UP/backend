@@ -25,9 +25,6 @@ jobs:
         env:
           TEST_ENV: ${{ secrets.TEST_ENV }}
         run: |
-          touch ./ssl/privkey1.pem
-          touch ./ssl/cert1.pem
-          touch ./ssl/chain1.pem
           printf "%s" "${TEST_ENV}" > ./server/api/config/.env.test
           sudo chown -R 1000:1000 $(pwd)
 
@@ -37,4 +34,4 @@ jobs:
 
       - name: test api
         shell: bash
-        run: ./server.sh api test
+        run: ./server.sh api test --coverage
