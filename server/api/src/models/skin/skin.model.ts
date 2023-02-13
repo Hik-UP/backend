@@ -1,9 +1,11 @@
 import { create } from './create.model';
 import { retrieve } from './retrieve.model';
+import { unlock } from './unlock.model';
 
-const dbTrail = {
+const dbSkin = {
   create,
-  retrieve
+  retrieve,
+  unlock
 };
 
-export { dbTrail };
+export { dbSkin };
