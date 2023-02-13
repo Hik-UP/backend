@@ -9,6 +9,8 @@ beforeAll(async () => {
   await dbTest.removeAllPOI();
   await dbTest.removeAllTrails();
   await dbTest.removeAllUsers();
+  await dbTest.removeAllSkins();
+  await dbTest.createSkin();
 });
 
 afterAll(async () => {
@@ -16,6 +18,7 @@ afterAll(async () => {
   await dbTest.removeAllPOI();
   await dbTest.removeAllTrails();
   await dbTest.removeAllUsers();
+  await dbTest.removeAllSkins();
 });
 
 const User = {

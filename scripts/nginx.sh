@@ -10,7 +10,7 @@ deploy_nginx() {
 
 stop_nginx() {
   docker compose stop --timeout 60 nginx
-  docker compose rm --force nginx
+  docker compose rm --stop --force nginx
 }
 
 restart_nginx() {

@@ -6,7 +6,7 @@ start_redis() {
 
 stop_redis() {
   docker compose stop --timeout 60 redis
-  docker compose rm --force redis
+  docker compose rm --stop --force redis
 }
 
 restart_redis() {

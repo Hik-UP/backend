@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { logger } from '../../utils/logger.util';
-import { dbUserData } from '../../models/user/data.model';
+import { dbUserData } from '../../models/user/user.model';
 
 async function profile(req: Request, res: Response): Promise<void> {
   try {
