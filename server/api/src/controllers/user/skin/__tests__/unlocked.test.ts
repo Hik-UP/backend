@@ -1,8 +1,8 @@
 import request from 'supertest';
 
-import { httpsServer } from '../../../server/https';
-import { dbTest } from '../../../models/test/test.model';
-import { crypto } from '../../../utils/cryptography.util';
+import { httpsServer } from '../../../../server/https';
+import { dbTest } from '../../../../models/test/test.model';
+import { crypto } from '../../../../utils/cryptography.util';
 
 beforeAll(async () => {
   await dbTest.removeAllUsers();
@@ -21,9 +21,16 @@ const User = {
   username: crypto.randomString(20),
   email: `test@${crypto.randomString(8)}.com`,
   password: crypto.randomString(64),
-  picture: '',
   roles: [''],
   token: ''
+};
+
+const Skin = {
+  id: '',
+  name: '',
+  description: '',
+  pictures: '',
+  model: ''
 };
 
 describe('POST /auth/signup', () => {
@@ -44,7 +51,7 @@ describe('POST /auth/signup', () => {
 
 describe('POST /auth/login', () => {
   it('should return 200', async () => {
-    const res = await request(httpsServer)
+    let res = await request(httpsServer)
       .post('/api/auth/login')
       .send({
         user: {
@@ -60,13 +67,29 @@ describe('POST /auth/login', () => {
     User.userId = res.body.user.id;
     User.roles = res.body.user.roles;
     User.token = res.body.user.token;
+
+    res = await request(httpsServer)
+      .post('/api/skin/retrieve')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        }
+      });
+
+    Skin.id = res.body.skins[0].id;
+    Skin.name = res.body.skins[0].name;
+    Skin.description = res.body.skins[0].description;
+    Skin.pictures = res.body.skins[0].pictures;
+    Skin.model = res.body.skins[0].model;
   });
 });
 
-describe('POST /user/profile', () => {
+describe('POST /user/skin/unlocked', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/profile')
+      .post('/api/user/skin/unlocked')
       .send({
         user: {
           id: User.userId,
@@ -78,10 +101,10 @@ describe('POST /user/profile', () => {
   });
 });
 
-describe('POST /user/profile', () => {
-  it('should return 200', async () => {
+describe('POST /user/skin/unlocked', () => {
+  it('should return 201', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/profile')
+      .post('/api/user/skin/unlocked')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
@@ -90,16 +113,7 @@ describe('POST /user/profile', () => {
         }
       });
     expect(res.statusCode).toEqual(200);
-    expect(typeof res.body.user.username).toBe('string');
-    expect(typeof res.body.user.email).toBe('string');
-    expect(typeof res.body.user.picture).toBe('string');
-
-    User.picture = res.body.user.picture;
-
-    expect(res.body.user).toMatchObject({
-      username: User.username,
-      email: User.email,
-      picture: User.picture
-    });
+    expect(res.body.skins.length).toEqual(1);
+    expect(res.body.skins).toContainEqual(Skin);
   });
 });
