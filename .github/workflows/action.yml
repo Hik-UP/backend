@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - master
+      - dev
       - actions
   workflow_dispatch:
 
@@ -21,11 +22,16 @@ jobs:
 
       - name: requirements
         shell: bash
+        env:
+          PORT: ${{ secrets.PORT }}
+          HOSTNAME: ${{ secrets.HOSTNAME }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_HOSTNAME: ${{ secrets.REDIS_HOSTNAME }}
         run: |
           touch ./ssl/privkey1.pem
           touch ./ssl/cert1.pem
           touch ./ssl/chain1.pem
-          printf "PORT='8080'\nHOSTNAME='172.19.0.4'\n" > ./server/api/config/.env.test
+          printf "PORT='%s'\nHOSTNAME='%s'\nREDIS_PORT='%s'\nREDIS_HOSTNAME='%s'" "${PORT}" "${HOSTNAME}" "${REDIS_PORT}" "${REDIS_HOSTNAME}" > ./server/api/config/.env.test
           sudo chown -R 1000:1000 $(pwd)
 
       - name: start database
