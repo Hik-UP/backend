@@ -6,6 +6,7 @@ function createUserRoutes(): express.Router {
   const userRoutes: express.Router = express.Router();
 
   userRoutes.post('/profile', userCtrl.profile);
+  userRoutes.post('/profile/update', userCtrl.updateProfile);
 
   return userRoutes;
 }
