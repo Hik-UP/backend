@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ResultWeather } from '../../ts/trail.type';
 import { logger } from '../../utils/logger.util';
+import { validateDetailsRequestBody } from '../../utils/validator';
 
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 const WEATHER_BASE_API_URL = process.env.WEATHER_BASE_API_URL;
@@ -51,25 +52,46 @@ async function getWheater(
   }
 }
 
-async function getCalories(weight: number, hoursActivity: number) {
+async function getCalories(
+  weight: number,
+  hoursActivity: number,
+  tall: number,
+  sex: string,
+  age: number
+) {
+  //Formule de Mifflin-St Jeor
   const MET = 5; //Metabolic equivalent, l'effort dépensé pendant l'activité
-  console.log(weight);
-  console.log(hoursActivity);
+  const BMT =
+    sex === 'M'
+      ? 10 * weight + 6.25 * tall - 5 * age + 5
+      : 10 * weight + 6.25 * tall - 5 * age - 161;
 
-  return 0.037 * MET * hoursActivity;
+  logger.info(BMT);
+
+  return hoursActivity * MET * BMT;
 }
 
 async function details(req: Request, res: Response) {
   const body = req.body;
+  const { error } = validateDetailsRequestBody(body['trail']);
+  if (error) return res.status(400).json({ error: error.details[0].message });
+  if (body['trail']['sex'] !== 'M' && body['trail']['sex'] !== 'F')
+    return res
+      .status(400)
+      .json({ error: 'Sex need to be M or F (in uppercase)' });
+
   const weatherResult = await getWheater(
     body['trail']['lat'],
     body['trail']['long']
   );
   const tools = await getTools();
   const urls = await recommendArticleUrl();
-  const calories = getCalories(
+  const calories = await getCalories(
     Number(body['trail']['weight']),
-    Number(body['trail']['hoursActivity'])
+    Number(body['trail']['hoursActivity']),
+    Number(body['trail']['tall']),
+    body['trail']['sex'],
+    Number(body['trail']['age'])
   );
 
   if (typeof weatherResult === 'boolean') {
