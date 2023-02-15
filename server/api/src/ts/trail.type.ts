@@ -11,6 +11,8 @@ interface INewTrail {
   distance: number;
   uphill: number;
   downhill: number;
+  tools: string[];
+  relatedArticles: string[];
   labels: string[];
   geoJSON: string;
 }
@@ -27,6 +29,8 @@ interface ITrail {
   distance: number;
   uphill: number;
   downhill: number;
+  tools: string[];
+  relatedArticles: string[];
   labels: string[];
   geoJSON: string;
   comments: IComment[];

@@ -1,24 +1,40 @@
 import Joi from 'joi';
 
 interface DetailsRequestBody {
-  lat: string;
-  long: string;
-  weight: string;
-  hoursActivity: string;
-  tall: string;
+  id: string;
+  roles: string[];
+  weight: number;
+  tall: number;
   sex: 'M' | 'F';
-  age: string;
+  age: number;
 }
 
-export const validateDetailsRequestBody = (body: DetailsRequestBody) => {
+interface DetailsTrails {
+  id: string;
+  latitude: number;
+  longitude: number;
+  duration: number;
+}
+
+export const validateDetailsUser = (body: DetailsRequestBody) => {
   const schema = Joi.object({
-    lat: Joi.string().required(),
-    long: Joi.string().required(),
-    weight: Joi.string().required(),
-    hoursActivity: Joi.string().required(),
-    tall: Joi.string().required(),
+    id: Joi.string().required(),
+    roles: Joi.array().required(),
+    weight: Joi.number().required(),
+    tall: Joi.number().required(),
     sex: Joi.string().required(),
-    age: Joi.string().required()
+    age: Joi.number().required()
+  });
+
+  return schema.validate(body);
+};
+
+export const validateDetailsTrails = (body: DetailsTrails) => {
+  const schema = Joi.object({
+    id: Joi.string().required(),
+    latitude: Joi.number().required(),
+    longitude: Joi.number().required(),
+    duration: Joi.number().required()
   });
 
   return schema.validate(body);
