@@ -6,7 +6,7 @@ function createUserRoutes(): express.Router {
   const userRoutes: express.Router = express.Router();
 
   userRoutes.post('/profile', userCtrl.profile);
-  userRoutes.post('/profile/picture/update', userCtrl.updateProfile);
+  userRoutes.put('/profile/update', userCtrl.updateProfile);
 
   return userRoutes;
 }

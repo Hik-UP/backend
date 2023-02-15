@@ -1,33 +1,26 @@
 import { Request, Response } from 'express';
 import { ResultWeather } from '../../ts/trail.type';
 import { logger } from '../../utils/logger.util';
-import { validateDetailsRequestBody } from '../../utils/validator';
+import {
+  validateDetailsUser,
+  validateDetailsTrails
+} from '../../utils/validator';
+import { HttpError } from '../../utils/error.util';
+import { dbTrail } from '../../models/trail/trail.model';
 
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 const WEATHER_BASE_API_URL = process.env.WEATHER_BASE_API_URL;
 const WEATHER_BASE_ICON_URL = process.env.WEATHER_BASE_ICON_URL;
 
-async function recommendArticleUrl(): Promise<string[]> {
-  const urls = [
-    'https://www.altituderando.com/Check-list-rando-montagne-ou-comment-ne-rien-oublier',
-    'https://www.routard.com/dossier-pratique-sur-le-voyage/cid135415-10-accessoires-indispensables-pour-partir-en-randonnee.html',
-    'https://www.evanela.com/check-list-materiel-randonne-plusieurs-jours/'
-  ];
+async function recommendArticleUrl(id: string): Promise<string[] | undefined> {
+  const { relatedArticles } = (await dbTrail.findOne(id)) || {};
 
-  return urls;
+  return relatedArticles;
 }
 
-async function getTools(): Promise<string[]> {
-  const tools = [
-    'La Boussole',
-    'Lampe frontale',
-    'Alimentation à forte calorie',
-    'L’eau supplémentaire (et purificateur)',
-    'Vêtements chauds et isolants',
-    'Couteau multifonctions',
-    'Crème solaire et lunettes de soleil',
-    'Couverture de survie et Trousse de premiers soins'
-  ];
+async function getTools(id: string): Promise<string[] | undefined> {
+  logger.info(id);
+  const { tools } = (await dbTrail.findOne(id)) || {};
 
   return tools;
 }
@@ -72,38 +65,53 @@ async function getCalories(
 }
 
 async function details(req: Request, res: Response) {
-  const body = req.body;
-  const { error } = validateDetailsRequestBody(body['trail']);
-  if (error) return res.status(400).json({ error: error.details[0].message });
-  if (body['trail']['sex'] !== 'M' && body['trail']['sex'] !== 'F')
-    return res
-      .status(400)
-      .json({ error: 'Sex need to be M or F (in uppercase)' });
+  try {
+    const body = req.body;
+    const { error } = validateDetailsUser(body['user']);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+    if (body['user']['sex'] !== 'M' && body['user']['sex'] !== 'F')
+      throw new HttpError(400, "Sex need to be M or F (in uppercase)'");
+    const errorTrails = validateDetailsTrails(body['trail']);
+    if (errorTrails.error)
+      throw new HttpError(400, errorTrails.error.details[0].message);
 
-  const weatherResult = await getWheater(
-    body['trail']['lat'],
-    body['trail']['long']
-  );
-  const tools = await getTools();
-  const urls = await recommendArticleUrl();
-  const calories = await getCalories(
-    Number(body['trail']['weight']),
-    Number(body['trail']['hoursActivity']),
-    Number(body['trail']['tall']),
-    body['trail']['sex'],
-    Number(body['trail']['age'])
-  );
+    const weatherResult = await getWheater(
+      body['trail']['latitude'],
+      body['trail']['longitude']
+    );
+    const tools = await getTools(body['trail']['id']);
+    const urls = await recommendArticleUrl(body['trail']['id']);
+    const calories = await getCalories(
+      Number(body['user']['weight']),
+      Number(body['trail']['duration']),
+      Number(body['user']['tall']),
+      body['user']['sex'],
+      Number(body['user']['age'])
+    );
 
-  if (typeof weatherResult === 'boolean') {
-    return res.status(500).json({ error: 'Internal Server Error' });
+    if (typeof weatherResult === 'boolean') {
+      throw '';
+    }
+    return res.status(200).json({
+      message: 'Everyting woks fine',
+      weather: weatherResult,
+      tools: tools,
+      recommendArticleUrls: urls,
+      calories
+    });
+  } catch (error) {
+    if (error instanceof HttpError) {
+      logger.warn('Details failed');
+      res.status(error.statusCode).json({
+        error: error.message
+      });
+    } else {
+      logger.error('Details errors\n' + error);
+      res.status(500).json({
+        error: 'Internal Server Error'
+      });
+    }
   }
-  return res.status(200).json({
-    msg: 'Everyting woks fine',
-    weather: weatherResult,
-    tools: tools,
-    recommendArticleUrls: urls,
-    calories
-  });
 }
 
 export default details;
