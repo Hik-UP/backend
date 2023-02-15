@@ -26,7 +26,7 @@ async function findOne(id: string): Promise<IUserProfile | null> {
   });
 }
 
-async function update(
+async function updateProfile(
   id: string,
   picture: string
 ): Promise<IUserProfile | null> {
@@ -54,7 +54,7 @@ const dbUserData = {
   create,
   findOne,
   findSecrets,
-  update
+  updateProfile
 };
 
 export { dbUserData };

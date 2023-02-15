@@ -4,12 +4,13 @@ import { logger } from '../../utils/logger.util';
 
 async function updateProfile(req: Request, res: Response): Promise<void> {
   try {
-    await dbUserData.update(req.body.user.id, req.body.picture);
+    logger.info('Update profile');
+    await dbUserData.updateProfile(req.body.user.id, req.body.user.picture);
 
-    logger.info('User picture update by ' + req.body.picture);
-    res.status(200).json({ msg: 'Successfully' });
-  } catch (e) {
-    logger.error('User profile recovery failed\n' + e);
+    logger.info('User picture update by ' + req.body.user.picture);
+    res.status(200).json({ message: 'Updated' });
+  } catch (error) {
+    logger.error('User profile update failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });
