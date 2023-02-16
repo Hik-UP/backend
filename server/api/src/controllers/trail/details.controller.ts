@@ -93,7 +93,6 @@ async function details(req: Request, res: Response) {
       throw '';
     }
     return res.status(200).json({
-      message: 'Everyting woks fine',
       weather: weatherResult,
       tools: tools,
       recommendArticleUrls: urls,

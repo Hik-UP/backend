@@ -6,13 +6,14 @@ import { crypto } from '../../../utils/cryptography.util';
 
 beforeAll(async () => {
   await dbTest.removeAllUsers();
-  await dbTest.removeAllTrails();
+  await dbTest.removeAllSkins();
+  await dbTest.createSkin();
 });
 
 afterAll(async () => {
   httpsServer.close();
   await dbTest.removeAllUsers();
-  await dbTest.removeAllTrails();
+  await dbTest.removeAllSkins();
 });
 
 const User = {
@@ -42,6 +43,42 @@ describe('POST /auth/signup', () => {
 
 describe('POST /auth/login', () => {
   it('should return 200', async () => {
+    const res = await request(httpsServer)
+      .post('/api/auth/login')
+      .send({
+        user: {
+          email: User.email,
+          password: User.password
+        }
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(typeof res.body.user.id).toBe('string');
+    expect(res.body.user.roles).toEqual(['USER']);
+    expect(typeof res.body.user.token).toBe('string');
+
+    User.userId = res.body.user.id;
+    User.roles = res.body.user.roles;
+    User.token = res.body.user.token;
+  });
+});
+
+describe('POST /skin/retrieve', () => {
+  it('should return 401', async () => {
+    const res = await request(httpsServer)
+      .post('/api/skin/retrieve')
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        }
+      });
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toMatchObject({ error: 'Unauthorized' });
+  });
+});
+
+describe('POST /auth/login', () => {
+  it('should return 200', async () => {
     await dbTest.setAdmin(User.email);
     const res = await request(httpsServer)
       .post('/api/auth/login')
@@ -56,59 +93,33 @@ describe('POST /auth/login', () => {
     expect(res.body.user.roles).toEqual(['ADMIN']);
     expect(typeof res.body.user.token).toBe('string');
 
-    User.userId = res.body.user.id;
     User.roles = res.body.user.roles;
     User.token = res.body.user.token;
   });
 });
 
-describe('POST /trail/retrieve', () => {
-  it('should return 401', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/retrieve')
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        }
-      });
-    expect(res.statusCode).toEqual(401);
-    expect(res.body).toMatchObject({ error: 'Unauthorized' });
-  });
-});
-
-describe('POST /trail/retrieve', () => {
+describe('POST /skin/retrieve', () => {
   it('should return 201', async () => {
-    await dbTest.removeAllTrails();
     for (let i = 0; i < 25; i += 1) {
-      const newTrail = {
+      const newSkin = {
         id: '',
-        name: `${crypto.randomString(20)}`,
-        description: `${crypto.randomString(20)}`,
-        pictures: [`${crypto.randomString(20)}`],
-        latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
-        longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-        difficulty: 0,
-        duration: 0,
-        distance: 0,
-        uphill: 0,
-        downhill: 0,
-        labels: [`${crypto.randomString(20)}`],
-        geoJSON: `${crypto.randomString(20)}`,
-        comments: []
+        name: crypto.randomString(20),
+        description: crypto.randomString(20),
+        pictures: [crypto.randomString(20), crypto.randomString(20)],
+        model: crypto.randomString(8)
       };
       let res = await request(httpsServer)
-        .post('/api/trail/create')
+        .post('/api/skin/create')
         .set('Authorization', `Bearer ${User.token}`)
         .send({
           user: {
             id: User.userId,
             roles: User.roles
           },
-          trail: newTrail
+          skin: newSkin
         });
       res = await request(httpsServer)
-        .post('/api/trail/retrieve')
+        .post('/api/skin/retrieve')
         .set('Authorization', `Bearer ${User.token}`)
         .send({
           user: {
@@ -117,24 +128,11 @@ describe('POST /trail/retrieve', () => {
           }
         });
       expect(res.statusCode).toEqual(200);
-      expect(res.body.trails.length).toEqual(i + 1);
+      expect(res.body.skins.length).toEqual(i + 2);
 
-      newTrail.id = res.body.trails[i].id;
-      newTrail.comments = res.body.trails[i].comments;
+      newSkin.id = res.body.skins[i + 1].id;
 
-      expect(typeof res.body.trails[i].name).toBe('string');
-      expect(typeof res.body.trails[i].description).toBe('string');
-      expect(typeof res.body.trails[i].pictures[0]).toBe('string');
-      expect(typeof res.body.trails[i].latitude).toBe('number');
-      expect(typeof res.body.trails[i].longitude).toBe('number');
-      expect(typeof res.body.trails[i].difficulty).toBe('number');
-      expect(typeof res.body.trails[i].duration).toBe('number');
-      expect(typeof res.body.trails[i].distance).toBe('number');
-      expect(typeof res.body.trails[i].uphill).toBe('number');
-      expect(typeof res.body.trails[i].downhill).toBe('number');
-      expect(typeof res.body.trails[i].labels[0]).toBe('string');
-      expect(typeof res.body.trails[i].geoJSON).toBe('string');
-      expect(res.body.trails).toContainEqual(newTrail);
+      expect(res.body.skins).toContainEqual(newSkin);
     }
   });
 });

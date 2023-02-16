@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import { logger } from '../../utils/logger.util';
 import { dbPOI } from '../../models/poi/poi.model';
 import { IPOI } from '../../ts/poi.type';
+import { logger } from '../../utils/logger.util';
 
 async function retrieve(req: Request, res: Response): Promise<void> {
   try {

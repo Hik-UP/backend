@@ -1,3 +1,5 @@
+import { ISkin } from './skin.type';
+
 interface INewUser {
   username: string;
   email: string;
@@ -5,6 +7,10 @@ interface INewUser {
 }
 
 interface IUserProfile {
+  username: string;
+  email: string;
+  picture: string;
+  skin: ISkin;
   roles: string[];
 }
 

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { dbUserData } from '../models/user/data.model';
+import { dbUserData } from '../models/user/user.model';
 import { logger } from '../utils/logger.util';
 
 function rolesCheck(allowRoles: string[]) {

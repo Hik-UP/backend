@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { logger } from '../../utils/logger.util';
 import { dbTrail } from '../../models/trail/trail.model';
+import { logger } from '../../utils/logger.util';
 
 async function create(req: Request, res: Response): Promise<void> {
   try {
@@ -26,7 +26,7 @@ async function create(req: Request, res: Response): Promise<void> {
       message: 'Created'
     });
   } catch (error) {
-    logger.error('Trail reation failed\n' + error);
+    logger.error('Trail creation failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });
