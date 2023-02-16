@@ -39,6 +39,8 @@ const Trail = {
   distance: 0,
   uphill: 0,
   downhill: 0,
+  tools: [],
+  relatedArticles: [],
   labels: [`${crypto.randomString(20)}`],
   geoJSON: `${crypto.randomString(20)}`,
   comments: []
@@ -525,6 +527,8 @@ describe('POST /trail/create', () => {
         distance: 0,
         uphill: 0,
         downhill: 0,
+        tools: [`${crypto.randomString(20)}`],
+        relatedArticles: [`${crypto.randomString(20)}`],
         labels: [`${crypto.randomString(20)}`],
         geoJSON: `${crypto.randomString(20)}`,
         comments: []

@@ -8,6 +8,7 @@ function createTrailRoutes(): express.Router {
 
   trailRoutes.post('/create', rolesCheck(['ADMIN']), trailCtrl.create);
   trailRoutes.post('/retrieve', trailCtrl.retrieve);
+  trailRoutes.post('/details', trailCtrl.details);
   return trailRoutes;
 }
 

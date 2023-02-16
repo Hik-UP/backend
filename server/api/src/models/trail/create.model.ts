@@ -14,6 +14,8 @@ async function create(newTrail: INewTrail): Promise<void> {
       distance: newTrail.distance,
       uphill: newTrail.uphill,
       downhill: newTrail.downhill,
+      tools: newTrail.tools,
+      relatedArticles: newTrail.relatedArticles,      
       labels: newTrail.labels,
       geoJSON: newTrail.geoJSON
     }

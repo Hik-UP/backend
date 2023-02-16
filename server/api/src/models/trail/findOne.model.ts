@@ -1,8 +1,11 @@
 import { prisma } from '../../utils/prisma.util';
 import { ITrail } from '../../ts/trail.type';
 
-async function retrieve(): Promise<ITrail[] | null> {
-  return await prisma.trail.findMany({
+async function findOne(id: string): Promise<ITrail | null> {
+  return await prisma.trail.findUnique({
+    where: {
+      id: id
+    },
     select: {
       id: true,
       name: true,
@@ -37,4 +40,4 @@ async function retrieve(): Promise<ITrail[] | null> {
   });
 }
 
-export { retrieve };
+export { findOne };

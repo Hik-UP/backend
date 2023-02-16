@@ -16,6 +16,8 @@ async function create(req: Request, res: Response): Promise<void> {
       distance: req.body.trail.distance,
       uphill: req.body.trail.uphill,
       downhill: req.body.trail.downhill,
+      tools: req.body.trail.tools,
+      relatedArticles: req.body.trail.relatedArticles,
       labels: req.body.trail.labels,
       geoJSON: req.body.trail.geoJSON
     });
@@ -24,7 +26,7 @@ async function create(req: Request, res: Response): Promise<void> {
       message: 'Created'
     });
   } catch (error) {
-    logger.error('Trail reation failed\n' + error);
+    logger.error('Trail creation failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });
