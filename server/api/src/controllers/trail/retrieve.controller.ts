@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import { logger } from '../../utils/logger.util';
 import { dbTrail } from '../../models/trail/trail.model';
 import { ITrail } from '../../ts/trail.type';
+import { logger } from '../../utils/logger.util';
 
 async function retrieve(req: Request, res: Response): Promise<void> {
   try {

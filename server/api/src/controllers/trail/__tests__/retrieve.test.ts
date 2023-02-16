@@ -6,12 +6,15 @@ import { crypto } from '../../../utils/cryptography.util';
 
 beforeAll(async () => {
   await dbTest.removeAllUsers();
+  await dbTest.removeAllSkins();
   await dbTest.removeAllTrails();
+  await dbTest.createSkin();
 });
 
 afterAll(async () => {
   httpsServer.close();
   await dbTest.removeAllUsers();
+  await dbTest.removeAllSkins();
   await dbTest.removeAllTrails();
 });
 
@@ -93,6 +96,8 @@ describe('POST /trail/retrieve', () => {
         distance: 0,
         uphill: 0,
         downhill: 0,
+        tools: [`${crypto.randomString(20)}`],
+        relatedArticles: [`${crypto.randomString(20)}`],
         labels: [`${crypto.randomString(20)}`],
         geoJSON: `${crypto.randomString(20)}`,
         comments: []
@@ -132,6 +137,8 @@ describe('POST /trail/retrieve', () => {
       expect(typeof res.body.trails[i].distance).toBe('number');
       expect(typeof res.body.trails[i].uphill).toBe('number');
       expect(typeof res.body.trails[i].downhill).toBe('number');
+      expect(typeof res.body.trails[i].tools[0]).toBe('string');
+      expect(typeof res.body.trails[i].relatedArticles[0]).toBe('string');
       expect(typeof res.body.trails[i].labels[0]).toBe('string');
       expect(typeof res.body.trails[i].geoJSON).toBe('string');
       expect(res.body.trails).toContainEqual(newTrail);
