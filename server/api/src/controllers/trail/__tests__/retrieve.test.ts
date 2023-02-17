@@ -91,11 +91,11 @@ describe('POST /trail/retrieve', () => {
         pictures: [`${crypto.randomString(20)}`],
         latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
         longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-        difficulty: 0,
-        duration: 0,
-        distance: 0,
-        uphill: 0,
-        downhill: 0,
+        difficulty: Math.floor(Math.random() * 10),
+        duration: Math.floor(Math.random() * 10),
+        distance: Math.floor(Math.random() * 10),
+        uphill: Math.floor(Math.random() * 10),
+        downhill: Math.floor(Math.random() * 10),
         tools: [`${crypto.randomString(20)}`],
         relatedArticles: [`${crypto.randomString(20)}`],
         labels: [`${crypto.randomString(20)}`],
@@ -110,7 +110,22 @@ describe('POST /trail/retrieve', () => {
             id: User.userId,
             roles: User.roles
           },
-          trail: newTrail
+          trail: {
+            name: newTrail.name,
+            description: newTrail.description,
+            pictures: newTrail.pictures,
+            latitude: newTrail.latitude,
+            longitude: newTrail.longitude,
+            difficulty: newTrail.difficulty,
+            duration: newTrail.duration,
+            distance: newTrail.distance,
+            uphill: newTrail.uphill,
+            downhill: newTrail.downhill,
+            tools: newTrail.tools,
+            relatedArticles: newTrail.relatedArticles,
+            labels: newTrail.labels,
+            geoJSON: newTrail.geoJSON
+          }
         });
       res = await request(httpsServer)
         .post('/api/trail/retrieve')

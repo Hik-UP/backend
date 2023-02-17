@@ -116,7 +116,22 @@ describe('POST /poi/create', () => {
             id: User.userId,
             roles: User.roles
           },
-          trail: newTrail
+          trail: {
+            name: newTrail.name,
+            description: newTrail.description,
+            pictures: newTrail.pictures,
+            latitude: newTrail.latitude,
+            longitude: newTrail.longitude,
+            difficulty: newTrail.difficulty,
+            duration: newTrail.duration,
+            distance: newTrail.distance,
+            uphill: newTrail.uphill,
+            downhill: newTrail.downhill,
+            tools: newTrail.tools,
+            relatedArticles: newTrail.relatedArticles,
+            labels: newTrail.labels,
+            geoJSON: newTrail.geoJSON
+          }
         });
       res = await request(httpsServer)
         .post('/api/trail/retrieve')

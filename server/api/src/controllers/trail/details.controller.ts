@@ -63,7 +63,7 @@ async function details(req: Request, res: Response): Promise<void> {
       Number(req.body.user.age)
     );
 
-    if (typeof weatherResult === 'boolean') {
+    if (weatherResult === false) {
       throw '';
     }
     logger.info('Trail details recovery succeed');

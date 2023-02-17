@@ -116,7 +116,12 @@ describe('POST /skin/retrieve', () => {
             id: User.userId,
             roles: User.roles
           },
-          skin: newSkin
+          skin: {
+            name: newSkin.name,
+            description: newSkin.description,
+            pictures: newSkin.pictures,
+            model: newSkin.model
+          }
         });
       res = await request(httpsServer)
         .post('/api/skin/retrieve')

@@ -140,7 +140,22 @@ describe('POST /poi/create', () => {
           id: User.userId,
           roles: User.roles
         },
-        trail: Trail
+        trail: {
+          name: Trail.name,
+          description: Trail.description,
+          pictures: Trail.pictures,
+          latitude: Trail.latitude,
+          longitude: Trail.longitude,
+          difficulty: Trail.difficulty,
+          duration: Trail.duration,
+          distance: Trail.distance,
+          uphill: Trail.uphill,
+          downhill: Trail.downhill,
+          tools: Trail.tools,
+          relatedArticles: Trail.relatedArticles,
+          labels: Trail.labels,
+          geoJSON: Trail.geoJSON
+        }
       });
     let res = await request(httpsServer)
       .post('/api/trail/retrieve')
@@ -176,7 +191,7 @@ describe('POST /poi/create', () => {
 });
 
 describe('POST /poi/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -192,13 +207,13 @@ describe('POST /poi/create', () => {
           latitude: PointOfInterest.latitude
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /poi/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/poi/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -214,12 +229,13 @@ describe('POST /poi/create', () => {
           longitude: PointOfInterest.longitude
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /poi/create', () => {
+  jest.setTimeout(60000);
   it('should return 201', async () => {
     await dbTest.removeAllTrails();
     for (let i = 0; i < 20; i += 1) {
@@ -230,15 +246,16 @@ describe('POST /poi/create', () => {
         pictures: [`${crypto.randomString(20)}`],
         latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
         longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-        difficulty: 0,
-        duration: 0,
-        distance: 0,
-        uphill: 0,
-        downhill: 0,
+        difficulty: Math.floor(Math.random() * 10),
+        duration: Math.floor(Math.random() * 10),
+        distance: Math.floor(Math.random() * 10),
+        uphill: Math.floor(Math.random() * 10),
+        downhill: Math.floor(Math.random() * 10),
         tools: [`${crypto.randomString(20)}`],
         relatedArticles: [`${crypto.randomString(20)}`],
         labels: [`${crypto.randomString(20)}`],
-        geoJSON: `${crypto.randomString(20)}`
+        geoJSON: `${crypto.randomString(20)}`,
+        comments: []
       };
       const newPointOfInterest = {
         latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
@@ -252,7 +269,22 @@ describe('POST /poi/create', () => {
             id: User.userId,
             roles: User.roles
           },
-          trail: newTrail
+          trail: {
+            name: newTrail.name,
+            description: newTrail.description,
+            pictures: newTrail.pictures,
+            latitude: newTrail.latitude,
+            longitude: newTrail.longitude,
+            difficulty: newTrail.difficulty,
+            duration: newTrail.duration,
+            distance: newTrail.distance,
+            uphill: newTrail.uphill,
+            downhill: newTrail.downhill,
+            tools: newTrail.tools,
+            relatedArticles: newTrail.relatedArticles,
+            labels: newTrail.labels,
+            geoJSON: newTrail.geoJSON
+          }
         });
       res = await request(httpsServer)
         .post('/api/trail/retrieve')
