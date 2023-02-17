@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 
-import { dbUserData } from '../../models/user/user.model';
+import { dbUser } from '../../models/user/user.model';
 import { logger } from '../../utils/logger.util';
 import { HttpError } from '../../utils/error.util';
 
@@ -22,11 +22,11 @@ async function login(req: Request, res: Response): Promise<void> {
       expiresIn: '1h',
       algorithm: 'RS256'
     };
-    const user = await dbUserData.findSecrets(req.body.user.email);
+    const user = await dbUser.findSecrets(req.body.user.email);
     if (!user) {
       throw new HttpError(401, 'Unauthorized');
     }
-    const { roles: userRoles } = (await dbUserData.findOne(user.id)) || {};
+    const { roles: userRoles } = (await dbUser.findOne(user.id)) || {};
     if (!userRoles) {
       throw new HttpError(401, 'Unauthorized');
     }

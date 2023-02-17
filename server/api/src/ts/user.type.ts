@@ -19,4 +19,10 @@ interface IUserSecrets {
   password: string;
 }
 
-export { INewUser, IUserProfile, IUserSecrets };
+interface IUpdateUserProfile {
+  username?: string;
+  email?: string;
+  picture?: string;
+}
+
+export { INewUser, IUserProfile, IUserSecrets, IUpdateUserProfile };

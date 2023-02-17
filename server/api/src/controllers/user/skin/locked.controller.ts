@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 
-import { dbUserData } from '../../../models/user/user.model';
+import { dbUser } from '../../../models/user/user.model';
 import { ISkin } from '../../../ts/skin.type';
 import { logger } from '../../../utils/logger.util';
 
 async function locked(req: Request, res: Response): Promise<void> {
   try {
-    const skins: ISkin[] | null = await dbUserData.skin.locked(
+    const skins: ISkin[] | null = await dbUser.skin.locked(
       req.body.user.id
     );
 
