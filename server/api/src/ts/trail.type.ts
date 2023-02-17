@@ -36,9 +36,9 @@ interface ITrail {
   comments: IComment[];
 }
 
-interface ResultWeather {
-  temp: number;
-  url_icon: string;
+interface ITrailWeather {
+  temperature: number;
+  icon: string;
 }
 
-export { INewTrail, ITrail, ResultWeather };
+export { INewTrail, ITrail, ITrailWeather };

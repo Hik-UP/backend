@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { dbUserData } from '../models/user/user.model';
+import { dbUser } from '../models/user/user.model';
 import { logger } from '../utils/logger.util';
 
 function rolesCheck(allowRoles: string[]) {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const { roles: userRoles } =
-        (await dbUserData.findOne(req.body.user.id)) || {};
+        (await dbUser.findOne(req.body.user.id)) || {};
 
       if (
         !userRoles ||

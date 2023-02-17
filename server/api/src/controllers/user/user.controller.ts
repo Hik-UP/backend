@@ -1,11 +1,11 @@
 import { profile } from './profile.controller';
 import { skin } from './skin/skin.controller';
-import { updateProfile } from './updateProfile.controller';
+import { update } from './update.controller';
 
 const userCtrl = {
   profile,
   skin,
-  updateProfile
+  update
 };
 
 export { userCtrl };
