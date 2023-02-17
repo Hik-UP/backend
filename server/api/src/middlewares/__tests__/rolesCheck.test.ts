@@ -7,6 +7,7 @@ import { crypto } from '../../utils/cryptography.util';
 beforeAll(async () => {
   await dbTest.removeAllUsers();
   await dbTest.removeAllSkins();
+  await dbTest.removeAllTrails();
   await dbTest.createSkin();
 });
 
@@ -14,6 +15,7 @@ afterAll(async () => {
   httpsServer.close();
   await dbTest.removeAllUsers();
   await dbTest.removeAllSkins();
+  await dbTest.removeAllTrails();
 });
 
 const User = {
@@ -73,7 +75,20 @@ describe('POST /trail/create', () => {
           roles: User.roles
         },
         trail: {
-          foo: 'bar'
+          name: `${crypto.randomString(20)}`,
+          description: `${crypto.randomString(20)}`,
+          pictures: [`${crypto.randomString(20)}`],
+          latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
+          longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
+          difficulty: Math.floor(Math.random() * 10),
+          duration: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`${crypto.randomString(20)}`],
+          labels: [`${crypto.randomString(20)}`],
+          geoJSON: `${crypto.randomString(20)}`
         }
       });
     expect(res.statusCode).toEqual(401);
@@ -122,7 +137,7 @@ describe('POST /auth/login', () => {
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 201', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -132,10 +147,22 @@ describe('POST /trail/create', () => {
           roles: User.roles
         },
         trail: {
-          foo: 'bar'
+          name: `${crypto.randomString(20)}`,
+          description: `${crypto.randomString(20)}`,
+          pictures: [`${crypto.randomString(20)}`],
+          latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
+          longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
+          difficulty: Math.floor(Math.random() * 10),
+          duration: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`${crypto.randomString(20)}`],
+          labels: [`${crypto.randomString(20)}`],
+          geoJSON: `${crypto.randomString(20)}`
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(201);
   });
 });

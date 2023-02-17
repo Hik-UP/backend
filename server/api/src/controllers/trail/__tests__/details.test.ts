@@ -125,7 +125,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -143,7 +143,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -161,7 +161,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -179,7 +179,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -197,7 +197,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -217,7 +217,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -236,7 +236,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -255,7 +255,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -275,7 +275,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -295,7 +295,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -316,7 +316,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -340,7 +340,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -364,7 +364,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -388,7 +388,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -412,7 +412,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -437,7 +437,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -463,7 +463,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -488,7 +488,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -513,7 +513,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -538,7 +538,7 @@ describe('POST /trail/details', () => {
         }
       });
     expect(res.statusCode).toEqual(400);
-    expect(typeof res.body.error).toBe('string');
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -555,9 +555,9 @@ describe('POST /trail/details', () => {
     for (let i = 0; i < 25; i += 1) {
       const newUserDetails = {
         sex: generateRandomLetter(),
-        weight: Math.floor(Math.random() * 10),
-        tall: Math.floor(Math.random() * 10),
-        age: Math.floor(Math.random() * 10)
+        weight: Math.floor(Math.random() * (200 - 60) + 60),
+        tall: Math.floor(Math.random() * (200 - 90) + 90),
+        age: Math.floor(Math.random() * (100 - 20) + 100)
       };
       const newTrail = {
         id: '',
@@ -585,7 +585,22 @@ describe('POST /trail/details', () => {
             id: User.userId,
             roles: User.roles
           },
-          trail: newTrail
+          trail: {
+            name: newTrail.name,
+            description: newTrail.description,
+            pictures: newTrail.pictures,
+            latitude: newTrail.latitude,
+            longitude: newTrail.longitude,
+            difficulty: newTrail.difficulty,
+            duration: newTrail.duration,
+            distance: newTrail.distance,
+            uphill: newTrail.uphill,
+            downhill: newTrail.downhill,
+            tools: newTrail.tools,
+            relatedArticles: newTrail.relatedArticles,
+            labels: newTrail.labels,
+            geoJSON: newTrail.geoJSON
+          }
         });
 
       res = await request(httpsServer)
@@ -613,10 +628,7 @@ describe('POST /trail/details', () => {
             age: newUserDetails.age
           },
           trail: {
-            id: newTrail.id,
-            latitude: newTrail.latitude,
-            longitude: newTrail.longitude,
-            duration: newTrail.duration
+            id: newTrail.id
           }
         });
 
@@ -634,8 +646,8 @@ describe('POST /trail/details', () => {
       const calories = 5 * BMT * newTrail.duration;
 
       expect(res.statusCode).toEqual(200);
-      expect(typeof res.body.weather.temp).toBe('number');
-      expect(typeof res.body.weather.url_icon).toBe('string');
+      expect(typeof res.body.weather.temperature).toBe('number');
+      expect(typeof res.body.weather.icon).toBe('string');
       expect(typeof res.body.calories).toBe('number');
       expect(res.body.calories === calories).toBeTruthy();
     }

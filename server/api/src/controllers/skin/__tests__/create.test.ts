@@ -26,7 +26,7 @@ const User = {
 };
 
 const Skin = {
-  name: '',
+  name: crypto.randomString(20),
   description: crypto.randomString(20),
   pictures: [crypto.randomString(20), crypto.randomString(20)],
   model: crypto.randomString(64)
@@ -124,7 +124,7 @@ describe('POST /skin/create', () => {
 });
 
 describe('POST /skin/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/skin/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -139,13 +139,13 @@ describe('POST /skin/create', () => {
           model: Skin.model
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /skin/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/skin/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -160,13 +160,13 @@ describe('POST /skin/create', () => {
           model: Skin.model
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /skin/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/skin/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -181,8 +181,8 @@ describe('POST /skin/create', () => {
           pictures: Skin.pictures
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -204,7 +204,12 @@ describe('POST /skin/create', () => {
             id: User.userId,
             roles: User.roles
           },
-          skin: newSkin
+          skin: {
+            name: newSkin.name,
+            description: newSkin.description,
+            pictures: newSkin.pictures,
+            model: newSkin.model
+          }
         });
       expect(res.statusCode).toEqual(201);
       expect(res.body).toMatchObject({ message: 'Created' });

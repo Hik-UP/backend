@@ -28,7 +28,6 @@ const User = {
 };
 
 const Trail = {
-  id: '',
   name: `${crypto.randomString(20)}`,
   description: `${crypto.randomString(20)}`,
   pictures: [`${crypto.randomString(20)}`],
@@ -42,8 +41,7 @@ const Trail = {
   tools: [],
   relatedArticles: [],
   labels: [`${crypto.randomString(20)}`],
-  geoJSON: `${crypto.randomString(20)}`,
-  comments: []
+  geoJSON: `${crypto.randomString(20)}`
 };
 
 describe('POST /auth/signup', () => {
@@ -173,7 +171,7 @@ describe('POST /trail/create', () => {
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -196,13 +194,13 @@ describe('POST /trail/create', () => {
           geoJSON: `${crypto.randomString(20)}`
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -225,13 +223,13 @@ describe('POST /trail/create', () => {
           geoJSON: `${crypto.randomString(20)}`
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -254,13 +252,13 @@ describe('POST /trail/create', () => {
           geoJSON: `${crypto.randomString(20)}`
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -283,13 +281,13 @@ describe('POST /trail/create', () => {
           geoJSON: `${crypto.randomString(20)}`
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -312,13 +310,13 @@ describe('POST /trail/create', () => {
           geoJSON: `${crypto.randomString(20)}`
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -341,13 +339,13 @@ describe('POST /trail/create', () => {
           geoJSON: `${crypto.randomString(20)}`
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -370,13 +368,13 @@ describe('POST /trail/create', () => {
           geoJSON: `${crypto.randomString(20)}`
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -399,13 +397,13 @@ describe('POST /trail/create', () => {
           geoJSON: `${crypto.randomString(20)}`
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -428,13 +426,13 @@ describe('POST /trail/create', () => {
           geoJSON: `${crypto.randomString(20)}`
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -457,13 +455,13 @@ describe('POST /trail/create', () => {
           labels: [`${crypto.randomString(20)}`]
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -474,13 +472,13 @@ describe('POST /trail/create', () => {
         },
         trail: {}
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
 describe('POST /trail/create', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       .post('/api/trail/create')
       .set('Authorization', `Bearer ${User.token}`)
@@ -490,8 +488,8 @@ describe('POST /trail/create', () => {
           roles: User.roles
         }
       });
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
 
@@ -522,11 +520,11 @@ describe('POST /trail/create', () => {
         pictures: [`${crypto.randomString(20)}`],
         latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
         longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-        difficulty: 0,
-        duration: 0,
-        distance: 0,
-        uphill: 0,
-        downhill: 0,
+        difficulty: Math.floor(Math.random() * 10),
+        duration: Math.floor(Math.random() * 10),
+        distance: Math.floor(Math.random() * 10),
+        uphill: Math.floor(Math.random() * 10),
+        downhill: Math.floor(Math.random() * 10),
         tools: [`${crypto.randomString(20)}`],
         relatedArticles: [`${crypto.randomString(20)}`],
         labels: [`${crypto.randomString(20)}`],
@@ -541,7 +539,22 @@ describe('POST /trail/create', () => {
             id: User.userId,
             roles: User.roles
           },
-          trail: newTrail
+          trail: {
+            name: newTrail.name,
+            description: newTrail.description,
+            pictures: newTrail.pictures,
+            latitude: newTrail.latitude,
+            longitude: newTrail.longitude,
+            difficulty: newTrail.difficulty,
+            duration: newTrail.duration,
+            distance: newTrail.distance,
+            uphill: newTrail.uphill,
+            downhill: newTrail.downhill,
+            tools: newTrail.tools,
+            relatedArticles: newTrail.relatedArticles,
+            labels: newTrail.labels,
+            geoJSON: newTrail.geoJSON
+          }
         });
       expect(res.statusCode).toEqual(201);
       expect(res.body).toMatchObject({ message: 'Created' });
