@@ -66,6 +66,34 @@ describe('POST /auth/login', () => {
 });
 
 describe('POST /auth/login', () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      .post('/api/auth/login')
+      .send({
+        user: {
+          email: User.email
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /auth/login', () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      .post('/api/auth/login')
+      .send({
+        user: {
+          password: User.password
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /auth/login', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .post('/api/auth/login')

@@ -7,7 +7,7 @@ afterAll(() => {
 });
 
 describe('POST /auth/signup', () => {
-  it('should return 500', async () => {
+  it('should return 400', async () => {
     for (let iteration = 0; iteration < 100; iteration += 1) {
       const res = await request(httpsServer)
         .post('/api/auth/signup')
@@ -16,8 +16,8 @@ describe('POST /auth/signup', () => {
             foo: 'bar'
           }
         });
-      expect(res.statusCode).toEqual(500);
-      expect(res.body).toMatchObject({ error: 'Internal Server Error' });
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toMatchObject({ error: 'Bad Request' });
     }
   });
 });
