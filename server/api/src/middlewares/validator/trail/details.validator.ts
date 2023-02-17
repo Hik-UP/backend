@@ -3,16 +3,14 @@ import Joi from 'joi';
 import { authJOI } from '../auth/auth.validator';
 
 const user = Joi.object({
-  id: Joi.string().required(),
-  roles: Joi.array().required(),
-  weight: Joi.number().required(),
-  tall: Joi.number().required(),
-  sex: Joi.string().required(),
-  age: Joi.number().required()
+  weight: Joi.number().min(24).max(512).required(),
+  tall: Joi.number().min(24).max(512).required(),
+  sex: Joi.string().min(1).max(1).required(),
+  age: Joi.number().min(0).max(128).required()
 });
 
 const trail = Joi.object({
-  id: Joi.string().required()
+  id: Joi.string().min(36).max(36).required()
 });
 
 const details = Joi.object({
