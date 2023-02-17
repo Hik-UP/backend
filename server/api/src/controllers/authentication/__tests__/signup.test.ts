@@ -59,6 +59,51 @@ describe('POST /auth/signup', () => {
 });
 
 describe('POST /auth/signup', () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      .post('/api/auth/signup')
+      .send({
+        user: {
+          email: `test@${crypto.randomString(8)}.com`,
+          password: crypto.randomString(64)
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /auth/signup', () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      .post('/api/auth/signup')
+      .send({
+        user: {
+          username: User.username,
+          password: crypto.randomString(64)
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /auth/signup', () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      .post('/api/auth/signup')
+      .send({
+        user: {
+          username: User.username,
+          email: `test@${crypto.randomString(8)}.com`
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /auth/signup', () => {
   it('should return 500', async () => {
     const res = await request(httpsServer)
       .post('/api/auth/signup')
