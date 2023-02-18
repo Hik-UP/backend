@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
 
 import { rateLimiter } from './middlewares/rateLimiter.middleware';
@@ -8,6 +8,7 @@ import { userRoutes } from './routes/user.route';
 import { skinRoutes } from './routes/skin.route';
 import { POIRoutes } from './routes/poi.route';
 import { trailRoutes } from './routes/trail.route';
+import { logger } from './utils/logger.util';
 
 function createApp(): Express {
   const app: Express = express();
@@ -17,6 +18,13 @@ function createApp(): Express {
   app.set('trust proxy', 1);
   app.disable('x-powered-by');
   app.use(rateLimiter);
+
+  app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+    logger.error('Failed to process request\n' + err);
+    res.status(500).json({
+      error: 'Internal Server Error'
+    });
+  });
 
   app.use('/api/auth/', authRoutes);
 
