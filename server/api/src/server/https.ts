@@ -2,7 +2,8 @@ import https from 'https';
 import fs from 'fs';
 
 import { app } from '../app';
-import { logger } from '../utils/logger';
+import { normalizePort } from '../utils/normalizePort.util';
+import { logger } from '../utils/logger.util';
 
 interface ErrnoException extends Error {
   errno?: number;
@@ -16,18 +17,6 @@ interface SSLCertificates {
   key: string;
   cert: string;
   ca: string;
-}
-
-function normalizePort(value: string | undefined): number | undefined {
-  const port: number | undefined = parseInt(value || '', 10);
-
-  if (isNaN(port)) {
-    return undefined;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return undefined;
 }
 
 function getSSLCertificates(): SSLCertificates {
@@ -52,7 +41,7 @@ function getSSLCertificates(): SSLCertificates {
 function createHttpsServer(
   port: string | undefined,
   hostname: string | undefined
-): void {
+): https.Server {
   const server: https.Server = https.createServer(getSSLCertificates(), app);
 
   process.on('SIGTERM', () => {
@@ -61,13 +50,18 @@ function createHttpsServer(
     });
   });
   server.on('error', (error: ErrnoException) => {
-    logger.error('Https server error');
     throw error;
   });
   server.on('listening', () => {
     logger.info('Https server started');
   });
   server.listen(normalizePort(port), hostname);
+  return server;
 }
 
-createHttpsServer(process.env.PORT, process.env.HOSTNAME);
+const httpsServer: https.Server = createHttpsServer(
+  process.env.API_PORT,
+  process.env.API_HOSTNAME
+);
+
+export { httpsServer };

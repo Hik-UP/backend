@@ -4,7 +4,7 @@ WORKDIR /usr/app
 
 COPY --chown=nginx:nginx ./server/nginx/nginx.conf		/etc/nginx/nginx.conf
 
-COPY --chown=nginx:nginx ./ssl/cert1.pem			/tmp/.secrets/ssl/cert1.pem
+COPY --chown=nginx:nginx ./ssl/fullchain1.pem			/tmp/.secrets/ssl/fullchain1.pem
 COPY --chown=nginx:nginx ./ssl/privkey1.pem			/tmp/.secrets/ssl/privkey1.pem
 
 COPY --chown=nginx:nginx ./server/nginx/docker-entrypoint.sh	/usr/app/docker-entrypoint.sh
