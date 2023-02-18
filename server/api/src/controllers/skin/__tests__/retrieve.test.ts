@@ -105,8 +105,8 @@ describe('POST /skin/retrieve', () => {
         id: '',
         name: crypto.randomString(20),
         description: crypto.randomString(20),
-        pictures: [crypto.randomString(20), crypto.randomString(20)],
-        model: crypto.randomString(8)
+        pictures: [`https://${crypto.randomString(20)}.com`],
+        model: `https://${crypto.randomString(20)}.com`
       };
       let res = await request(httpsServer)
         .post('/api/skin/create')

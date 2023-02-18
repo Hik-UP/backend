@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 
-import { trailJOI } from '../../middlewares/validator/trail/trail.validator';
 import { ITrailWeather } from '../../ts/trail.type';
 import { HttpError } from '../../utils/error.util';
 import { dbTrail } from '../../models/trail/trail.model';
@@ -9,10 +8,10 @@ import { logger } from '../../utils/logger.util';
 async function getWheater(
   latitude: number,
   longitude: number
-): Promise<ITrailWeather | boolean> {
-  const baseUrl = `${process.env.WEATHER_BASE_API_URL}?lat=${latitude}&lon=${longitude}&units=metric&appid=${process.env.WEATHER_API_KEY}`;
-
+): Promise<ITrailWeather | undefined> {
   try {
+    const baseUrl = `${process.env.WEATHER_BASE_API_URL}?lat=${latitude}&lon=${longitude}&units=metric&appid=${process.env.WEATHER_API_KEY}`;
+
     const result = await fetch(baseUrl);
     const jsonData = await result.json();
 
@@ -20,9 +19,8 @@ async function getWheater(
       temperature: Math.round(Number(jsonData.main.temp)),
       icon: `${process.env.WEATHER_BASE_ICON_URL}/${jsonData.weather[0].icon}@2x.png`
     };
-  } catch (e) {
-    logger.error(e);
-    return false;
+  } catch (error) {
+    logger.error('Trail weather recovery failed\n' + error);
   }
 }
 
@@ -63,7 +61,7 @@ async function details(req: Request, res: Response): Promise<void> {
       Number(req.body.user.age)
     );
 
-    if (weatherResult === false) {
+    if (weatherResult === undefined) {
       throw '';
     }
     logger.info('Trail details recovery succeed');

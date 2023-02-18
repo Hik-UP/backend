@@ -18,6 +18,12 @@ afterAll(async () => {
   await dbTest.removeAllTrails();
 });
 
+function generateRandomLetter() {
+  const alphabet = 'MF';
+
+  return alphabet[Math.floor(Math.random() * alphabet.length)];
+}
+
 const User = {
   userId: '',
   username: crypto.randomString(20),
@@ -25,27 +31,27 @@ const User = {
   password: crypto.randomString(64),
   roles: [''],
   token: '',
-  weight: 0,
-  tall: 0,
-  sex: '',
-  age: 0
+  sex: generateRandomLetter(),
+  weight: Math.floor(Math.random() * (200 - 60) + 60),
+  tall: Math.floor(Math.random() * (200 - 90) + 90),
+  age: Math.floor(Math.random() * (100 - 20) + 20)
 };
 
 const Trail = {
   id: '',
   name: `${crypto.randomString(20)}`,
   description: `${crypto.randomString(20)}`,
-  pictures: [`${crypto.randomString(20)}`],
+  pictures: [`https://${crypto.randomString(20)}.com`],
   latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
   longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-  difficulty: 0,
-  duration: 0,
-  distance: 0,
-  uphill: 0,
-  downhill: 0,
-  tools: [],
-  relatedArticles: [],
-  labels: [`${crypto.randomString(20)}`],
+  difficulty: Math.floor(Math.random() * 10),
+  duration: Math.floor(Math.random() * 10),
+  distance: Math.floor(Math.random() * 10),
+  uphill: Math.floor(Math.random() * 10),
+  downhill: Math.floor(Math.random() * 10),
+  tools: [`${crypto.randomString(20)}`],
+  relatedArticles: [`https://${crypto.randomString(20)}.com`],
+  labels: [`${crypto.randomString(10)}`],
   geoJSON: `${crypto.randomString(20)}`,
   comments: []
 };
@@ -320,7 +326,7 @@ describe('POST /trail/details', () => {
   });
 });
 
-//When body contains user , and only id in trail object
+//When body contains user , and no id in trail object
 describe('POST /trail/details', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
@@ -336,180 +342,7 @@ describe('POST /trail/details', () => {
           sex: User.sex
         },
         trail: {
-          id: Trail.id
-        }
-      });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
-  });
-});
-
-//When body contains user , and only latitude in trail object
-describe('POST /trail/details', () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/details')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles,
-          tall: User.tall,
-          weight: User.weight,
-          age: User.age,
-          sex: User.sex
-        },
-        trail: {
-          latitude: Trail.latitude
-        }
-      });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
-  });
-});
-
-//When body contains user , and only longitude in trail object
-describe('POST /trail/details', () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/details')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles,
-          tall: User.tall,
-          weight: User.weight,
-          age: User.age,
-          sex: User.sex
-        },
-        trail: {
-          longitude: Trail.longitude
-        }
-      });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
-  });
-});
-
-//When body contains user , and only duration in trail object
-describe('POST /trail/details', () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/details')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles,
-          tall: User.tall,
-          weight: User.weight,
-          age: User.age,
-          sex: User.sex
-        },
-        trail: {
-          duration: Trail.duration
-        }
-      });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
-  });
-});
-
-//When body contains user , and only id and latitude in trail object
-describe('POST /trail/details', () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/details')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles,
-          tall: User.tall,
-          weight: User.weight,
-          age: User.age,
-          sex: User.sex
-        },
-        trail: {
-          id: Trail.id,
-          latitude: Trail.latitude
-        }
-      });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
-  });
-});
-
-//When body contains user , and only id, latitude, longitude in trail object
-describe('POST /trail/details', () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/details')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles,
-          tall: User.tall,
-          weight: User.weight,
-          age: User.age,
-          sex: User.sex
-        },
-        trail: {
-          id: Trail.id,
-          latitude: Trail.latitude,
-          longitude: Trail.longitude
-        }
-      });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
-  });
-});
-
-//When body contains user , and only id, longitude in trail object
-describe('POST /trail/details', () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/details')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles,
-          tall: User.tall,
-          weight: User.weight,
-          age: User.age,
-          sex: User.sex
-        },
-        trail: {
-          id: Trail.id,
-          longitude: Trail.longitude
-        }
-      });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
-  });
-});
-
-//When body contains user , and only id, duration in trail object
-describe('POST /trail/details', () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/details')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles,
-          tall: User.tall,
-          weight: User.weight,
-          age: User.age,
-          sex: User.sex
-        },
-        trail: {
-          id: Trail.id,
-          duration: Trail.duration
+          foo: 'bar'
         }
       });
     expect(res.statusCode).toEqual(400);
@@ -533,20 +366,13 @@ describe('POST /trail/details', () => {
           sex: 'P'
         },
         trail: {
-          id: Trail.id,
-          duration: Trail.duration
+          id: Trail.id
         }
       });
     expect(res.statusCode).toEqual(400);
     expect(res.body).toMatchObject({ error: 'Bad Request' });
   });
 });
-
-function generateRandomLetter() {
-  const alphabet = 'MF';
-
-  return alphabet[Math.floor(Math.random() * alphabet.length)];
-}
 
 describe('POST /trail/details', () => {
   jest.setTimeout(60000);
@@ -557,13 +383,13 @@ describe('POST /trail/details', () => {
         sex: generateRandomLetter(),
         weight: Math.floor(Math.random() * (200 - 60) + 60),
         tall: Math.floor(Math.random() * (200 - 90) + 90),
-        age: Math.floor(Math.random() * (100 - 20) + 100)
+        age: Math.floor(Math.random() * (100 - 20) + 20)
       };
       const newTrail = {
         id: '',
         name: `${crypto.randomString(20)}`,
         description: `${crypto.randomString(20)}`,
-        pictures: [`${crypto.randomString(20)}`],
+        pictures: [`https://${crypto.randomString(20)}.com`],
         latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
         longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
         difficulty: Math.floor(Math.random() * 10),
@@ -572,8 +398,8 @@ describe('POST /trail/details', () => {
         uphill: Math.floor(Math.random() * 10),
         downhill: Math.floor(Math.random() * 10),
         tools: [`${crypto.randomString(20)}`],
-        relatedArticles: [`${crypto.randomString(20)}`],
-        labels: [`${crypto.randomString(20)}`],
+        relatedArticles: [`https://${crypto.randomString(20)}.com`],
+        labels: [`${crypto.randomString(10)}`],
         geoJSON: `${crypto.randomString(20)}`,
         comments: []
       };

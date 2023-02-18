@@ -21,8 +21,7 @@ const User = {
   username: crypto.randomString(20),
   email: `test@${crypto.randomString(8)}.com`,
   password: crypto.randomString(64),
-  picture:
-    'https://static.wikia.nocookie.net/denaruto3/images/f/f0/BorutoInMovie.png/revision/latest?cb=20150513165125&path-prefix=de',
+  picture: `https://${crypto.randomString(20)}.com`,
   roles: [''],
   token: ''
 };

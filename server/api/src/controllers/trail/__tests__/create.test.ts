@@ -30,17 +30,17 @@ const User = {
 const Trail = {
   name: `${crypto.randomString(20)}`,
   description: `${crypto.randomString(20)}`,
-  pictures: [`${crypto.randomString(20)}`],
+  pictures: [`https://${crypto.randomString(20)}.com`],
   latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
   longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-  difficulty: 0,
-  duration: 0,
-  distance: 0,
-  uphill: 0,
-  downhill: 0,
-  tools: [],
-  relatedArticles: [],
-  labels: [`${crypto.randomString(20)}`],
+  difficulty: Math.floor(Math.random() * 10),
+  duration: Math.floor(Math.random() * 10),
+  distance: Math.floor(Math.random() * 10),
+  uphill: Math.floor(Math.random() * 10),
+  downhill: Math.floor(Math.random() * 10),
+  tools: [`${crypto.randomString(20)}`],
+  relatedArticles: [`https://${crypto.randomString(20)}.com`],
+  labels: [`${crypto.randomString(10)}`],
   geoJSON: `${crypto.randomString(20)}`
 };
 
@@ -182,14 +182,16 @@ describe('POST /trail/create', () => {
         },
         trail: {
           description: `${crypto.randomString(20)}`,
-          pictures: [`${crypto.randomString(20)}`],
+          pictures: [`https://${crypto.randomString(20)}.com`],
           latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
           longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-          difficulty: 0,
-          duration: 0,
-          distance: 0,
-          uphill: 0,
-          downhill: 0,
+          difficulty: Math.floor(Math.random() * 10),
+          duration: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`https://${crypto.randomString(20)}.com`],
           labels: [`${crypto.randomString(20)}`],
           geoJSON: `${crypto.randomString(20)}`
         }
@@ -211,43 +213,16 @@ describe('POST /trail/create', () => {
         },
         trail: {
           name: `${crypto.randomString(20)}`,
-          pictures: [`${crypto.randomString(20)}`],
+          pictures: [`https://${crypto.randomString(20)}.com`],
           latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
           longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-          difficulty: 0,
-          duration: 0,
-          distance: 0,
-          uphill: 0,
-          downhill: 0,
-          labels: [`${crypto.randomString(20)}`],
-          geoJSON: `${crypto.randomString(20)}`
-        }
-      });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
-  });
-});
-
-describe('POST /trail/create', () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      .post('/api/trail/create')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
-        },
-        trail: {
-          name: `${crypto.randomString(20)}`,
-          description: `${crypto.randomString(20)}`,
-          pictures: [`${crypto.randomString(20)}`],
-          longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-          difficulty: 0,
-          duration: 0,
-          distance: 0,
-          uphill: 0,
-          downhill: 0,
+          difficulty: Math.floor(Math.random() * 10),
+          duration: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`https://${crypto.randomString(20)}.com`],
           labels: [`${crypto.randomString(20)}`],
           geoJSON: `${crypto.randomString(20)}`
         }
@@ -270,13 +245,15 @@ describe('POST /trail/create', () => {
         trail: {
           name: `${crypto.randomString(20)}`,
           description: `${crypto.randomString(20)}`,
-          pictures: [`${crypto.randomString(20)}`],
-          latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
-          difficulty: 0,
-          duration: 0,
-          distance: 0,
-          uphill: 0,
-          downhill: 0,
+          pictures: [`https://${crypto.randomString(20)}.com`],
+          longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
+          difficulty: Math.floor(Math.random() * 10),
+          duration: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`https://${crypto.randomString(20)}.com`],
           labels: [`${crypto.randomString(20)}`],
           geoJSON: `${crypto.randomString(20)}`
         }
@@ -299,13 +276,15 @@ describe('POST /trail/create', () => {
         trail: {
           name: `${crypto.randomString(20)}`,
           description: `${crypto.randomString(20)}`,
-          pictures: [`${crypto.randomString(20)}`],
+          pictures: [`https://${crypto.randomString(20)}.com`],
           latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
-          longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-          duration: 0,
-          distance: 0,
-          uphill: 0,
-          downhill: 0,
+          difficulty: Math.floor(Math.random() * 10),
+          duration: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`https://${crypto.randomString(20)}.com`],
           labels: [`${crypto.randomString(20)}`],
           geoJSON: `${crypto.randomString(20)}`
         }
@@ -328,13 +307,15 @@ describe('POST /trail/create', () => {
         trail: {
           name: `${crypto.randomString(20)}`,
           description: `${crypto.randomString(20)}`,
-          pictures: [`${crypto.randomString(20)}`],
+          pictures: [`https://${crypto.randomString(20)}.com`],
           latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
           longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-          difficulty: 0,
-          distance: 0,
-          uphill: 0,
-          downhill: 0,
+          duration: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`https://${crypto.randomString(20)}.com`],
           labels: [`${crypto.randomString(20)}`],
           geoJSON: `${crypto.randomString(20)}`
         }
@@ -357,13 +338,15 @@ describe('POST /trail/create', () => {
         trail: {
           name: `${crypto.randomString(20)}`,
           description: `${crypto.randomString(20)}`,
-          pictures: [`${crypto.randomString(20)}`],
+          pictures: [`https://${crypto.randomString(20)}.com`],
           latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
           longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-          difficulty: 0,
-          duration: 0,
-          uphill: 0,
-          downhill: 0,
+          difficulty: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`https://${crypto.randomString(20)}.com`],
           labels: [`${crypto.randomString(20)}`],
           geoJSON: `${crypto.randomString(20)}`
         }
@@ -386,13 +369,15 @@ describe('POST /trail/create', () => {
         trail: {
           name: `${crypto.randomString(20)}`,
           description: `${crypto.randomString(20)}`,
-          pictures: [`${crypto.randomString(20)}`],
+          pictures: [`https://${crypto.randomString(20)}.com`],
           latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
           longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-          difficulty: 0,
-          duration: 0,
-          distance: 0,
-          downhill: 0,
+          difficulty: Math.floor(Math.random() * 10),
+          duration: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`https://${crypto.randomString(20)}.com`],
           labels: [`${crypto.randomString(20)}`],
           geoJSON: `${crypto.randomString(20)}`
         }
@@ -415,13 +400,15 @@ describe('POST /trail/create', () => {
         trail: {
           name: `${crypto.randomString(20)}`,
           description: `${crypto.randomString(20)}`,
-          pictures: [`${crypto.randomString(20)}`],
+          pictures: [`https://${crypto.randomString(20)}.com`],
           latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
           longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-          difficulty: 0,
-          duration: 0,
-          distance: 0,
-          uphill: 0,
+          difficulty: Math.floor(Math.random() * 10),
+          duration: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`https://${crypto.randomString(20)}.com`],
           labels: [`${crypto.randomString(20)}`],
           geoJSON: `${crypto.randomString(20)}`
         }
@@ -444,14 +431,47 @@ describe('POST /trail/create', () => {
         trail: {
           name: `${crypto.randomString(20)}`,
           description: `${crypto.randomString(20)}`,
-          pictures: [`${crypto.randomString(20)}`],
+          pictures: [`https://${crypto.randomString(20)}.com`],
           latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
           longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-          difficulty: 0,
-          duration: 0,
-          distance: 0,
-          uphill: 0,
-          downhill: 0,
+          difficulty: Math.floor(Math.random() * 10),
+          duration: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`https://${crypto.randomString(20)}.com`],
+          labels: [`${crypto.randomString(20)}`],
+          geoJSON: `${crypto.randomString(20)}`
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /trail/create', () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      .post('/api/trail/create')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        trail: {
+          name: `${crypto.randomString(20)}`,
+          description: `${crypto.randomString(20)}`,
+          pictures: [`https://${crypto.randomString(20)}.com`],
+          latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
+          longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
+          difficulty: Math.floor(Math.random() * 10),
+          duration: Math.floor(Math.random() * 10),
+          distance: Math.floor(Math.random() * 10),
+          uphill: Math.floor(Math.random() * 10),
+          downhill: Math.floor(Math.random() * 10),
+          tools: [`${crypto.randomString(20)}`],
+          relatedArticles: [`https://${crypto.randomString(20)}.com`],
           labels: [`${crypto.randomString(20)}`]
         }
       });
@@ -517,7 +537,7 @@ describe('POST /trail/create', () => {
         id: '',
         name: `${crypto.randomString(20)}`,
         description: `${crypto.randomString(20)}`,
-        pictures: [`${crypto.randomString(20)}`],
+        pictures: [`https://${crypto.randomString(20)}.com`],
         latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
         longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
         difficulty: Math.floor(Math.random() * 10),
@@ -526,8 +546,8 @@ describe('POST /trail/create', () => {
         uphill: Math.floor(Math.random() * 10),
         downhill: Math.floor(Math.random() * 10),
         tools: [`${crypto.randomString(20)}`],
-        relatedArticles: [`${crypto.randomString(20)}`],
-        labels: [`${crypto.randomString(20)}`],
+        relatedArticles: [`https://${crypto.randomString(20)}.com`],
+        labels: [`${crypto.randomString(10)}`],
         geoJSON: `${crypto.randomString(20)}`,
         comments: []
       };

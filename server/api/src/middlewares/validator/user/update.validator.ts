@@ -10,6 +10,6 @@ const user = Joi.object({
 
 const update = Joi.object({
   user: authJOI.payload.concat(user).min(3)
-});
+}).required();
 
 export { update };

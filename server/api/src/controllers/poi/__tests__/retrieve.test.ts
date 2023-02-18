@@ -1,5 +1,4 @@
 import request from 'supertest';
-import { randomUUID } from 'crypto';
 
 import { httpsServer } from '../../../server/https';
 import { dbTest } from '../../../models/test/test.model';
@@ -91,17 +90,17 @@ describe('POST /poi/create', () => {
         id: '',
         name: `${crypto.randomString(20)}`,
         description: `${crypto.randomString(20)}`,
-        pictures: [`${crypto.randomString(20)}`],
+        pictures: [`https://${crypto.randomString(20)}.com`],
         latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
         longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
-        difficulty: 0,
-        duration: 0,
-        distance: 0,
-        uphill: 0,
-        downhill: 0,
+        difficulty: Math.floor(Math.random() * 10),
+        duration: Math.floor(Math.random() * 10),
+        distance: Math.floor(Math.random() * 10),
+        uphill: Math.floor(Math.random() * 10),
+        downhill: Math.floor(Math.random() * 10),
         tools: [`${crypto.randomString(20)}`],
-        relatedArticles: [`${crypto.randomString(20)}`],
-        labels: [`${crypto.randomString(20)}`],
+        relatedArticles: [`https://${crypto.randomString(20)}.com`],
+        labels: [`${crypto.randomString(10)}`],
         geoJSON: `${crypto.randomString(20)}`
       };
       const newPointOfInterest = {
