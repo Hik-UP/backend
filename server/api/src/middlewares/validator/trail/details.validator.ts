@@ -5,7 +5,7 @@ import { authJOI } from '../auth/auth.validator';
 const user = Joi.object({
   weight: Joi.number().min(24).max(512).required(),
   tall: Joi.number().min(24).max(512).required(),
-  sex: Joi.string().min(1).max(1).required(),
+  sex: Joi.string().valid('F', 'M').min(1).max(1).required(),
   age: Joi.number().min(0).max(128).required()
 }).required();
 

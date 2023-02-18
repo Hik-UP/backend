@@ -1,11 +1,11 @@
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+    provider        = "postgresql"
+    url             = env("DATABASE_URL")
 }
 
 generator client {
-    provider      = "prisma-client-js"
-    binaryTargets = ["native", "linux-musl", "debian-openssl-1.1.x", "linux-arm64-openssl-1.1.x"]
+    provider        = "prisma-client-js"
+    binaryTargets   = ["native", "linux-musl", "debian-openssl-1.1.x", "linux-arm64-openssl-1.1.x"]
 }
 
 model User {
@@ -13,7 +13,7 @@ model User {
     username            String              @unique @db.VarChar(24)
     email               String              @unique @db.VarChar(256)
     password            String              @db.VarChar(60)
-    picture             String
+    picture             String              @db.VarChar(1024)
 
     skinId              String              @db.VarChar(36)
     skin                Skin                @relation("User", fields: [skinId], references: [id])
@@ -33,10 +33,10 @@ model User {
 
 model Skin {
     id                  String              @unique @id @default(uuid()) @db.VarChar(36)
-    name                String              @unique @db.VarChar(24)
-    description         String
-    pictures            String[]
-    model               String
+    name                String              @unique @db.VarChar(128)
+    description         String              @db.VarChar(1024)
+    pictures            String[]            @db.VarChar(1024)
+    model               String              @db.VarChar(1024)
     users               User[]              @relation("User")
     owners              User[]              @relation("Owner")
 }
@@ -53,9 +53,9 @@ model Notification {
 
 model Trail {
     id                  String              @id @unique @default(uuid()) @db.VarChar(36)
-    name                String
-    description         String
-    pictures            String[]
+    name                String              @db.VarChar(128)
+    description         String              @db.VarChar(1024)
+    pictures            String[]            @db.VarChar(1024)
     latitude            Float               @db.DoublePrecision
     longitude           Float               @db.DoublePrecision
     difficulty          Int
@@ -63,10 +63,10 @@ model Trail {
     distance            Int
     uphill              Int
     downhill            Int
-    tools               String[]
-    relatedArticles     String[]
-    labels              String[]
-    geoJSON             String              @unique
+    tools               String[]            @db.VarChar(256)
+    relatedArticles     String[]            @db.VarChar(1024)
+    labels              String[]            @db.VarChar(32)
+    geoJSON             String              @unique @db.VarChar(16384)
     comments            Comment[]
     hikes               Hike[]
     pointOfInterests    PointOfInterest[]

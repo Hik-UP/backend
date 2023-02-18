@@ -50,7 +50,6 @@ function createHttpsServer(
     });
   });
   server.on('error', (error: ErrnoException) => {
-    logger.error('Https server error');
     throw error;
   });
   server.on('listening', () => {

@@ -1,4 +1,5 @@
 import request from 'supertest';
+import { randomUUID } from 'crypto';
 
 import { httpsServer } from '../../../server/https';
 import { dbTest } from '../../../models/test/test.model';
@@ -371,6 +372,29 @@ describe('POST /trail/details', () => {
       });
     expect(res.statusCode).toEqual(400);
     expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /trail/details', () => {
+  it('should return 500', async () => {
+    const res = await request(httpsServer)
+      .post('/api/trail/details')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles,
+          tall: User.tall,
+          weight: User.weight,
+          age: User.age,
+          sex: User.sex
+        },
+        trail: {
+          id: randomUUID()
+        }
+      });
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toMatchObject({ error: 'Internal Server Error' });
   });
 });
 

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
 import { ITrailWeather } from '../../ts/trail.type';
-import { HttpError } from '../../utils/error.util';
 import { dbTrail } from '../../models/trail/trail.model';
 import { logger } from '../../utils/logger.util';
 
@@ -43,10 +42,6 @@ async function getCalories(
 
 async function details(req: Request, res: Response): Promise<void> {
   try {
-    if (req.body.user.sex !== 'M' && req.body.user.sex !== 'F') {
-      throw new HttpError(400, 'Bad Request');
-    }
-
     const Trail = await dbTrail.findOne(req.body.trail.id);
     if (!Trail) {
       throw '';
@@ -72,17 +67,10 @@ async function details(req: Request, res: Response): Promise<void> {
       calories
     });
   } catch (error) {
-    if (error instanceof HttpError) {
-      logger.warn('Trail details recovery failed');
-      res.status(error.statusCode).json({
-        error: error.message
-      });
-    } else {
-      logger.error('Trail details recovery failed\n' + error);
-      res.status(500).json({
-        error: 'Internal Server Error'
-      });
-    }
+    logger.error('Trail details recovery failed\n' + error);
+    res.status(500).json({
+      error: 'Internal Server Error'
+    });
   }
 }
 
