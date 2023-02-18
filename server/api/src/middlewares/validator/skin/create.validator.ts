@@ -12,6 +12,6 @@ const skin = Joi.object({
 const create = Joi.object({
   user: authJOI.payload,
   skin: skin
-});
+}).required();
 
 export { create };

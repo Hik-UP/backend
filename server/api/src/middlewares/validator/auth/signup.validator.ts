@@ -8,6 +8,6 @@ const user = Joi.object({
 
 const signup = Joi.object({
   user: user
-});
+}).required();
 
 export { signup };

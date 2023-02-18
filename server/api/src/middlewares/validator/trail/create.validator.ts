@@ -28,6 +28,6 @@ const trail = Joi.object({
 const create = Joi.object({
   user: authJOI.payload,
   trail: trail
-});
+}).required();
 
 export { create };

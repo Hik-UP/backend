@@ -7,6 +7,6 @@ const user = Joi.object({
 
 const login = Joi.object({
   user: user
-});
+}).required();
 
 export { login };

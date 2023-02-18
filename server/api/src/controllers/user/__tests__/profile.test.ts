@@ -21,7 +21,7 @@ const User = {
   username: crypto.randomString(20),
   email: `test@${crypto.randomString(8)}.com`,
   password: crypto.randomString(64),
-  picture: '',
+  picture: `https://${crypto.randomString(20)}.com`,
   roles: [''],
   token: ''
 };
