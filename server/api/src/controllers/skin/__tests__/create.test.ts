@@ -28,8 +28,8 @@ const User = {
 const Skin = {
   name: crypto.randomString(20),
   description: crypto.randomString(20),
-  pictures: [crypto.randomString(20), crypto.randomString(20)],
-  model: crypto.randomString(64)
+  pictures: [`https://${crypto.randomString(20)}.com`],
+  model: `https://${crypto.randomString(20)}.com`
 };
 
 describe('POST /auth/signup', () => {

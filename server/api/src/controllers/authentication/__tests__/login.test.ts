@@ -114,7 +114,7 @@ describe('POST /auth/login', () => {
       .post('/api/auth/login')
       .send({
         user: {
-          email: 'wrong@email.test',
+          email: 'thisisawrong@email.com',
           password: User.password
         }
       });
