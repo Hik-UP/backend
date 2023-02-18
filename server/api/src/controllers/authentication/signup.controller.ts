@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 
-import { dbUserData } from '../../models/user/data.model';
-import { logger } from '../../utils/logger';
+import { dbUser } from '../../models/user/user.model';
+import { logger } from '../../utils/logger.util';
 
 async function signup(req: Request, res: Response): Promise<void> {
   try {
     const hash = await bcrypt.hash(req.body.user.password, 12);
 
-    await dbUserData.create({
+    await dbUser.create({
+      username: req.body.user.username,
       email: req.body.user.email,
       password: hash
     });

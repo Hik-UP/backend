@@ -29,8 +29,8 @@ services:
     image: hikup/redis
     ports:
       - "172.19.0.1:6379:6379"
-#    volumes:
-#      - redis:/data
+    volumes:
+      - redis:/data
     networks:
       network:
         ipv4_address: 172.19.0.3
@@ -55,7 +55,7 @@ services:
       - ./server/api/package.json:/usr/app/package.json:rw
       - ./server/api/yarn.lock:/usr/app/yarn.lock:rw
 
-      - api_prisma:/usr/prisma:rw
+      - prisma:/usr/prisma:rw
     ports:
       - "172.19.0.1:8443:8443"
       - "127.0.0.1:42042:42042"
@@ -98,4 +98,5 @@ networks:
 
 volumes:
   postgres:
-  api_prisma:
+  redis:
+  prisma:

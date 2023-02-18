@@ -6,7 +6,7 @@ start_redis() {
 
 stop_redis() {
   docker compose stop --timeout 60 redis
-  docker compose rm --force redis
+  docker compose rm --stop --force redis
 }
 
 restart_redis() {
@@ -28,6 +28,7 @@ install_redis() {
 
 uninstall_redis() {
   stop_redis
+  docker volume rm "${FOLDER_NAME}_redis"
   docker rmi hikup/redis
   docker builder prune --all --force
 }

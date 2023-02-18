@@ -16,7 +16,9 @@ sigterm_handler() {
     -R						\
     ${EXEC_UID}:${EXEC_GID}			\
     /usr/app/dist				\
-    /usr/app/node_modules
+    /usr/app/node_modules			\
+    /usr/app/package.json			\
+    /usr/app/yarn.lock
   fi
   exit 0;
 }
@@ -37,7 +39,9 @@ main() {
   chown node:node				\
   -R						\
   /usr/app/dist					\
-  /usr/app/node_modules
+  /usr/app/node_modules				\
+  /usr/app/package.json				\
+  /usr/app/yarn.lock
 
   su node -- /usr/app/node-init.sh $@ &
   readonly pid="$!"
