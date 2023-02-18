@@ -22,6 +22,26 @@ const User = {
   password: crypto.randomString(64)
 };
 
+describe('POST /foo/bar', () => {
+  it('should return 404', async () => {
+    const res = await request(httpsServer).post('/foo/bar').send({
+      user: User
+    });
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toMatchObject({ error: 'Not Found' });
+  });
+});
+
+describe('POST /auth/foo', () => {
+  it('should return 404', async () => {
+    const res = await request(httpsServer).post('/auth/foo').send({
+      user: User
+    });
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toMatchObject({ error: 'Not Found' });
+  });
+});
+
 describe('POST /auth/signup', () => {
   it('should return 201', async () => {
     const res = await request(httpsServer).post('/api/auth/signup').send({
