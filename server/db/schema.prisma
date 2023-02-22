@@ -54,6 +54,7 @@ model Notification {
 model Trail {
     id                  String              @id @unique @default(uuid()) @db.VarChar(36)
     name                String              @db.VarChar(128)
+    address             String              @db.VarChar(256)
     description         String              @db.VarChar(1024)
     pictures            String[]            @db.VarChar(1024)
     latitude            Float               @db.DoublePrecision

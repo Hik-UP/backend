@@ -41,6 +41,7 @@ const User = {
 const Trail = {
   id: '',
   name: `${crypto.randomString(20)}`,
+  address: `${crypto.randomString(20)}`,
   description: `${crypto.randomString(20)}`,
   pictures: [`https://${crypto.randomString(20)}.com`],
   latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
@@ -412,6 +413,7 @@ describe('POST /trail/details', () => {
       const newTrail = {
         id: '',
         name: `${crypto.randomString(20)}`,
+        address: `${crypto.randomString(20)}`,
         description: `${crypto.randomString(20)}`,
         pictures: [`https://${crypto.randomString(20)}.com`],
         latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
@@ -437,6 +439,7 @@ describe('POST /trail/details', () => {
           },
           trail: {
             name: newTrail.name,
+            address: newTrail.address,
             description: newTrail.description,
             pictures: newTrail.pictures,
             latitude: newTrail.latitude,

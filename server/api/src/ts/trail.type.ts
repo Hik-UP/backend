@@ -2,6 +2,7 @@ import { IComment } from './comment.type';
 
 interface INewTrail {
   name: string;
+  address: string;
   description: string;
   pictures: string[];
   latitude: number;
@@ -20,6 +21,7 @@ interface INewTrail {
 interface ITrail {
   id: string;
   name: string;
+  address: string;
   description: string;
   pictures: string[];
   latitude: number;

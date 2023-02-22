@@ -4,6 +4,7 @@ import { authJOI } from '../auth/auth.validator';
 
 const trail = Joi.object({
   name: Joi.string().min(8).max(128).required(),
+  address: Joi.string().min(8).max(256).required(),
   description: Joi.string().min(8).max(1024).required(),
   pictures: Joi.array()
     .items(Joi.string().uri().min(16).max(1024))
