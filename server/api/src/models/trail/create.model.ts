@@ -5,6 +5,7 @@ async function create(newTrail: INewTrail): Promise<void> {
   await prisma.trail.create({
     data: {
       name: newTrail.name,
+      address: newTrail.address,
       description: newTrail.description,
       pictures: newTrail.pictures,
       latitude: newTrail.latitude,
@@ -15,7 +16,7 @@ async function create(newTrail: INewTrail): Promise<void> {
       uphill: newTrail.uphill,
       downhill: newTrail.downhill,
       tools: newTrail.tools,
-      relatedArticles: newTrail.relatedArticles,      
+      relatedArticles: newTrail.relatedArticles,
       labels: newTrail.labels,
       geoJSON: newTrail.geoJSON
     }
