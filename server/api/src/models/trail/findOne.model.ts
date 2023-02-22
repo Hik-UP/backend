@@ -9,6 +9,7 @@ async function findOne(id: string): Promise<ITrail | null> {
     select: {
       id: true,
       name: true,
+      address: true,
       description: true,
       pictures: true,
       latitude: true,
