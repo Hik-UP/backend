@@ -87,6 +87,7 @@ describe('POST /trail/retrieve', () => {
       const newTrail = {
         id: '',
         name: `${crypto.randomString(20)}`,
+        address: `${crypto.randomString(20)}`,
         description: `${crypto.randomString(20)}`,
         pictures: [`https://${crypto.randomString(20)}.com`],
         latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
@@ -112,6 +113,7 @@ describe('POST /trail/retrieve', () => {
           },
           trail: {
             name: newTrail.name,
+            address: newTrail.address,
             description: newTrail.description,
             pictures: newTrail.pictures,
             latitude: newTrail.latitude,
@@ -143,6 +145,7 @@ describe('POST /trail/retrieve', () => {
       newTrail.comments = res.body.trails[i].comments;
 
       expect(typeof res.body.trails[i].name).toBe('string');
+      expect(typeof res.body.trails[i].address).toBe('string');
       expect(typeof res.body.trails[i].description).toBe('string');
       expect(typeof res.body.trails[i].pictures[0]).toBe('string');
       expect(typeof res.body.trails[i].latitude).toBe('number');

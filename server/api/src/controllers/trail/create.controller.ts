@@ -7,6 +7,7 @@ async function create(req: Request, res: Response): Promise<void> {
   try {
     await dbTrail.create({
       name: req.body.trail.name,
+      address: req.body.trail.address,
       description: req.body.trail.description,
       pictures: req.body.trail.pictures,
       latitude: req.body.trail.latitude,
