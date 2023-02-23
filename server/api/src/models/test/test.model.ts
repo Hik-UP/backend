@@ -29,6 +29,10 @@ async function removeAllPOI(): Promise<void> {
   await prisma.pointOfInterest.deleteMany();
 }
 
+async function removeAllHikes(): Promise<void> {
+  await prisma.hike.deleteMany();
+}
+
 async function setAdmin(email: string): Promise<void> {
   await prisma.user.update({
     where: {
@@ -46,6 +50,7 @@ const dbTest = {
   removeAllUsers,
   removeAllTrails,
   removeAllPOI,
+  removeAllHikes,
   setAdmin
 };
 

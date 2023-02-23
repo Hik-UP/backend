@@ -9,6 +9,7 @@ import { userRoutes } from './routes/user.route';
 import { skinRoutes } from './routes/skin.route';
 import { POIRoutes } from './routes/poi.route';
 import { trailRoutes } from './routes/trail.route';
+import { hikeRoutes } from './routes/hike.route';
 import { logger } from './utils/logger.util';
 
 function createApp(): Express {
@@ -35,6 +36,7 @@ function createApp(): Express {
   app.use('/api/skin/', auth, skinRoutes);
   app.use('/api/poi/', auth, POIRoutes);
   app.use('/api/trail/', auth, trailRoutes);
+  app.use('/api/hike/', auth, hikeRoutes);
 
   app.use(function (req: Request, res: Response) {
     res.status(404).json({

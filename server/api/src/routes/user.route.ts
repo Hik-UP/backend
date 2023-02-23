@@ -18,9 +18,7 @@ function createUserRoutes(): express.Router {
     validator(userJOI.skin.unlocked),
     userCtrl.skin.unlocked
   );
-
   userRoutes.put('/profile/update', validator(userJOI.update), userCtrl.update);
-
   return userRoutes;
 }
 

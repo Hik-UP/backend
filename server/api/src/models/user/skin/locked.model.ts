@@ -1,5 +1,6 @@
 import { ISkin } from '../../../ts/skin.type';
 import { prisma } from '../../../utils/prisma.util';
+import { dbSkinSelector } from '../../skin/selector.model';
 
 async function locked(userId: string): Promise<ISkin[] | null> {
   return await prisma.skin.findMany({
@@ -10,13 +11,7 @@ async function locked(userId: string): Promise<ISkin[] | null> {
         }
       }
     },
-    select: {
-      id: true,
-      name: true,
-      description: true,
-      pictures: true,
-      model: true
-    }
+    select: dbSkinSelector
   });
 }
 

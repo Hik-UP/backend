@@ -15,6 +15,7 @@ function validator(schema: Joi.ObjectSchema<any>) {
       next();
     } catch (error) {
       if (error instanceof HttpError) {
+        console.log(schema.validate(req.body).error);
         logger.warn('Schema validation failed');
         res.status(error.statusCode).json({
           error: error.message

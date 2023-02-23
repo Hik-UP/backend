@@ -14,6 +14,11 @@ interface IUserProfile {
   roles: string[];
 }
 
+interface IUserPublicProfile {
+  username: string;
+  picture: string;
+}
+
 interface IUserSecrets {
   id: string;
   password: string;
@@ -25,4 +30,10 @@ interface IUpdateUserProfile {
   picture?: string;
 }
 
-export { INewUser, IUserProfile, IUserSecrets, IUpdateUserProfile };
+export {
+  INewUser,
+  IUserProfile,
+  IUserPublicProfile,
+  IUserSecrets,
+  IUpdateUserProfile
+};

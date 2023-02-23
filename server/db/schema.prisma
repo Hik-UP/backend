@@ -13,6 +13,7 @@ model User {
     username            String              @unique @db.VarChar(24)
     email               String              @unique @db.VarChar(256)
     password            String              @db.VarChar(60)
+    //fcmToken          String
     picture             String              @db.VarChar(1024)
 
     skinId              String              @db.VarChar(36)
@@ -22,8 +23,9 @@ model User {
     inbox               Notification[]
     comments            Comment[]
 
-    hikes               Hike[]              @relation("Attendee")
-    invitations         Hike[]              @relation("Guest")
+    organizerHikes      Hike[]              @relation("Organizer")
+    attendeeHikes       Hike[]              @relation("Attendee")
+    guestHikes          Hike[]              @relation("Guest")
     stats               Stats[]
     pointOfInterests    PointOfInterest[]
 
@@ -86,13 +88,16 @@ model Comment {
 
 model Hike {
     id                  String              @id @unique @default(uuid()) @db.VarChar(36)
-    creatorId           String              @db.VarChar(36)
+    name                String              @db.VarChar(128)
+    description         String              @db.VarChar(1024)
     trailId             String              @db.VarChar(36)
     trail               Trail               @relation(fields: [trailId], references: [id])
+    organizers          User[]              @relation("Organizer")
     attendees           User[]              @relation("Attendee")
     guests              User[]              @relation("Guest")
     stats               Stats[]
     schedule            DateTime            @default(now())
+    createdAt           DateTime            @default(now())
 }
 
 model Stats {
