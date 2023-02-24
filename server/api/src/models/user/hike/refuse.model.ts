@@ -1,14 +1,14 @@
-import { prisma } from '../../utils/prisma.util';
+import { prisma } from '../../../utils/prisma.util';
 
 async function refuse(userId: string, hikeId: string): Promise<void> {
-  await prisma.user.update({
+  await prisma.hike.update({
     where: {
-      id: userId
+      id: hikeId
     },
     data: {
-      guestHikes: {
+      guests: {
         disconnect: {
-          id: hikeId
+          id: userId
         }
       }
     }

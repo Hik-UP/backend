@@ -9,8 +9,6 @@ function createHikeRoutes(): express.Router {
 
   hikeRoutes.post('/create', validator(hikeJOI.create), hikeCtrl.create);
   hikeRoutes.post('/retrieve', validator(hikeJOI.retrieve), hikeCtrl.retrieve);
-  hikeRoutes.put('/accept', validator(hikeJOI.accept), hikeCtrl.accept);
-  hikeRoutes.put('/refuse', validator(hikeJOI.refuse), hikeCtrl.refuse);
   return hikeRoutes;
 }
 
