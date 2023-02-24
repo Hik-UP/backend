@@ -16,7 +16,7 @@ const hike = Joi.object({
 }).required();
 
 const create = Joi.object({
-  user: authJOI.payload,
+  user: authJOI.payload.required(),
   trail: Joi.object({
     id: Joi.string().min(36).max(36).required()
   }).required(),

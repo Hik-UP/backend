@@ -3,7 +3,7 @@ import Joi from 'joi';
 import { authJOI } from '../auth/auth.validator';
 
 const retrieve = Joi.object({
-  user: authJOI.payload
+  user: authJOI.payload.required()
 }).required();
 
 export { retrieve };

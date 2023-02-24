@@ -1,16 +1,13 @@
 import { prisma } from '../../utils/prisma.util';
 import { IUpdateUserProfile } from '../../ts/user.type';
 
-async function update(
-  id: string,
-  newProfile: IUpdateUserProfile
-): Promise<void> {
+async function update(userId: string, user: IUpdateUserProfile): Promise<void> {
   await prisma.user.update({
-    where: { id: id },
+    where: { id: userId },
     data: {
-      username: newProfile.username,
-      email: newProfile.email,
-      picture: newProfile.picture
+      username: user.username,
+      email: user.email,
+      picture: user.picture
     }
   });
 }

@@ -21,4 +21,14 @@ interface IHike {
   createdAt: Date;
 }
 
-export { INewHike, IHike };
+interface IUpdateHike {
+  id: string;
+  name?: string;
+  description?: string;
+  trailId?: string;
+  attendees?: { remove?: [{ email: string }] };
+  guests?: { add?: [{ email: string }]; remove?: [{ email: string }] };
+  schedule?: Date;
+}
+
+export { INewHike, IHike, IUpdateHike };
