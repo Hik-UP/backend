@@ -39,7 +39,7 @@ const update = Joi.object({
   trail: Joi.object({
     id: Joi.string().min(36).max(36).required()
   }),
-  hike: hike
+  hike: hike.required()
 }).required();
 
 export { update };

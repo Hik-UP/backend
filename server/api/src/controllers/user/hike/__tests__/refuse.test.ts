@@ -193,7 +193,7 @@ describe('POST /user/hike/refuse', () => {
   it('should return 201', async () => {
     await dbTest.removeAllHikes();
     await dbTest.removeAllTrails();
-    for (let i = 0; i < 10; i += 1) {
+    for (let i = 0; i < 5; i += 1) {
       const newTrail = {
         id: '',
         name: `${crypto.randomString(20)}`,

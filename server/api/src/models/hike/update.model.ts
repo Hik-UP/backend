@@ -15,7 +15,7 @@ async function update(userId: string, hike: IUpdateHike): Promise<void> {
             description: hike.description,
             trailId: hike.trailId,
             attendees: {
-              disconnect: hike.guests?.remove
+              disconnect: hike.attendees?.remove
             },
             guests: {
               connect: hike.guests?.add,

@@ -3,15 +3,26 @@ import { Request, Response } from 'express';
 import { dbHike } from '../../models/hike/hike.model';
 import { logger } from '../../utils/logger.util';
 import { HttpError } from '../../utils/error.util';
+import { dbUser } from '../../models/user/user.model';
 
 async function update(req: Request, res: Response): Promise<void> {
   try {
+    const { email: userEmail } = (await dbUser.findOne(req.body.user.id)) || {};
+
     if (
-      req.body.hike.guests.add &&
+      req.body.hike.guests?.add &&
       (await dbHike.isUserInHike(
         req.body.hike.id,
         req.body.hike.guests.add.map((value: { email: string }) => value.email)
       ))
+    ) {
+      throw new HttpError(400, 'Bad Request');
+    }
+    if (
+      req.body.hike.attendees?.remove &&
+      req.body.hike.attendees.remove.every(
+        (value: { email: string }) => value.email === userEmail
+      )
     ) {
       throw new HttpError(400, 'Bad Request');
     }

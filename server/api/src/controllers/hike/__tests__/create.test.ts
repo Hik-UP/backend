@@ -241,11 +241,92 @@ describe('POST /hike/create', () => {
   });
 });
 
+describe('POST /hike/create', () => {
+  it('should return 400', async () => {
+    const newTrail = {
+      id: '',
+      name: `${crypto.randomString(20)}`,
+      address: `${crypto.randomString(20)}`,
+      description: `${crypto.randomString(20)}`,
+      pictures: [`https://${crypto.randomString(20)}.com`],
+      latitude: parseFloat((Math.random() * (90 - 0) + 0).toFixed(12)),
+      longitude: parseFloat((Math.random() * (180 - 0) + 0).toFixed(12)),
+      difficulty: Math.floor(Math.random() * 10),
+      duration: Math.floor(Math.random() * 10),
+      distance: Math.floor(Math.random() * 10),
+      uphill: Math.floor(Math.random() * 10),
+      downhill: Math.floor(Math.random() * 10),
+      tools: [`${crypto.randomString(20)}`],
+      relatedArticles: [`https://${crypto.randomString(20)}.com`],
+      labels: [`${crypto.randomString(10)}`],
+      geoJSON: `${crypto.randomString(20)}`,
+      comments: []
+    };
+    let res = await request(httpsServer)
+      .post('/api/trail/create')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        trail: {
+          name: newTrail.name,
+          address: newTrail.address,
+          description: newTrail.description,
+          pictures: newTrail.pictures,
+          latitude: newTrail.latitude,
+          longitude: newTrail.longitude,
+          difficulty: newTrail.difficulty,
+          duration: newTrail.duration,
+          distance: newTrail.distance,
+          uphill: newTrail.uphill,
+          downhill: newTrail.downhill,
+          tools: newTrail.tools,
+          relatedArticles: newTrail.relatedArticles,
+          labels: newTrail.labels,
+          geoJSON: newTrail.geoJSON
+        }
+      });
+    res = await request(httpsServer)
+      .post('/api/trail/retrieve')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        }
+      });
+
+    newTrail.id = res.body.trails[0].id;
+
+    res = await request(httpsServer)
+      .post('/api/hike/create')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        trail: {
+          id: newTrail.id
+        },
+        hike: {
+          name: `${crypto.randomString(20)}`,
+          description: `${crypto.randomString(20)}`,
+          guests: [{ email: User.email }]
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
 describe('POST /api/hike/accept', () => {
   jest.setTimeout(60000);
   it('should return 201', async () => {
     await dbTest.removeAllTrails();
-    for (let i = 0; i < 20; i += 1) {
+    for (let i = 0; i < 10; i += 1) {
       const newTrail = {
         id: '',
         name: `${crypto.randomString(20)}`,

@@ -1,10 +1,22 @@
 import { Request, Response } from 'express';
 
 import { dbHike } from '../../models/hike/hike.model';
+import { dbUser } from '../../models/user/user.model';
 import { logger } from '../../utils/logger.util';
+import { HttpError } from '../../utils/error.util';
 
 async function create(req: Request, res: Response): Promise<void> {
   try {
+    const { email: userEmail } = (await dbUser.findOne(req.body.user.id)) || {};
+
+    if (
+      req.body.hike.guests &&
+      req.body.hike.guests.every(
+        (value: { email: string }) => value.email === userEmail
+      )
+    ) {
+      throw new HttpError(400, 'Bad Request');
+    }
     await dbHike.create({
       name: req.body.hike.name,
       description: req.body.hike.description,
@@ -20,10 +32,17 @@ async function create(req: Request, res: Response): Promise<void> {
       message: 'Created'
     });
   } catch (error) {
-    logger.error('Hike creation failed\n' + error);
-    res.status(500).json({
-      error: 'Internal Server Error'
-    });
+    if (error instanceof HttpError) {
+      logger.warn('Hike creation failed');
+      res.status(error.statusCode).json({
+        error: error.message
+      });
+    } else {
+      logger.error('Hike creation failed\n' + error);
+      res.status(500).json({
+        error: 'Internal Server Error'
+      });
+    }
   }
 }
 
