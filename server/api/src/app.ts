@@ -21,7 +21,7 @@ function createApp(): Express {
   app.set('trust proxy', 1);
   app.disable('x-powered-by');
   app.use(rateLimiter);
-  app.use(cors({ methods: ['GET', 'POST', 'PUT'] }));
+  app.use(cors({ methods: ['GET', 'POST', 'PUT', 'DELETE'] }));
 
   app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
     logger.error('Failed to process request\n' + err);
