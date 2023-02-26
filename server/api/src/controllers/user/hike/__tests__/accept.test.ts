@@ -283,6 +283,9 @@ describe('POST /user/hike/accept', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
 
@@ -303,6 +306,9 @@ describe('POST /user/hike/accept', () => {
         user: {
           id: OtherUser.userId,
           roles: OtherUser.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
 
@@ -332,6 +338,9 @@ describe('POST /user/hike/accept', () => {
         user: {
           id: OtherUser.userId,
           roles: OtherUser.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
 
@@ -440,6 +449,9 @@ describe('POST /user/hike/accept', () => {
           user: {
             id: User.userId,
             roles: User.roles
+          },
+          hike: {
+            target: ['organized', 'attendee', 'guest']
           }
         });
 
@@ -461,6 +473,9 @@ describe('POST /user/hike/accept', () => {
           user: {
             id: OtherUser.userId,
             roles: OtherUser.roles
+          },
+          hike: {
+            target: ['organized', 'attendee', 'guest']
           }
         });
 
@@ -492,6 +507,9 @@ describe('POST /user/hike/accept', () => {
           user: {
             id: OtherUser.userId,
             roles: OtherUser.roles
+          },
+          hike: {
+            target: ['organized', 'attendee', 'guest']
           }
         });
 

@@ -1,5 +1,4 @@
 import request from 'supertest';
-import { randomUUID } from 'crypto';
 
 import { httpsServer } from '../../../server/https';
 import { dbTest } from '../../../models/test/test.model';
@@ -76,6 +75,9 @@ describe('POST /hike/retrieve', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organizer', 'attendee', 'guest']
         }
       });
     expect(res.statusCode).toEqual(401);
@@ -83,9 +85,158 @@ describe('POST /hike/retrieve', () => {
   });
 });
 
+describe('POST /hike/retrieve', () => {
+  it('should return 401', async () => {
+    const res = await request(httpsServer)
+      .post('/api/hike/retrieve')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /hike/retrieve', () => {
+  it('should return 401', async () => {
+    const res = await request(httpsServer)
+      .post('/api/hike/retrieve')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'foo']
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /hike/retrieve', () => {
+  it('should return 401', async () => {
+    const res = await request(httpsServer)
+      .post('/api/hike/retrieve')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest', 'guest']
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /hike/retrieve', () => {
+  it('should return 401', async () => {
+    const res = await request(httpsServer)
+      .post('/api/hike/retrieve')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        hike: {
+          target: []
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /hike/retrieve', () => {
+  it('should return 401', async () => {
+    const res = await request(httpsServer)
+      .post('/api/hike/retrieve')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        hike: {
+          target: ['foo']
+        }
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toMatchObject({ error: 'Bad Request' });
+  });
+});
+
+describe('POST /hike/retrieve', () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      .post('/api/hike/retrieve')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        hike: {
+          target: ['organized']
+        }
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toMatchObject({ hikes: { organized: [] } });
+  });
+});
+
+describe('POST /hike/retrieve', () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      .post('/api/hike/retrieve')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        hike: {
+          target: ['attendee']
+        }
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toMatchObject({ hikes: { attendee: [] } });
+  });
+});
+
+describe('POST /hike/retrieve', () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      .post('/api/hike/retrieve')
+      .set('Authorization', `Bearer ${User.token}`)
+      .send({
+        user: {
+          id: User.userId,
+          roles: User.roles
+        },
+        hike: {
+          target: ['guest']
+        }
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toMatchObject({ hikes: { guest: [] } });
+  });
+});
+
 describe('POST /hike/create', () => {
   jest.setTimeout(60000);
-  it('should return 201', async () => {
+  it('should return 200', async () => {
     await dbTest.removeAllTrails();
     for (let i = 0; i < 10; i += 1) {
       const newTrail = {
@@ -180,6 +331,9 @@ describe('POST /hike/create', () => {
           user: {
             id: User.userId,
             roles: User.roles
+          },
+          hike: {
+            target: ['organized', 'attendee', 'guest']
           }
         });
       expect(res.statusCode).toEqual(200);

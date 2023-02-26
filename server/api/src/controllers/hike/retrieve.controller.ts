@@ -15,9 +15,15 @@ async function retrieve(req: Request, res: Response): Promise<void> {
     logger.info('Hike recovery succeed');
     res.status(200).json({
       hikes: {
-        organized: hikes?.organizerHikes,
-        attendee: hikes?.attendeeHikes,
-        guest: hikes?.guestHikes
+        organized: req.body.hike?.target.includes('organized')
+          ? hikes?.organizerHikes
+          : undefined,
+        attendee: req.body.hike?.target.includes('attendee')
+          ? hikes?.attendeeHikes
+          : undefined,
+        guest: req.body.hike?.target.includes('guest')
+          ? hikes?.guestHikes
+          : undefined
       }
     });
   } catch (error) {

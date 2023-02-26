@@ -387,6 +387,9 @@ describe('POST /api/hike/update', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
 
@@ -513,6 +516,9 @@ describe('POST /api/hike/update', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
 
@@ -640,6 +646,9 @@ describe('POST /api/hike/update', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
 
@@ -780,6 +789,9 @@ describe('POST /api/hike/update', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
 
@@ -823,6 +835,9 @@ describe('POST /api/hike/update', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
     expect(res.body.hikes.organized[0].attendees.length).toEqual(1);
@@ -932,6 +947,9 @@ describe('POST /api/hike/update', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
 
@@ -962,6 +980,9 @@ describe('POST /api/hike/update', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
     expect(res.body.hikes.organized[0].attendees.length).toEqual(1);
@@ -1140,6 +1161,9 @@ describe('POST /api/hike/update', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
 
@@ -1180,6 +1204,9 @@ describe('POST /api/hike/update', () => {
         user: {
           id: User.userId,
           roles: User.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
         }
       });
 

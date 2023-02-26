@@ -423,6 +423,9 @@ describe('POST /api/hike/accept', () => {
           user: {
             id: User.userId,
             roles: User.roles
+          },
+          hike: {
+            target: ['organized', 'attendee', 'guest']
           }
         });
 

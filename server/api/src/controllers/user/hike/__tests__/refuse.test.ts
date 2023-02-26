@@ -287,6 +287,9 @@ describe('POST /user/hike/refuse', () => {
           user: {
             id: User.userId,
             roles: User.roles
+          },
+          hike: {
+            target: ['organized', 'attendee', 'guest']
           }
         });
 
@@ -308,6 +311,9 @@ describe('POST /user/hike/refuse', () => {
           user: {
             id: OtherUser.userId,
             roles: OtherUser.roles
+          },
+          hike: {
+            target: ['organized', 'attendee', 'guest']
           }
         });
 
@@ -339,6 +345,9 @@ describe('POST /user/hike/refuse', () => {
           user: {
             id: OtherUser.userId,
             roles: OtherUser.roles
+          },
+          hike: {
+            target: ['organized', 'attendee', 'guest']
           }
         });
 
