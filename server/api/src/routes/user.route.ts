@@ -22,16 +22,16 @@ function createUserRoutes(): express.Router {
   );
 
   userRoutes.post(
+    '/hike/create',
+    validator(userJOI.hike.create),
+    userCtrl.hike.create
+  );
+  userRoutes.post(
     '/hike/retrieve',
     validator(userJOI.hike.retrieve),
     userCtrl.hike.retrieve
   );
 
-  userRoutes.post(
-    '/hike/organizer/create',
-    validator(userJOI.hike.organizer.create),
-    userCtrl.hike.organizer.create
-  );
   userRoutes.put(
     '/hike/organizer/update',
     validator(userJOI.hike.organizer.update),

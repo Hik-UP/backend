@@ -1,5 +1,5 @@
-import { prisma } from '../../../../utils/prisma.util';
-import { INewHike } from '../../../../ts/hike.type';
+import { prisma } from '../../../utils/prisma.util';
+import { INewHike } from '../../../ts/hike.type';
 
 async function create(newTrail: INewHike): Promise<void> {
   await prisma.hike.create({

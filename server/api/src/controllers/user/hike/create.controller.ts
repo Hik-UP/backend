@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import { dbUser } from '../../../../models/user/user.model';
-import { logger } from '../../../../utils/logger.util';
-import { HttpError } from '../../../../utils/error.util';
+import { dbUser } from '../../../models/user/user.model';
+import { logger } from '../../../utils/logger.util';
+import { HttpError } from '../../../utils/error.util';
 
 async function create(req: Request, res: Response): Promise<void> {
   try {
@@ -16,7 +16,7 @@ async function create(req: Request, res: Response): Promise<void> {
     ) {
       throw new HttpError(400, 'Bad Request');
     }
-    await dbUser.hike.organizer.create({
+    await dbUser.hike.create({
       name: req.body.hike.name,
       description: req.body.hike.description,
       organizerId: req.body.user.id,

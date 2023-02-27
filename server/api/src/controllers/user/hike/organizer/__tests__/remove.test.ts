@@ -262,7 +262,7 @@ describe('DELETE /api/user/hike/organizer/remove', () => {
     newHike.trail.id = res.body.trails[0].id;
 
     res = await request(httpsServer)
-      .post('/api/user/hike/organizer/create')
+      .post('/api/user/hike/create')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
@@ -386,7 +386,7 @@ describe('DELETE /api/user/hike/organizer/remove', () => {
       newHike.trail.id = res.body.trails[i].id;
 
       res = await request(httpsServer)
-        .post('/api/user/hike/organizer/create')
+        .post('/api/user/hike/create')
         .set('Authorization', `Bearer ${User.token}`)
         .send({
           user: {

@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-import { authJOI } from '../../../auth/auth.validator';
+import { authJOI } from '../../auth/auth.validator';
 
 const hike = Joi.object({
   name: Joi.string().min(8).max(128).required(),

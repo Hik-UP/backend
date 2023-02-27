@@ -1,9 +1,9 @@
 import request from 'supertest';
 import { randomUUID } from 'crypto';
 
-import { httpsServer } from '../../../../../server/https';
-import { dbTest } from '../../../../../models/test/test.model';
-import { crypto } from '../../../../../utils/cryptography.util';
+import { httpsServer } from '../../../../server/https';
+import { dbTest } from '../../../../models/test/test.model';
+import { crypto } from '../../../../utils/cryptography.util';
 
 beforeAll(async () => {
   await dbTest.removeAllHikes();
@@ -68,10 +68,10 @@ describe('POST /auth/login', () => {
   });
 });
 
-describe('POST /user/hike/organizer/create', () => {
+describe('POST /user/hike/create', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/hike/organizer/create')
+      .post('/api/user/hike/create')
       .send({
         user: {
           id: User.userId,
@@ -90,10 +90,10 @@ describe('POST /user/hike/organizer/create', () => {
   });
 });
 
-describe('POST /user/hike/organizer/create', () => {
+describe('POST /user/hike/create', () => {
   it('should return 500', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/hike/organizer/create')
+      .post('/api/user/hike/create')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
@@ -113,10 +113,10 @@ describe('POST /user/hike/organizer/create', () => {
   });
 });
 
-describe('POST /user/hike/organizer/create', () => {
+describe('POST /user/hike/create', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/hike/organizer/create')
+      .post('/api/user/hike/create')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
@@ -136,10 +136,10 @@ describe('POST /user/hike/organizer/create', () => {
   });
 });
 
-describe('POST /user/hike/organizer/create', () => {
+describe('POST /user/hike/create', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/hike/organizer/create')
+      .post('/api/user/hike/create')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
@@ -158,10 +158,10 @@ describe('POST /user/hike/organizer/create', () => {
   });
 });
 
-describe('POST /user/hike/organizer/create', () => {
+describe('POST /user/hike/create', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/hike/organizer/create')
+      .post('/api/user/hike/create')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
@@ -180,10 +180,10 @@ describe('POST /user/hike/organizer/create', () => {
   });
 });
 
-describe('POST /user/hike/organizer/create', () => {
+describe('POST /user/hike/create', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/hike/organizer/create')
+      .post('/api/user/hike/create')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
@@ -200,10 +200,10 @@ describe('POST /user/hike/organizer/create', () => {
   });
 });
 
-describe('POST /user/hike/organizer/create', () => {
+describe('POST /user/hike/create', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/hike/organizer/create')
+      .post('/api/user/hike/create')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
@@ -219,10 +219,10 @@ describe('POST /user/hike/organizer/create', () => {
   });
 });
 
-describe('POST /user/hike/organizer/create', () => {
+describe('POST /user/hike/create', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/hike/organizer/create')
+      .post('/api/user/hike/create')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
@@ -241,7 +241,7 @@ describe('POST /user/hike/organizer/create', () => {
   });
 });
 
-describe('POST /user/hike/organizer/create', () => {
+describe('POST /user/hike/create', () => {
   it('should return 400', async () => {
     const newTrail = {
       id: '',
@@ -301,7 +301,7 @@ describe('POST /user/hike/organizer/create', () => {
     newTrail.id = res.body.trails[0].id;
 
     res = await request(httpsServer)
-      .post('/api/user/hike/organizer/create')
+      .post('/api/user/hike/create')
       .set('Authorization', `Bearer ${User.token}`)
       .send({
         user: {
@@ -322,7 +322,7 @@ describe('POST /user/hike/organizer/create', () => {
   });
 });
 
-describe('POST /api/user/hike/organizer/create', () => {
+describe('POST /api/user/hike/create', () => {
   jest.setTimeout(60000);
   it('should return 201', async () => {
     await dbTest.removeAllTrails();
@@ -397,7 +397,7 @@ describe('POST /api/user/hike/organizer/create', () => {
       newHike.trail.id = res.body.trails[i].id;
 
       res = await request(httpsServer)
-        .post('/api/user/hike/organizer/create')
+        .post('/api/user/hike/create')
         .set('Authorization', `Bearer ${User.token}`)
         .send({
           user: {
