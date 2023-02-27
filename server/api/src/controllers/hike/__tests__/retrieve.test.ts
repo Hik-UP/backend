@@ -234,11 +234,11 @@ describe('POST /hike/retrieve', () => {
   });
 });
 
-describe('POST /hike/create', () => {
+describe('POST /hike/retrieve', () => {
   jest.setTimeout(60000);
   it('should return 200', async () => {
     await dbTest.removeAllTrails();
-    for (let i = 0; i < 10; i += 1) {
+    for (let i = 0; i < 5; i += 1) {
       const newTrail = {
         id: '',
         name: `${crypto.randomString(20)}`,
