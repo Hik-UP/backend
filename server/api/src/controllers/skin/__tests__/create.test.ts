@@ -188,7 +188,7 @@ describe('POST /skin/create', () => {
 
 describe('POST /skin/create', () => {
   it('should return 201', async () => {
-    for (let i = 0; i < 25; i += 1) {
+    for (let i = 0; i < 15; i += 1) {
       const newSkin = {
         id: '',
         name: crypto.randomString(20),

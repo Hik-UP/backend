@@ -99,7 +99,7 @@ describe('POST /auth/login', () => {
   });
 });
 
-describe('POST /user/hike/accept', () => {
+describe('PUT /user/hike/accept', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .put('/api/user/hike/accept')
@@ -117,7 +117,7 @@ describe('POST /user/hike/accept', () => {
   });
 });
 
-describe('POST /user/hike/accept', () => {
+describe('PUT /user/hike/accept', () => {
   it('should return 500', async () => {
     const res = await request(httpsServer)
       .put('/api/user/hike/accept')
@@ -136,7 +136,7 @@ describe('POST /user/hike/accept', () => {
   });
 });
 
-describe('POST /user/hike/accept', () => {
+describe('PUT /user/hike/accept', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       .put('/api/user/hike/accept')
@@ -153,7 +153,7 @@ describe('POST /user/hike/accept', () => {
   });
 });
 
-describe('POST /user/hike/accept', () => {
+describe('PUT /user/hike/accept', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       .put('/api/user/hike/accept')
@@ -172,7 +172,7 @@ describe('POST /user/hike/accept', () => {
   });
 });
 
-describe('POST /user/hike/accept', () => {
+describe('PUT /user/hike/accept', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       .put('/api/user/hike/accept')
@@ -188,7 +188,7 @@ describe('POST /user/hike/accept', () => {
   });
 });
 
-describe('POST /user/hike/accept', () => {
+describe('PUT /user/hike/accept', () => {
   it('should return 500', async () => {
     await dbTest.removeAllTrails();
     const newTrail = {
@@ -350,7 +350,7 @@ describe('POST /user/hike/accept', () => {
   });
 });
 
-describe('POST /user/hike/accept', () => {
+describe('PUT /user/hike/accept', () => {
   jest.setTimeout(60000);
   it('should return 201', async () => {
     await dbTest.removeAllHikes();

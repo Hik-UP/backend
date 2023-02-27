@@ -99,7 +99,7 @@ describe('POST /auth/login', () => {
   });
 });
 
-describe('POST /hike/update', () => {
+describe('PUT /hike/update', () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
       .put('/api/hike/update')
@@ -121,7 +121,7 @@ describe('POST /hike/update', () => {
   });
 });
 
-describe('POST /hike/update', () => {
+describe('PUT /hike/update', () => {
   it('should return 500', async () => {
     const res = await request(httpsServer)
       .put('/api/hike/update')
@@ -142,7 +142,7 @@ describe('POST /hike/update', () => {
   });
 });
 
-describe('POST /hike/update', () => {
+describe('PUT /hike/update', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       .put('/api/hike/update')
@@ -166,7 +166,7 @@ describe('POST /hike/update', () => {
   });
 });
 
-describe('POST /hike/update', () => {
+describe('PUT /hike/update', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       .put('/api/hike/update')
@@ -185,7 +185,7 @@ describe('POST /hike/update', () => {
   });
 });
 
-describe('POST /hike/update', () => {
+describe('PUT /hike/update', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       .put('/api/hike/update')
@@ -204,7 +204,7 @@ describe('POST /hike/update', () => {
   });
 });
 
-describe('POST /hike/update', () => {
+describe('PUT /hike/update', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       .put('/api/hike/update')
@@ -226,7 +226,7 @@ describe('POST /hike/update', () => {
   });
 });
 
-describe('POST /hike/update', () => {
+describe('PUT /hike/update', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       .put('/api/hike/update')
@@ -246,7 +246,7 @@ describe('POST /hike/update', () => {
   });
 });
 
-describe('POST /hike/update', () => {
+describe('PUT /hike/update', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       .put('/api/hike/update')
@@ -265,7 +265,7 @@ describe('POST /hike/update', () => {
   });
 });
 
-describe('POST /hike/update', () => {
+describe('PUT /hike/update', () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       .put('/api/hike/update')
@@ -287,7 +287,7 @@ describe('POST /hike/update', () => {
   });
 });
 
-describe('POST /api/hike/update', () => {
+describe('PUT /api/hike/update', () => {
   jest.setTimeout(60000);
   it('should return 400', async () => {
     await dbTest.removeAllTrails();
@@ -415,7 +415,7 @@ describe('POST /api/hike/update', () => {
   });
 });
 
-describe('POST /api/hike/update', () => {
+describe('PUT /api/hike/update', () => {
   jest.setTimeout(60000);
   it('should return 400', async () => {
     await dbTest.removeAllHikes();
@@ -544,7 +544,7 @@ describe('POST /api/hike/update', () => {
   });
 });
 
-describe('POST /api/hike/update', () => {
+describe('PUT /api/hike/update', () => {
   jest.setTimeout(60000);
   it('should return 400', async () => {
     await dbTest.removeAllHikes();
@@ -687,7 +687,7 @@ describe('POST /api/hike/update', () => {
   });
 });
 
-describe('POST /api/hike/update', () => {
+describe('PUT /api/hike/update', () => {
   jest.setTimeout(60000);
   it('should return 200', async () => {
     await dbTest.removeAllHikes();
@@ -845,7 +845,7 @@ describe('POST /api/hike/update', () => {
   });
 });
 
-describe('POST /api/hike/update', () => {
+describe('PUT /api/hike/update', () => {
   jest.setTimeout(60000);
   it('should return 200', async () => {
     await dbTest.removeAllHikes();
@@ -990,7 +990,7 @@ describe('POST /api/hike/update', () => {
   });
 });
 
-describe('POST /api/hike/update', () => {
+describe('PUT /api/hike/update', () => {
   jest.setTimeout(60000);
   it('should return 200', async () => {
     await dbTest.removeAllHikes();
