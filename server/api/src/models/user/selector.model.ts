@@ -1,3 +1,5 @@
+import { dbTrailSelector } from '../trail/selector.model';
+
 const privateProfile = {
   username: true,
   email: true,
@@ -24,10 +26,31 @@ const secrets = {
   password: true
 };
 
+const hike = {
+  id: true,
+  name: true,
+  description: true,
+  trail: {
+    select: dbTrailSelector
+  },
+  organizers: {
+    select: publicProfile
+  },
+  attendees: {
+    select: publicProfile
+  },
+  guests: {
+    select: publicProfile
+  },
+  schedule: true,
+  createdAt: true
+};
+
 const dbUserSelector = {
   privateProfile,
   publicProfile,
-  secrets
+  secrets,
+  hike
 };
 
 export { dbUserSelector };

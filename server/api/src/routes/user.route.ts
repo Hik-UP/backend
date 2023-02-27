@@ -21,15 +21,43 @@ function createUserRoutes(): express.Router {
     userCtrl.skin.unlocked
   );
 
-  userRoutes.put(
-    '/hike/accept',
-    validator(userJOI.hike.accept),
-    userCtrl.hike.accept
+  userRoutes.post(
+    '/hike/retrieve',
+    validator(userJOI.hike.retrieve),
+    userCtrl.hike.retrieve
+  );
+
+  userRoutes.post(
+    '/hike/organizer/create',
+    validator(userJOI.hike.organizer.create),
+    userCtrl.hike.organizer.create
   );
   userRoutes.put(
-    '/hike/refuse',
-    validator(userJOI.hike.refuse),
-    userCtrl.hike.refuse
+    '/hike/organizer/update',
+    validator(userJOI.hike.organizer.update),
+    userCtrl.hike.organizer.update
+  );
+  userRoutes.delete(
+    '/hike/organizer/remove',
+    validator(userJOI.hike.organizer.remove),
+    userCtrl.hike.organizer.remove
+  );
+
+  userRoutes.put(
+    '/hike/attendee/leave',
+    validator(userJOI.hike.attendee.leave),
+    userCtrl.hike.attendee.leave
+  );
+
+  userRoutes.put(
+    '/hike/guest/accept',
+    validator(userJOI.hike.guest.accept),
+    userCtrl.hike.guest.accept
+  );
+  userRoutes.put(
+    '/hike/guest/refuse',
+    validator(userJOI.hike.guest.refuse),
+    userCtrl.hike.guest.refuse
   );
   return userRoutes;
 }
