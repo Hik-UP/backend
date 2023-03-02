@@ -7,7 +7,6 @@ import { auth } from './middlewares/auth.middleware';
 import { authRoutes } from './routes/auth.route';
 import { userRoutes } from './routes/user.route';
 import { skinRoutes } from './routes/skin.route';
-import { POIRoutes } from './routes/poi.route';
 import { trailRoutes } from './routes/trail.route';
 import { logger } from './utils/logger.util';
 
@@ -33,7 +32,6 @@ function createApp(): Express {
 
   app.use('/api/user/', auth, userRoutes);
   app.use('/api/skin/', auth, skinRoutes);
-  app.use('/api/poi/', auth, POIRoutes);
   app.use('/api/trail/', auth, trailRoutes);
 
   app.use(function (req: Request, res: Response) {

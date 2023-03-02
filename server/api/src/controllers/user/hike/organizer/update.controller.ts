@@ -17,14 +17,11 @@ async function update(req: Request, res: Response): Promise<void> {
     ) {
       throw new HttpError(400, 'Bad Request');
     }
-    if (
-      req.body.hike.attendees?.remove &&
-      req.body.hike.attendees.remove.every(
-        (value: { email: string }) => value.email === userEmail
-      )
-    ) {
-      throw new HttpError(400, 'Bad Request');
-    }
+    req.body.hike.attendees?.remove.forEach((value: { email: string }) => {
+      if (value.email === userEmail) {
+        throw new HttpError(400, 'Bad Request');
+      }
+    });
     await dbUser.hike.organizer.update(req.body.user.id, {
       id: req.body.hike.id,
       name: req.body.hike.name,
@@ -35,16 +32,16 @@ async function update(req: Request, res: Response): Promise<void> {
       schedule: req.body.hike.schedule
     });
 
-    logger.info('Hike update succeed');
+    logger.info('User hike update succeed');
     res.status(200).json({ message: 'Updated' });
   } catch (error) {
     if (error instanceof HttpError) {
-      logger.warn('Hike update failed');
+      logger.warn('User hike update failed');
       res.status(error.statusCode).json({
         error: error.message
       });
     } else {
-      logger.error('Hike update failed\n' + error);
+      logger.error('User hike update failed\n' + error);
       res.status(500).json({
         error: 'Internal Server Error'
       });

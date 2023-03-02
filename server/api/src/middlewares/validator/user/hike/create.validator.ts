@@ -8,7 +8,7 @@ const hike = Joi.object({
   guests: Joi.array()
     .items(
       Joi.object({
-        email: Joi.string().email().min(16).max(256)
+        email: Joi.string().email().max(256)
       })
     )
     .max(64),

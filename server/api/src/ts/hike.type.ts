@@ -11,6 +11,7 @@ interface INewHike {
 }
 
 interface IHike {
+  id: string;
   name: string;
   description: string;
   trail: ITrail;

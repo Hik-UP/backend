@@ -1,11 +1,10 @@
 import request from 'supertest';
-import { randomUUID } from 'crypto';
 
-import { httpsServer } from '../../../server/https';
-import { mainTest } from '../../../tests/main.test';
+import { httpsServer } from '../../../../server/https';
+import { mainTest } from '../../../../tests/main.test';
 
 const method = 'post';
-const route = '/api/poi/create';
+const route = '/api/user/poi/retrieve';
 const user = mainTest.vars.defaultUser;
 
 jest.setTimeout(60000);
@@ -19,14 +18,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          id: randomUUID()
-        },
         poi: {
-          latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12)),
-          longitude: parseFloat(
-            (Math.random() * (179 - -179) + -179).toFixed(12)
-          )
+          target: ['created', 'shared']
         }
       });
 
@@ -35,31 +28,6 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 500', async () => {
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send({
-        user: {
-          id: user.id,
-          roles: user.roles
-        },
-        trail: {
-          id: randomUUID()
-        },
-        poi: {
-          latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12)),
-          longitude: parseFloat(
-            (Math.random() * (179 - -179) + -179).toFixed(12)
-          )
-        }
-      });
-
-    mainTest.verify.internalServerError(res);
-  });
-});
-
-describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       [`${method}`](route)
@@ -69,16 +37,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          id: randomUUID()
-        },
         poi: {
-          latitude: `X${parseFloat(
-            (Math.random() * (89 - -89) + -89).toFixed(12)
-          )}X`,
-          longitude: `${parseFloat(
-            (Math.random() * (179 - -179) + -179).toFixed(12)
-          )}`
+          target: ['foo', 'shared']
         }
       });
 
@@ -96,16 +56,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          id: randomUUID()
-        },
         poi: {
-          latitude: `${parseFloat(
-            (Math.random() * (89 - -89) + -89).toFixed(12)
-          )}`,
-          longitude: `X${parseFloat(
-            (Math.random() * (179 - -179) + -179).toFixed(12)
-          )}X`
+          target: ['foo']
         }
       });
 
@@ -123,14 +75,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          id: randomUUID()
-        },
         poi: {
-          latitude: 91,
-          longitude: parseFloat(
-            (Math.random() * (179 - -179) + -179).toFixed(12)
-          )
+          target: ['created', 'shared', 'foo']
         }
       });
 
@@ -148,12 +94,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          id: randomUUID()
-        },
         poi: {
-          latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12)),
-          longitude: 181
+          target: ['created', 'shared', 'created']
         }
       });
 
@@ -171,14 +113,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          id: randomUUID()
-        },
         poi: {
-          latitude: -91,
-          longitude: parseFloat(
-            (Math.random() * (179 - -179) + -179).toFixed(12)
-          )
+          target: ['created', 'shared', 'shared']
         }
       });
 
@@ -196,12 +132,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          id: randomUUID()
-        },
         poi: {
-          latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12)),
-          longitude: -181
+          target: []
         }
       });
 
@@ -219,12 +151,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          id: randomUUID()
-        },
-        poi: {
-          latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12))
-        }
+        poi: {}
       });
 
     mainTest.verify.badRequest(res);
@@ -240,14 +167,6 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         user: {
           id: user.id,
           roles: user.roles
-        },
-        trail: {
-          id: randomUUID()
-        },
-        poi: {
-          longitude: parseFloat(
-            (Math.random() * (179 - -179) + -179).toFixed(12)
-          )
         }
       });
 
@@ -256,16 +175,52 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 201', async () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles
+        },
+        poi: {
+          target: ['created']
+        }
+      });
+
+    mainTest.verify.ok(res);
+    expect(res.body).toMatchObject({ poi: { created: [] } });
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles
+        },
+        poi: {
+          target: ['shared']
+        }
+      });
+
+    mainTest.verify.ok(res);
+    expect(res.body).toMatchObject({ poi: { shared: [] } });
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 200', async () => {
     await mainTest.req.setAdmin(user.email);
 
     for (let i = 0; i < 10; i += 1) {
-      const trail = await mainTest.req.createTrail();
-      const poi = {
-        latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12)),
-        longitude: parseFloat((Math.random() * (179 - -179) + -179).toFixed(12))
-      };
-      let res = await request(httpsServer)
+      const poi = await mainTest.req.createPOI();
+      const res = await request(httpsServer)
         [`${method}`](route)
         .set('Authorization', `Bearer ${user.token}`)
         .send({
@@ -273,25 +228,15 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             id: user.id,
             roles: user.roles
           },
-          trail: {
-            id: trail.id
-          },
-          poi: poi
-        });
-
-      mainTest.verify.created(res);
-
-      res = await request(httpsServer)
-        .post('/api/poi/retrieve')
-        .set('Authorization', `Bearer ${user.token}`)
-        .send({
-          user: {
-            id: user.id,
-            roles: user.roles
+          poi: {
+            target: ['created', 'shared']
           }
         });
-      expect(res.body.poi.length).toEqual(i + 1);
-      expect(res.body.poi).toContainEqual(poi);
+
+      mainTest.verify.ok(res);
+      expect(res.body.poi.created.length).toEqual(i + 1);
+      expect(res.body.poi.shared.length).toEqual(0);
+      expect(res.body.poi.created).toContainEqual(poi);
     }
   });
 });

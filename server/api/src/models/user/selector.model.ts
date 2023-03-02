@@ -46,11 +46,31 @@ const hike = {
   createdAt: true
 };
 
+const poi = {
+  id: true,
+  name: true,
+  description: true,
+  pictures: true,
+  creator: {
+    select: publicProfile
+  },
+  sharedWith: {
+    select: publicProfile
+  },
+  trail: {
+    select: dbTrailSelector
+  },
+  latitude: true,
+  longitude: true,
+  createdAt: true
+};
+
 const dbUserSelector = {
   privateProfile,
   publicProfile,
   secrets,
-  hike
+  hike,
+  poi
 };
 
 export { dbUserSelector };

@@ -148,15 +148,22 @@ async function createTrail(): Promise<ITrailTest> {
   return trail;
 }
 
-async function createPOI(): Promise<IPOITest> {
+async function createPOI(sharedWith?: [{ email: string }]): Promise<IPOITest> {
   const trail = await createTrail();
   const poi = {
+    id: '',
+    name: `${crypto.randomString(20)}`,
+    description: `${crypto.randomString(20)}`,
+    pictures: [`https://${crypto.randomString(20)}.com`],
+    creator: [],
+    sharedWith: [],
+    trail: trail,
     latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12)),
-    longitude: parseFloat((Math.random() * (179 - -179) + -179).toFixed(12))
+    longitude: parseFloat((Math.random() * (179 - -179) + -179).toFixed(12)),
+    createdAt: ''
   };
-
-  await request(httpsServer)
-    .post('/api/poi/create')
+  let res = await request(httpsServer)
+    .post('/api/user/poi/create')
     .set('Authorization', `Bearer ${vars.defaultUser.token}`)
     .send({
       user: {
@@ -166,8 +173,34 @@ async function createPOI(): Promise<IPOITest> {
       trail: {
         id: trail.id
       },
-      poi: poi
+      poi: {
+        name: poi.name,
+        description: poi.description,
+        pictures: poi.pictures,
+        sharedWith: poi.sharedWith,
+        latitude: poi.latitude,
+        longitude: poi.longitude
+      }
     });
+
+  res = await request(httpsServer)
+    .post('/api/user/poi/retrieve')
+    .set('Authorization', `Bearer ${vars.defaultUser.token}`)
+    .send({
+      user: {
+        id: vars.defaultUser.id,
+        roles: vars.defaultUser.roles
+      },
+      poi: {
+        target: ['created']
+      }
+    });
+  poi.id = res.body.poi.created[res.body.poi.created.length - 1].id;
+  poi.creator = res.body.poi.created[res.body.poi.created.length - 1].creator;
+  poi.sharedWith =
+    res.body.poi.created[res.body.poi.created.length - 1].sharedWith;
+  poi.createdAt =
+    res.body.poi.created[res.body.poi.created.length - 1].createdAt;
 
   return poi;
 }

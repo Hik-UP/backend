@@ -29,7 +29,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 401', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       [`${method}`](route)
       .set('Authorization', `Bearer ${user.token}`)
@@ -45,7 +45,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 401', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       [`${method}`](route)
       .set('Authorization', `Bearer ${user.token}`)
@@ -64,7 +64,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 401', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       [`${method}`](route)
       .set('Authorization', `Bearer ${user.token}`)
@@ -83,7 +83,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 401', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       [`${method}`](route)
       .set('Authorization', `Bearer ${user.token}`)
@@ -102,7 +102,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 401', async () => {
+  it('should return 400', async () => {
     const res = await request(httpsServer)
       [`${method}`](route)
       .set('Authorization', `Bearer ${user.token}`)

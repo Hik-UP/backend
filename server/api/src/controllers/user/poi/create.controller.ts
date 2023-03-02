@@ -8,33 +8,34 @@ async function create(req: Request, res: Response): Promise<void> {
   try {
     const { email: userEmail } = (await dbUser.findOne(req.body.user.id)) || {};
 
-    req.body.hike.guests?.forEach((value: { email: string }) => {
+    req.body.poi.sharedWith?.forEach((value: { email: string }) => {
       if (value.email === userEmail) {
         throw new HttpError(400, 'Bad Request');
       }
     });
-    await dbUser.hike.create({
-      name: req.body.hike.name,
-      description: req.body.hike.description,
-      organizerId: req.body.user.id,
+    dbUser;
+    await dbUser.poi.create({
+      name: req.body.poi.name,
+      description: req.body.poi.description,
+      pictures: req.body.poi.pictures,
+      creatorId: req.body.user.id,
+      sharedWith: req.body.poi.sharedWith,
       trailId: req.body.trail.id,
-      guests: req.body.hike.guests,
-      schedule: req.body.hike.schedule
-        ? new Date(req.body.hike.schedule * 1000)
-        : undefined
+      latitude: req.body.poi.latitude,
+      longitude: req.body.poi.longitude
     });
-    logger.info('User hike creation succeed');
+    logger.info('User POI creation succeed');
     res.status(201).json({
       message: 'Created'
     });
   } catch (error) {
     if (error instanceof HttpError) {
-      logger.warn('User hike creation failed');
+      logger.warn('User POI creation failed');
       res.status(error.statusCode).json({
         error: error.message
       });
     } else {
-      logger.error('User hike creation failed\n' + error);
+      logger.error('User POI creation failed\n' + error);
       res.status(500).json({
         error: 'Internal Server Error'
       });

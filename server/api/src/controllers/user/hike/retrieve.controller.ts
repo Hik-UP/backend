@@ -12,7 +12,7 @@ async function retrieve(req: Request, res: Response): Promise<void> {
       guestHikes: IHike[] | null;
     } | null = await dbUser.hike.retrieve(req.body.user.id);
 
-    logger.info('Hike recovery succeed');
+    logger.info('User hike recovery succeed');
     res.status(200).json({
       hikes: {
         organized: req.body.hike?.target.includes('organized')
@@ -27,7 +27,7 @@ async function retrieve(req: Request, res: Response): Promise<void> {
       }
     });
   } catch (error) {
-    logger.error('Hike recovery failed\n' + error);
+    logger.error('User hike recovery failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

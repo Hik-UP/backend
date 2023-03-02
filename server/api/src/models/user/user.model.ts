@@ -4,6 +4,7 @@ import { findSecrets } from './findSecrets.model';
 import { update } from './update.model';
 import { skin } from './skin/skin.model';
 import { hike } from './hike/hike.model';
+import { poi } from './poi/poi.model';
 
 const dbUser = {
   create,
@@ -11,7 +12,8 @@ const dbUser = {
   findSecrets,
   update,
   skin,
-  hike
+  hike,
+  poi
 };
 
 export { dbUser };

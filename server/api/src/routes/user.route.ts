@@ -32,6 +32,17 @@ function createUserRoutes(): express.Router {
     userCtrl.hike.retrieve
   );
 
+  userRoutes.post(
+    '/poi/create',
+    validator(userJOI.poi.create),
+    userCtrl.poi.create
+  );
+  userRoutes.post(
+    '/poi/retrieve',
+    validator(userJOI.poi.retrieve),
+    userCtrl.poi.retrieve
+  );
+
   userRoutes.put(
     '/hike/organizer/update',
     validator(userJOI.hike.organizer.update),
