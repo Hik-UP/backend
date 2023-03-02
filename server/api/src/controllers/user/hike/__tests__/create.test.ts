@@ -213,6 +213,65 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 
 describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 201', async () => {
+    const trail = await mainTest.req.createTrail();
+    const otherUser = await mainTest.req.createUser();
+    const hike = {
+      id: '',
+      name: `${crypto.randomString(20)}`,
+      description: `${crypto.randomString(20)}`,
+      trail: trail,
+      organizers: [{ username: user.username, picture: user.picture }],
+      attendees: [{ username: user.username, picture: user.picture }],
+      guests: [{ username: otherUser.username, picture: otherUser.picture }],
+      schedule: '',
+      createdAt: ''
+    };
+    let res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles
+        },
+        trail: {
+          id: trail.id
+        },
+        hike: {
+          name: hike.name,
+          description: hike.description,
+          guests: [{ email: otherUser.email }]
+        }
+      });
+
+    mainTest.verify.created(res);
+
+    res = await request(httpsServer)
+      .post('/api/user/hike/retrieve')
+      .set('Authorization', `Bearer ${otherUser.token}`)
+      .send({
+        user: {
+          id: otherUser.id,
+          roles: otherUser.roles
+        },
+        hike: {
+          target: ['organized', 'attendee', 'guest']
+        }
+      });
+    hike.id = res.body.hikes.guest[0].id;
+    hike.schedule = res.body.hikes.guest[0].schedule;
+    hike.createdAt = res.body.hikes.guest[0].createdAt;
+    expect(res.body.hikes.organized.length).toEqual(0);
+    expect(res.body.hikes.attendee.length).toEqual(0);
+    expect(res.body.hikes.guest.length).toEqual(1);
+    expect(res.body.hikes.guest).toContainEqual(hike);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 201', async () => {
+    await mainTest.db.removeAllHikes();
+
     for (let i = 0; i < 10; i += 1) {
       const trail = await mainTest.req.createTrail();
       const hike = {
