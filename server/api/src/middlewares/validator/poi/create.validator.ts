@@ -3,7 +3,7 @@ import Joi from 'joi';
 import { authJOI } from '../auth/auth.validator';
 
 const trail = Joi.object({
-  id: Joi.string().required()
+  id: Joi.string().min(36).max(36).required()
 }).required();
 
 const poi = Joi.object({
@@ -12,9 +12,9 @@ const poi = Joi.object({
 }).required();
 
 const create = Joi.object({
-  user: authJOI.payload,
-  trail: trail,
-  poi: poi
+  user: authJOI.payload.required(),
+  trail: trail.required(),
+  poi: poi.required()
 }).required();
 
 export { create };

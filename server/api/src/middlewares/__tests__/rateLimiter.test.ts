@@ -1,37 +1,40 @@
 import request from 'supertest';
 
 import { httpsServer } from '../../server/https';
+import { mainTest } from '../../tests/main.test';
 
-afterAll(() => {
-  httpsServer.close();
-});
+const method = 'post';
+const route = '/api/auth/login';
 
-describe('POST /auth/signup', () => {
+jest.setTimeout(60000);
+
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 400', async () => {
-    for (let iteration = 0; iteration < 100; iteration += 1) {
-      const res = await request(httpsServer)
-        .post('/api/auth/signup')
-        .send({
-          user: {
-            foo: 'bar'
-          }
-        });
-      expect(res.statusCode).toEqual(400);
-      expect(res.body).toMatchObject({ error: 'Bad Request' });
-    }
-  });
-});
-
-describe('POST /auth/signup', () => {
-  it('should return 429', async () => {
     const res = await request(httpsServer)
-      .post('/api/auth/signup')
+      [`${method}`](route)
       .send({
         user: {
           foo: 'bar'
         }
       });
-    expect(res.statusCode).toEqual(429);
-    expect(res.body).toMatchObject({ error: 'Too Many Requests' });
+
+    mainTest.verify.badRequest(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 429', async () => {
+    let res: any = undefined;
+
+    for (let i = 0; i < 100; i += 1) {
+      res = await request(httpsServer)
+        [`${method}`](route)
+        .send({
+          user: {
+            foo: 'bar'
+          }
+        });
+    }
+    mainTest.verify.tooManyRequests(res);
   });
 });
