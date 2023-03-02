@@ -238,7 +238,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             password: otherUser.password
           }
         });
-      expect(res.statusCode).toEqual(200);
+      mainTest.verify.ok(res);
     }
   });
 });

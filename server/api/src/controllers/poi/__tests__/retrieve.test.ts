@@ -40,7 +40,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           }
         });
 
-      expect(res.statusCode).toEqual(200);
+      mainTest.verify.ok(res);
       expect(res.body.poi.length).toEqual(i + 1);
       expect(res.body.poi).toContainEqual(poi);
     }

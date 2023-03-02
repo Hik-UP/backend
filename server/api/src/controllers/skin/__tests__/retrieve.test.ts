@@ -41,7 +41,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           }
         });
 
-      expect(res.statusCode).toEqual(200);
+      mainTest.verify.ok(res);
       expect(res.body.skins.length).toEqual(i + 2);
     }
   });

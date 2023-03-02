@@ -52,7 +52,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             roles: user.roles
           }
         });
-      expect(res.statusCode).toEqual(200);
+      mainTest.verify.ok(res);
       expect(res.body.skins.length).toEqual(i + 1);
       expect(res.body.skins).toContainEqual(skin);
     }

@@ -126,7 +126,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         }
       });
 
-    expect(res.statusCode).toEqual(200);
+    mainTest.verify.ok(res);
     expect(res.body.user.id).toEqual(user.id);
     expect(res.body.user.roles).toEqual(user.roles);
     expect(typeof res.body.user.token).toBe('string');

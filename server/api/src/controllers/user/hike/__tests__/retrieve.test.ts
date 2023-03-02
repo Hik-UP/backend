@@ -135,7 +135,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         }
       });
 
-    expect(res.statusCode).toEqual(200);
+    mainTest.verify.ok(res);
     expect(res.body).toMatchObject({ hikes: { organized: [] } });
   });
 });
@@ -155,7 +155,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         }
       });
 
-    expect(res.statusCode).toEqual(200);
+    mainTest.verify.ok(res);
     expect(res.body).toMatchObject({ hikes: { attendee: [] } });
   });
 });
@@ -175,7 +175,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         }
       });
 
-    expect(res.statusCode).toEqual(200);
+    mainTest.verify.ok(res);
     expect(res.body).toMatchObject({ hikes: { guest: [] } });
   });
 });
@@ -200,7 +200,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           }
         });
 
-      expect(res.statusCode).toEqual(200);
+      mainTest.verify.ok(res);
       expect(res.body.hikes.organized.length).toEqual(i + 1);
       expect(res.body.hikes.attendee.length).toEqual(i + 1);
       expect(res.body.hikes.guest.length).toEqual(0);

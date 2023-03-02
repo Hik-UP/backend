@@ -6,6 +6,10 @@ function created(res: request.Response) {
   expect(res.body).toMatchObject({ message: 'Created' });
 }
 
+function ok(res: request.Response) {
+  expect(res.statusCode).toEqual(200);
+}
+
 function updated(res: request.Response) {
   expect(res.statusCode).toEqual(200);
   expect(res.body.message).toEqual('Updated');
@@ -38,6 +42,7 @@ function internalServerError(res: request.Response) {
 
 const verify = {
   created,
+  ok,
   updated,
   deleted,
   unauthorized,

@@ -334,7 +334,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           }
         });
 
-      expect(res.statusCode).toEqual(200);
+      mainTest.verify.ok(res);
       expect(typeof res.body.weather.temperature).toBe('number');
       expect(typeof res.body.weather.icon).toBe('string');
       expect(typeof res.body.calories).toBe('number');
