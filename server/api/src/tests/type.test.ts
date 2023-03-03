@@ -30,8 +30,16 @@ interface ITrailTest {
 }
 
 interface IPOITest {
+  id: string;
+  name: string;
+  description: string;
+  pictures: string[];
+  creator: { username: string; picture: string };
+  sharedWith: { username: string; picture: string }[];
+  trail: ITrailTest;
   latitude: number;
   longitude: number;
+  createdAt: Date;
 }
 
 interface IHikeTest {
@@ -42,8 +50,8 @@ interface IHikeTest {
   organizers: { username: string; picture: string }[];
   attendees: { username: string; picture: string }[];
   guests: { username: string; picture: string }[];
-  schedule: string;
-  createdAt: string;
+  schedule: Date;
+  createdAt: Date;
 }
 
 interface IUserTest {

@@ -302,33 +302,6 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         poi: {
           name: `${crypto.randomString(20)}`,
           description: `${crypto.randomString(20)}`,
-          latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12)),
-          longitude: parseFloat(
-            (Math.random() * (179 - -179) + -179).toFixed(12)
-          )
-        }
-      });
-
-    mainTest.verify.badRequest(res);
-  });
-});
-
-describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send({
-        user: {
-          id: user.id,
-          roles: user.roles
-        },
-        trail: {
-          id: randomUUID()
-        },
-        poi: {
-          name: `${crypto.randomString(20)}`,
-          description: `${crypto.randomString(20)}`,
           pictures: [`https://${crypto.randomString(20)}.com`],
           latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12))
         }
@@ -464,7 +437,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
       trail: trail,
       latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12)),
       longitude: parseFloat((Math.random() * (179 - -179) + -179).toFixed(12)),
-      createdAt: ''
+      createdAt: new Date()
     };
     let res = await request(httpsServer)
       [`${method}`](route)
@@ -527,7 +500,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         longitude: parseFloat(
           (Math.random() * (179 - -179) + -179).toFixed(12)
         ),
-        createdAt: ''
+        createdAt: new Date()
       };
       let res = await request(httpsServer)
         [`${method}`](route)

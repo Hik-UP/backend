@@ -9,11 +9,7 @@ const trail = Joi.object({
 const poi = Joi.object({
   name: Joi.string().min(8).max(128).required(),
   description: Joi.string().min(8).max(1024).required(),
-  pictures: Joi.array()
-    .items(Joi.string().uri().min(16).max(1024))
-    .min(1)
-    .max(16)
-    .required(),
+  pictures: Joi.array().items(Joi.string().uri().min(16).max(1024)).max(16),
   sharedWith: Joi.array()
     .items(
       Joi.object({

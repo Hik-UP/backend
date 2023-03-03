@@ -32,17 +32,6 @@ function createUserRoutes(): express.Router {
     userCtrl.hike.retrieve
   );
 
-  userRoutes.post(
-    '/poi/create',
-    validator(userJOI.poi.create),
-    userCtrl.poi.create
-  );
-  userRoutes.post(
-    '/poi/retrieve',
-    validator(userJOI.poi.retrieve),
-    userCtrl.poi.retrieve
-  );
-
   userRoutes.put(
     '/hike/organizer/update',
     validator(userJOI.hike.organizer.update),
@@ -69,6 +58,22 @@ function createUserRoutes(): express.Router {
     '/hike/guest/refuse',
     validator(userJOI.hike.guest.refuse),
     userCtrl.hike.guest.refuse
+  );
+
+  userRoutes.post(
+    '/poi/create',
+    validator(userJOI.poi.create),
+    userCtrl.poi.create
+  );
+  userRoutes.post(
+    '/poi/retrieve',
+    validator(userJOI.poi.retrieve),
+    userCtrl.poi.retrieve
+  );
+  userRoutes.put(
+    '/poi/update',
+    validator(userJOI.poi.update),
+    userCtrl.poi.update
   );
   return userRoutes;
 }

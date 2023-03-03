@@ -25,4 +25,12 @@ interface IPOI {
   createdAt: Date;
 }
 
-export { INewPOI, IPOI };
+interface IUpdatePOI {
+  id: string;
+  name?: string;
+  description?: string;
+  pictures: string[];
+  sharedWith?: { add?: [{ email: string }]; remove?: [{ email: string }] };
+}
+
+export { INewPOI, IPOI, IUpdatePOI };

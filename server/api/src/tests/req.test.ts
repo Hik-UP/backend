@@ -81,7 +81,10 @@ async function createSkin(): Promise<ISkinTest> {
         roles: vars.defaultUser.roles
       }
     });
-  skin.id = res.body.skins[res.body.skins.length - 1].id;
+  const retrievedSkin: ISkinTest = res.body.skins.find(
+    (value: ISkinTest) => value.name === skin.name
+  );
+  skin.id = retrievedSkin.id;
 
   return skin;
 }
@@ -142,8 +145,10 @@ async function createTrail(): Promise<ITrailTest> {
         roles: vars.defaultUser.roles
       }
     });
-  trail.id = res.body.trails[res.body.trails.length - 1].id;
-  trail.comments = res.body.trails[res.body.trails.length - 1].comments;
+  const retrievedTrail: ITrailTest = res.body.trails.find(
+    (value: ITrailTest) => value.name === trail.name
+  );
+  trail.id = retrievedTrail.id;
 
   return trail;
 }
@@ -155,12 +160,15 @@ async function createPOI(sharedWith?: [{ email: string }]): Promise<IPOITest> {
     name: `${crypto.randomString(20)}`,
     description: `${crypto.randomString(20)}`,
     pictures: [`https://${crypto.randomString(20)}.com`],
-    creator: [],
-    sharedWith: [],
+    creator: {
+      username: vars.defaultUser.username,
+      picture: vars.defaultUser.picture
+    },
+    sharedWith: [{ username: '', picture: '' }],
     trail: trail,
     latitude: parseFloat((Math.random() * (89 - -89) + -89).toFixed(12)),
     longitude: parseFloat((Math.random() * (179 - -179) + -179).toFixed(12)),
-    createdAt: ''
+    createdAt: new Date()
   };
   let res = await request(httpsServer)
     .post('/api/user/poi/create')
@@ -177,7 +185,7 @@ async function createPOI(sharedWith?: [{ email: string }]): Promise<IPOITest> {
         name: poi.name,
         description: poi.description,
         pictures: poi.pictures,
-        sharedWith: poi.sharedWith,
+        sharedWith: sharedWith,
         latitude: poi.latitude,
         longitude: poi.longitude
       }
@@ -195,12 +203,13 @@ async function createPOI(sharedWith?: [{ email: string }]): Promise<IPOITest> {
         target: ['created']
       }
     });
-  poi.id = res.body.poi.created[res.body.poi.created.length - 1].id;
-  poi.creator = res.body.poi.created[res.body.poi.created.length - 1].creator;
-  poi.sharedWith =
-    res.body.poi.created[res.body.poi.created.length - 1].sharedWith;
-  poi.createdAt =
-    res.body.poi.created[res.body.poi.created.length - 1].createdAt;
+  const retrievedPOI: IPOITest = res.body.poi.created.find(
+    (value: IPOITest) => value.name === poi.name
+  );
+  poi.id = retrievedPOI.id;
+  poi.creator = retrievedPOI.creator;
+  poi.sharedWith = retrievedPOI.sharedWith;
+  poi.createdAt = retrievedPOI.createdAt;
 
   return poi;
 }
@@ -212,11 +221,11 @@ async function createHike(guests?: [{ email: string }]): Promise<IHikeTest> {
     name: `${crypto.randomString(20)}`,
     description: `${crypto.randomString(20)}`,
     trail: trail,
-    organizers: [],
-    attendees: [],
-    guests: [],
-    schedule: '',
-    createdAt: ''
+    organizers: [{ username: '', picture: '' }],
+    attendees: [{ username: '', picture: '' }],
+    guests: [{ username: '', picture: '' }],
+    schedule: new Date(),
+    createdAt: new Date()
   };
   let res = await request(httpsServer)
     .post('/api/user/hike/create')
@@ -248,17 +257,15 @@ async function createHike(guests?: [{ email: string }]): Promise<IHikeTest> {
         target: ['organized', 'attendee', 'guest']
       }
     });
-  hike.id = res.body.hikes.organized[res.body.hikes.organized.length - 1].id;
-  hike.organizers =
-    res.body.hikes.organized[res.body.hikes.organized.length - 1].organizers;
-  hike.attendees =
-    res.body.hikes.organized[res.body.hikes.organized.length - 1].attendees;
-  hike.guests =
-    res.body.hikes.organized[res.body.hikes.organized.length - 1].guests;
-  hike.schedule =
-    res.body.hikes.organized[res.body.hikes.organized.length - 1].schedule;
-  hike.createdAt =
-    res.body.hikes.organized[res.body.hikes.organized.length - 1].createdAt;
+  const retrievedHike: IHikeTest = res.body.hikes.organized.find(
+    (value: IHikeTest) => value.name === hike.name
+  );
+  hike.id = retrievedHike.id;
+  hike.organizers = retrievedHike.organizers;
+  hike.attendees = retrievedHike.attendees;
+  hike.guests = retrievedHike.guests;
+  hike.schedule = retrievedHike.schedule;
+  hike.createdAt = retrievedHike.createdAt;
 
   return hike;
 }

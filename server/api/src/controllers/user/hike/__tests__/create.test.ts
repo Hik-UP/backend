@@ -223,8 +223,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
       organizers: [{ username: user.username, picture: user.picture }],
       attendees: [{ username: user.username, picture: user.picture }],
       guests: [{ username: otherUser.username, picture: otherUser.picture }],
-      schedule: '',
-      createdAt: ''
+      schedule: new Date(),
+      createdAt: new Date()
     };
     let res = await request(httpsServer)
       [`${method}`](route)
@@ -282,8 +282,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         organizers: [{ username: user.username, picture: user.picture }],
         attendees: [{ username: user.username, picture: user.picture }],
         guests: [],
-        schedule: '',
-        createdAt: ''
+        schedule: new Date(),
+        createdAt: new Date()
       };
       let res = await request(httpsServer)
         [`${method}`](route)
