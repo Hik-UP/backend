@@ -4,7 +4,7 @@ import { authJOI } from '../../auth/auth.validator';
 
 const poi = Joi.object({
   target: Joi.array()
-    .items(Joi.string().min(5).max(9).valid('created', 'shared'))
+    .items(Joi.string().valid('created', 'shared'))
     .min(1)
     .max(2)
     .required()

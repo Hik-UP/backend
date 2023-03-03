@@ -3,6 +3,7 @@ import request from 'supertest';
 import { httpsServer } from '../../../server/https';
 import { mainTest } from '../../../tests/main.test';
 import { crypto } from '../../../utils/cryptography.util';
+import { ISkinTest } from '../../../tests/type.test';
 
 const method = 'post';
 const route = '/api/skin/create';
@@ -228,7 +229,10 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             roles: user.roles
           }
         });
-      skin.id = res.body.skins[i + 1].id;
+      const retrievedSkin: ISkinTest = res.body.skins.find(
+        (value: ISkinTest) => value.name === skin.name
+      );
+      skin.id = retrievedSkin.id;
       expect(res.body.skins).toContainEqual(skin);
     }
   });

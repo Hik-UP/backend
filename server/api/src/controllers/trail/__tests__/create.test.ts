@@ -3,6 +3,7 @@ import request from 'supertest';
 import { httpsServer } from '../../../server/https';
 import { mainTest } from '../../../tests/main.test';
 import { crypto } from '../../../utils/cryptography.util';
+import { ITrailTest } from '../../../tests/type.test';
 
 const method = 'post';
 const route = '/api/trail/create';
@@ -489,7 +490,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 201', async () => {
     for (let i = 0; i < 10; i += 1) {
-      const newTrail = {
+      const trail = {
         id: '',
         name: `${crypto.randomString(20)}`,
         address: `${crypto.randomString(20)}`,
@@ -519,21 +520,21 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             roles: user.roles
           },
           trail: {
-            name: newTrail.name,
-            address: newTrail.address,
-            description: newTrail.description,
-            pictures: newTrail.pictures,
-            latitude: newTrail.latitude,
-            longitude: newTrail.longitude,
-            difficulty: newTrail.difficulty,
-            duration: newTrail.duration,
-            distance: newTrail.distance,
-            uphill: newTrail.uphill,
-            downhill: newTrail.downhill,
-            tools: newTrail.tools,
-            relatedArticles: newTrail.relatedArticles,
-            labels: newTrail.labels,
-            geoJSON: newTrail.geoJSON
+            name: trail.name,
+            address: trail.address,
+            description: trail.description,
+            pictures: trail.pictures,
+            latitude: trail.latitude,
+            longitude: trail.longitude,
+            difficulty: trail.difficulty,
+            duration: trail.duration,
+            distance: trail.distance,
+            uphill: trail.uphill,
+            downhill: trail.downhill,
+            tools: trail.tools,
+            relatedArticles: trail.relatedArticles,
+            labels: trail.labels,
+            geoJSON: trail.geoJSON
           }
         });
 
@@ -548,9 +549,11 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             roles: user.roles
           }
         });
-      newTrail.id = res.body.trails[i].id;
-      newTrail.comments = res.body.trails[i].comments;
-      expect(res.body.trails).toContainEqual(newTrail);
+      const retrievedTrail: ITrailTest = res.body.trails.find(
+        (value: ITrailTest) => value.name === trail.name
+      );
+      trail.id = retrievedTrail.id;
+      expect(res.body.trails).toContainEqual(trail);
     }
   });
 });

@@ -4,6 +4,7 @@ import { randomUUID } from 'crypto';
 import { httpsServer } from '../../../../server/https';
 import { mainTest } from '../../../../tests/main.test';
 import { crypto } from '../../../../utils/cryptography.util';
+import { IPOITest } from '../../../../tests/type.test';
 
 const method = 'post';
 const route = '/api/user/poi/create';
@@ -537,8 +538,11 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             target: ['created', 'shared']
           }
         });
-      poi.id = res.body.poi.created[i].id;
-      poi.createdAt = res.body.poi.created[i].createdAt;
+      const retrievedPOI: IPOITest = res.body.poi.created.find(
+        (value: IPOITest) => value.name === poi.name
+      );
+      poi.id = retrievedPOI.id;
+      poi.createdAt = retrievedPOI.createdAt;
       expect(res.body.poi.created.length).toEqual(i + 1);
       expect(res.body.poi.shared.length).toEqual(0);
       expect(res.body.poi.created).toContainEqual(poi);

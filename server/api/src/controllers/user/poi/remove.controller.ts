@@ -3,10 +3,17 @@ import { Request, Response } from 'express';
 import { dbUser } from '../../../models/user/user.model';
 import { logger } from '../../../utils/logger.util';
 import { HttpError } from '../../../utils/error.util';
+import { IPOI } from '../../../ts/poi.type';
 
 async function remove(req: Request, res: Response): Promise<void> {
   try {
-    await dbUser.poi.remove(req.body.user.id, req.body.poi.id);
+    const isCreator = (
+      await dbUser.poi.retrieve(req.body.user.id)
+    )?.pointOfInterests?.find((value: IPOI) => value.id === req.body.poi.id)
+      ? true
+      : false;
+
+    await dbUser.poi.remove(req.body.user.id, req.body.poi.id, isCreator);
 
     logger.info('User POI deletion succeed');
     res.status(200).json({ message: 'Deleted' });

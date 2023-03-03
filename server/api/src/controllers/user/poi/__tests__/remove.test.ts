@@ -29,25 +29,6 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 500', async () => {
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send({
-        user: {
-          id: user.id,
-          roles: user.roles
-        },
-        poi: {
-          id: randomUUID()
-        }
-      });
-
-    mainTest.verify.internalServerError(res);
-  });
-});
-
-describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
       [`${method}`](route)
@@ -100,46 +81,59 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 500', async () => {
+  it('should return 200', async () => {
+    await mainTest.db.removeAllPOI();
     await mainTest.req.setAdmin(user.email);
 
     const otherUser = await mainTest.req.createUser();
-    const poi = await mainTest.req.createPOI();
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${otherUser.token}`)
-      .send({
-        user: {
-          id: otherUser.id,
-          roles: otherUser.roles
-        },
-        poi: {
-          id: poi.id
-        }
-      });
 
-    mainTest.verify.internalServerError(res);
-  });
-});
+    for (let i = 0; i < 5; i += 1) {
+      const poi = await mainTest.req.createPOI([{ email: otherUser.email }]);
+      let res = await request(httpsServer)
+        [`${method}`](route)
+        .set('Authorization', `Bearer ${otherUser.token}`)
+        .send({
+          user: {
+            id: otherUser.id,
+            roles: otherUser.roles
+          },
+          poi: {
+            id: poi.id
+          }
+        });
 
-describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 500', async () => {
-    const otherUser = await mainTest.req.createUser();
-    const poi = await mainTest.req.createPOI([{ email: otherUser.email }]);
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${otherUser.token}`)
-      .send({
-        user: {
-          id: otherUser.id,
-          roles: otherUser.roles
-        },
-        poi: {
-          id: poi.id
-        }
-      });
+      mainTest.verify.deleted(res);
 
-    mainTest.verify.internalServerError(res);
+      res = await request(httpsServer)
+        .post('/api/user/poi/retrieve')
+        .set('Authorization', `Bearer ${otherUser.token}`)
+        .send({
+          user: {
+            id: otherUser.id,
+            roles: otherUser.roles
+          },
+          poi: {
+            target: ['created', 'shared']
+          }
+        });
+      expect(res.body.poi.created.length).toEqual(0);
+      expect(res.body.poi.shared.length).toEqual(0);
+
+      res = await request(httpsServer)
+        .post('/api/user/poi/retrieve')
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({
+          user: {
+            id: user.id,
+            roles: user.roles
+          },
+          poi: {
+            target: ['created', 'shared']
+          }
+        });
+      expect(res.body.poi.created.length).toEqual(i + 1);
+      expect(res.body.poi.shared.length).toEqual(0);
+    }
   });
 });
 
@@ -147,8 +141,10 @@ describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 200', async () => {
     await mainTest.db.removeAllPOI();
 
-    for (let i = 0; i < 10; i += 1) {
-      const poi = await mainTest.req.createPOI();
+    const otherUser = await mainTest.req.createUser();
+
+    for (let i = 0; i < 5; i += 1) {
+      const poi = await mainTest.req.createPOI([{ email: otherUser.email }]);
       let res = await request(httpsServer)
         [`${method}`](route)
         .set('Authorization', `Bearer ${user.token}`)
@@ -171,6 +167,21 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           user: {
             id: user.id,
             roles: user.roles
+          },
+          poi: {
+            target: ['created', 'shared']
+          }
+        });
+      expect(res.body.poi.created.length).toEqual(0);
+      expect(res.body.poi.shared.length).toEqual(0);
+
+      res = await request(httpsServer)
+        .post('/api/user/poi/retrieve')
+        .set('Authorization', `Bearer ${otherUser.token}`)
+        .send({
+          user: {
+            id: otherUser.id,
+            roles: otherUser.roles
           },
           poi: {
             target: ['created', 'shared']

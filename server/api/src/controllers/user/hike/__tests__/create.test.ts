@@ -4,6 +4,7 @@ import { randomUUID } from 'crypto';
 import { httpsServer } from '../../../../server/https';
 import { mainTest } from '../../../../tests/main.test';
 import { crypto } from '../../../../utils/cryptography.util';
+import { IHikeTest } from '../../../../tests/type.test';
 
 const method = 'post';
 const route = '/api/user/hike/create';
@@ -316,9 +317,12 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             target: ['organized', 'attendee', 'guest']
           }
         });
-      hike.id = res.body.hikes.organized[i].id;
-      hike.schedule = res.body.hikes.organized[i].schedule;
-      hike.createdAt = res.body.hikes.organized[i].createdAt;
+      const retrievedHike: IHikeTest = res.body.hikes.organized.find(
+        (value: IHikeTest) => value.name === hike.name
+      );
+      hike.id = retrievedHike.id;
+      hike.schedule = retrievedHike.schedule;
+      hike.createdAt = retrievedHike.createdAt;
       expect(res.body.hikes.organized).toContainEqual(hike);
       expect(res.body.hikes.attendee).toContainEqual(hike);
       expect(res.body.hikes.guest).toEqual([]);

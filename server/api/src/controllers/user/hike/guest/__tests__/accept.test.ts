@@ -209,8 +209,18 @@ describe(`${method.toUpperCase()} ${route}`, () => {
       expect(res.body.hikes.guest.length).toEqual(0);
       expect(res.body.hikes.attendee[i].organizers.length).toEqual(1);
       expect(res.body.hikes.attendee[i].attendees.length).toEqual(2);
+      expect(res.body.hikes.attendee[i].attendees).toContainEqual({
+        username: user.username,
+        picture: user.picture
+      });
+      expect(res.body.hikes.attendee[i].attendees).toContainEqual({
+        username: otherUser.username,
+        picture: otherUser.picture
+      });
       expect(res.body.hikes.attendee[i].guests.length).toEqual(0);
-      expect(res.body.hikes.attendee[i].id).toEqual(hike.id);
+      hike.attendees = res.body.hikes.attendee[i].attendees;
+      hike.guests = [];
+      expect(res.body.hikes.attendee).toContainEqual(hike);
     }
   });
 });
