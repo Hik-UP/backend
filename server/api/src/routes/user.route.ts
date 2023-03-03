@@ -75,6 +75,11 @@ function createUserRoutes(): express.Router {
     validator(userJOI.poi.update),
     userCtrl.poi.update
   );
+  userRoutes.delete(
+    '/poi/remove',
+    validator(userJOI.poi.remove),
+    userCtrl.poi.remove
+  );
   return userRoutes;
 }
 
