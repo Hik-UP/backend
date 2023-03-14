@@ -8,6 +8,8 @@ function createUserRoutes(): express.Router {
   const userRoutes: express.Router = express.Router();
 
   userRoutes.post('/profile', validator(userJOI.profile), userCtrl.profile);
+  userRoutes.put('/profile/update', validator(userJOI.update), userCtrl.update);
+
   userRoutes.post(
     '/skin/locked',
     validator(userJOI.skin.locked),
@@ -19,8 +21,65 @@ function createUserRoutes(): express.Router {
     userCtrl.skin.unlocked
   );
 
-  userRoutes.put('/profile/update', validator(userJOI.update), userCtrl.update);
+  userRoutes.post(
+    '/hike/create',
+    validator(userJOI.hike.create),
+    userCtrl.hike.create
+  );
+  userRoutes.post(
+    '/hike/retrieve',
+    validator(userJOI.hike.retrieve),
+    userCtrl.hike.retrieve
+  );
 
+  userRoutes.put(
+    '/hike/organizer/update',
+    validator(userJOI.hike.organizer.update),
+    userCtrl.hike.organizer.update
+  );
+  userRoutes.delete(
+    '/hike/organizer/remove',
+    validator(userJOI.hike.organizer.remove),
+    userCtrl.hike.organizer.remove
+  );
+
+  userRoutes.put(
+    '/hike/attendee/leave',
+    validator(userJOI.hike.attendee.leave),
+    userCtrl.hike.attendee.leave
+  );
+
+  userRoutes.put(
+    '/hike/guest/accept',
+    validator(userJOI.hike.guest.accept),
+    userCtrl.hike.guest.accept
+  );
+  userRoutes.put(
+    '/hike/guest/refuse',
+    validator(userJOI.hike.guest.refuse),
+    userCtrl.hike.guest.refuse
+  );
+
+  userRoutes.post(
+    '/poi/create',
+    validator(userJOI.poi.create),
+    userCtrl.poi.create
+  );
+  userRoutes.post(
+    '/poi/retrieve',
+    validator(userJOI.poi.retrieve),
+    userCtrl.poi.retrieve
+  );
+  userRoutes.put(
+    '/poi/update',
+    validator(userJOI.poi.update),
+    userCtrl.poi.update
+  );
+  userRoutes.delete(
+    '/poi/remove',
+    validator(userJOI.poi.remove),
+    userCtrl.poi.remove
+  );
   return userRoutes;
 }
 

@@ -1,124 +1,134 @@
 import request from 'supertest';
 
 import { httpsServer } from '../../../server/https';
-import { dbTest } from '../../../models/test/test.model';
-import { crypto } from '../../../utils/cryptography.util';
+import { mainTest } from '../../../tests/main.test';
 
-beforeAll(async () => {
-  await dbTest.removeAllUsers();
-  await dbTest.removeAllSkins();
-  await dbTest.createSkin();
-});
+const method = 'post';
+const route = '/api/auth/login';
+const user = mainTest.vars.defaultUser;
 
-afterAll(async () => {
-  httpsServer.close();
-  await dbTest.removeAllUsers();
-  await dbTest.removeAllSkins();
-});
+jest.setTimeout(60000);
 
-const User = {
-  username: crypto.randomString(20),
-  email: `test@${crypto.randomString(8)}.com`,
-  password: crypto.randomString(64)
-};
-
-describe('POST /auth/signup', () => {
-  it('should return 201', async () => {
-    const res = await request(httpsServer).post('/api/auth/signup').send({
-      user: User
-    });
-    expect(res.statusCode).toEqual(201);
-    expect(res.body).toMatchObject({ message: 'Created' });
-  });
-});
-
-describe('POST /auth/signup', () => {
-  it('should return 201', async () => {
-    const res = await request(httpsServer)
-      .post('/api/auth/signup')
-      .send({
-        user: {
-          username: crypto.randomString(20),
-          email: `test@${crypto.randomString(8)}.com`,
-          password: User.password
-        }
-      });
-    expect(res.statusCode).toEqual(201);
-    expect(res.body).toMatchObject({ message: 'Created' });
-  });
-});
-
-describe('POST /auth/login', () => {
-  it('should return 200', async () => {
-    const res = await request(httpsServer)
-      .post('/api/auth/login')
-      .send({
-        user: {
-          email: User.email,
-          password: User.password
-        }
-      });
-    expect(res.statusCode).toEqual(200);
-    expect(typeof res.body.user.id).toBe('string');
-    expect(res.body.user.roles).toEqual(['USER']);
-    expect(typeof res.body.user.token).toBe('string');
-  });
-});
-
-describe('POST /auth/login', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
-      .post('/api/auth/login')
+      [`${method}`](route)
       .send({
         user: {
-          email: User.email
+          email: user.email
         }
       });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
+
+    mainTest.verify.badRequest(res);
   });
 });
 
-describe('POST /auth/login', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
-      .post('/api/auth/login')
+      [`${method}`](route)
       .send({
         user: {
-          password: User.password
+          password: user.password
         }
       });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
+
+    mainTest.verify.badRequest(res);
   });
 });
 
-describe('POST /auth/login', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
-      .post('/api/auth/login')
+      [`${method}`](route)
       .send({
         user: {
-          email: User.email,
+          email: user.email,
           password: 'Wrong password !'
         }
       });
-    expect(res.statusCode).toEqual(401);
-    expect(res.body).toMatchObject({ error: 'Unauthorized' });
+
+    mainTest.verify.unauthorized(res);
   });
 });
 
-describe('POST /auth/login', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
-      .post('/api/auth/login')
+      [`${method}`](route)
       .send({
         user: {
           email: 'thisisawrong@email.com',
-          password: User.password
+          password: user.password
         }
       });
-    expect(res.statusCode).toEqual(401);
-    expect(res.body).toMatchObject({ error: 'Unauthorized' });
+
+    mainTest.verify.unauthorized(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)[`${method}`](route).send({
+      user: {}
+    });
+
+    mainTest.verify.badRequest(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)[`${method}`](route).send({});
+
+    mainTest.verify.badRequest(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .send({
+        user: {
+          foo: 'bar'
+        }
+      });
+
+    mainTest.verify.badRequest(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .send({
+        user: {
+          email: user.email,
+          password: user.password,
+          foo: 'bar'
+        }
+      });
+
+    mainTest.verify.badRequest(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .send({
+        user: {
+          email: user.email,
+          password: user.password
+        }
+      });
+
+    mainTest.verify.ok(res);
+    expect(res.body.user.id).toEqual(user.id);
+    expect(res.body.user.roles).toEqual(user.roles);
+    expect(typeof res.body.user.token).toBe('string');
   });
 });

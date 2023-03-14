@@ -1,208 +1,203 @@
 import request from 'supertest';
 
 import { httpsServer } from '../../../server/https';
-import { dbTest } from '../../../models/test/test.model';
+import { mainTest } from '../../../tests/main.test';
 import { crypto } from '../../../utils/cryptography.util';
 
-beforeAll(async () => {
-  await dbTest.removeAllUsers();
-  await dbTest.removeAllSkins();
-  await dbTest.createSkin();
-});
+const method = 'put';
+const route = '/api/user/profile/update';
+const user = mainTest.vars.defaultUser;
 
-afterAll(async () => {
-  httpsServer.close();
-  await dbTest.removeAllUsers();
-  await dbTest.removeAllSkins();
-});
+jest.setTimeout(60000);
 
-const User = {
-  userId: '',
-  username: crypto.randomString(20),
-  email: `test@${crypto.randomString(8)}.com`,
-  password: crypto.randomString(64),
-  picture: `https://${crypto.randomString(20)}.com`,
-  roles: [''],
-  token: ''
-};
-
-describe('POST /auth/signup', () => {
-  it('should return 201', async () => {
-    const res = await request(httpsServer)
-      .post('/api/auth/signup')
-      .send({
-        user: {
-          username: User.username,
-          email: User.email,
-          password: User.password
-        }
-      });
-    expect(res.statusCode).toEqual(201);
-    expect(res.body).toMatchObject({ message: 'Created' });
-  });
-});
-
-describe('POST /auth/login', () => {
-  it('should return 200', async () => {
-    const res = await request(httpsServer)
-      .post('/api/auth/login')
-      .send({
-        user: {
-          email: User.email,
-          password: User.password
-        }
-      });
-    expect(res.statusCode).toEqual(200);
-    expect(typeof res.body.user.id).toBe('string');
-    expect(res.body.user.roles).toEqual(['USER']);
-    expect(typeof res.body.user.token).toBe('string');
-
-    User.userId = res.body.user.id;
-    User.roles = res.body.user.roles;
-    User.token = res.body.user.token;
-  });
-});
-
-describe('POST /user/profile', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 401', async () => {
     const res = await request(httpsServer)
-      .post('/api/user/profile')
+      [`${method}`](route)
       .send({
         user: {
-          id: User.userId,
-          roles: User.roles
-        }
-      });
-    expect(res.statusCode).toEqual(401);
-    expect(res.body).toMatchObject({ error: 'Unauthorized' });
-  });
-});
-
-describe('PUT /user/profile/update', () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      .put('/api/user/profile/update')
-      .set('Authorization', `Bearer ${User.token}`)
-      .send({
-        user: {
-          id: User.userId,
-          roles: User.roles
+          id: user.id,
+          roles: user.roles
         }
       });
 
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
+    mainTest.verify.unauthorized(res);
   });
 });
 
-describe('PUT /user/profile/update', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
-      .put('/api/user/profile/update')
-      .set('Authorization', `Bearer ${User.token}`)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
       .send({
         user: {
-          id: User.userId,
-          roles: User.roles,
+          id: user.id,
+          roles: user.roles
+        }
+      });
+
+    mainTest.verify.badRequest(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles,
           foo: 'bar'
         }
       });
 
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
+    mainTest.verify.badRequest(res);
   });
 });
 
-describe('PUT /user/profile/update', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 400', async () => {
     const res = await request(httpsServer)
-      .put('/api/user/profile/update')
-      .set('Authorization', `Bearer ${User.token}`)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
       .send({
         user: {
-          id: User.userId,
-          roles: User.roles,
+          id: user.id,
+          roles: user.roles,
           username: crypto.randomString(20),
           email: `test@${crypto.randomString(8)}.com`,
-          picture: 'https://google.com',
+          picture: `https://${crypto.randomString(20)}.com`,
           foo: 'bar'
         }
       });
 
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toMatchObject({ error: 'Bad Request' });
+    mainTest.verify.badRequest(res);
   });
 });
 
-describe('PUT /user/profile/update', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 200', async () => {
     const res = await request(httpsServer)
-      .put('/api/user/profile/update')
-      .set('Authorization', `Bearer ${User.token}`)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
       .send({
         user: {
-          id: User.userId,
-          roles: User.roles,
-          picture: 'https://google.com'
+          id: user.id,
+          roles: user.roles,
+          picture: `https://${crypto.randomString(20)}.com`
         }
       });
 
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toEqual('Updated');
+    mainTest.verify.updated(res);
   });
 });
 
-describe('PUT /user/profile/update', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 200', async () => {
     const res = await request(httpsServer)
-      .put('/api/user/profile/update')
-      .set('Authorization', `Bearer ${User.token}`)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
       .send({
         user: {
-          id: User.userId,
-          roles: User.roles,
+          id: user.id,
+          roles: user.roles,
           email: `test@${crypto.randomString(8)}.com`
         }
       });
 
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toEqual('Updated');
+    mainTest.verify.updated(res);
   });
 });
 
-describe('PUT /user/profile/update', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 200', async () => {
     const res = await request(httpsServer)
-      .put('/api/user/profile/update')
-      .set('Authorization', `Bearer ${User.token}`)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
       .send({
         user: {
-          id: User.userId,
-          roles: User.roles,
+          id: user.id,
+          roles: user.roles,
           username: crypto.randomString(20)
         }
       });
 
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toEqual('Updated');
+    mainTest.verify.updated(res);
   });
 });
 
-describe('PUT /user/profile/update', () => {
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 200', async () => {
     const res = await request(httpsServer)
-      .put('/api/user/profile/update')
-      .set('Authorization', `Bearer ${User.token}`)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
       .send({
         user: {
-          id: User.userId,
-          roles: User.roles,
+          id: user.id,
+          roles: user.roles,
           username: crypto.randomString(20),
           email: `test@${crypto.randomString(8)}.com`
         }
       });
 
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.message).toEqual('Updated');
+    mainTest.verify.updated(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles,
+          email: `test@${crypto.randomString(8)}.com`,
+          picture: `https://${crypto.randomString(20)}.com`
+        }
+      });
+
+    mainTest.verify.updated(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles,
+          username: crypto.randomString(20),
+          picture: `https://${crypto.randomString(20)}.com`
+        }
+      });
+
+    mainTest.verify.updated(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 200', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles,
+          username: crypto.randomString(20),
+          email: `test@${crypto.randomString(8)}.com`,
+          picture: `https://${crypto.randomString(20)}.com`
+        }
+      });
+
+    mainTest.verify.updated(res);
   });
 });

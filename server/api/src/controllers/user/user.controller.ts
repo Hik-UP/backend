@@ -1,11 +1,15 @@
 import { profile } from './profile.controller';
-import { skin } from './skin/skin.controller';
 import { update } from './update.controller';
+import { skin } from './skin/skin.controller';
+import { hike } from './hike/hike.controller';
+import { poi } from './poi/poi.controller';
 
 const userCtrl = {
   profile,
+  update,
   skin,
-  update
+  hike,
+  poi
 };
 
 export { userCtrl };

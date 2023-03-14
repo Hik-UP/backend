@@ -6,9 +6,7 @@ import { logger } from '../../../utils/logger.util';
 
 async function locked(req: Request, res: Response): Promise<void> {
   try {
-    const skins: ISkin[] | null = await dbUser.skin.locked(
-      req.body.user.id
-    );
+    const skins: ISkin[] | null = await dbUser.skin.locked(req.body.user.id);
 
     logger.info('User skin locked recovery succeed');
     res.status(200).json({
