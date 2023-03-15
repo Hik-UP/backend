@@ -20,6 +20,12 @@ function createTrailRoutes(): express.Router {
     trailCtrl.retrieve
   );
   trailRoutes.post('/details', validator(trailJOI.details), trailCtrl.details);
+
+  trailRoutes.post(
+    '/comment/create',
+    validator(trailJOI.comment.create),
+    trailCtrl.comment.create
+  );
   return trailRoutes;
 }
 
