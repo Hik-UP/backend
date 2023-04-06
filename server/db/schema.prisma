@@ -13,14 +13,14 @@ model User {
     username            String              @unique @db.VarChar(24)
     email               String              @unique @db.VarChar(256)
     password            String              @db.VarChar(60)
-    //fcmToken          String
+    fcmToken            String              @default("")
     picture             String              @db.VarChar(1024)
 
     skinId              String              @db.VarChar(36)
     skin                Skin                @relation("User", fields: [skinId], references: [id])
     skins               Skin[]              @relation("Owner")
 
-    inbox               Notification[]
+    notifications       Notification[]
     comments            Comment[]
 
     organizerHikes      Hike[]              @relation("Organizer")
