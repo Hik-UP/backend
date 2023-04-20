@@ -8,7 +8,8 @@ async function update(req: Request, res: Response): Promise<void> {
     await dbUser.update(req.body.user.id, {
       username: req.body.user.username,
       email: req.body.user.email,
-      picture: req.body.user.picture
+      picture: req.body.user.picture,
+      fcmToken: req.body.user.fcmToken
     });
 
     logger.info('User profile update succeed');

@@ -12,4 +12,8 @@ interface INotification {
   date: Date;
 }
 
-export { INewNotification, INotification };
+interface IUpdateNotification {
+  read: boolean;
+}
+
+export { INewNotification, INotification, IUpdateNotification };

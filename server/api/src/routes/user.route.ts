@@ -11,6 +11,22 @@ function createUserRoutes(): express.Router {
   userRoutes.put('/profile/update', validator(userJOI.update), userCtrl.update);
 
   userRoutes.post(
+    '/notification/retrieve',
+    validator(userJOI.notification.retrieve),
+    userCtrl.notification.retrieve
+  );
+  userRoutes.put(
+    '/notification/update',
+    validator(userJOI.notification.update),
+    userCtrl.notification.update
+  );
+  userRoutes.delete(
+    '/notification/remove',
+    validator(userJOI.notification.remove),
+    userCtrl.notification.remove
+  );
+
+  userRoutes.post(
     '/skin/locked',
     validator(userJOI.skin.locked),
     userCtrl.skin.locked

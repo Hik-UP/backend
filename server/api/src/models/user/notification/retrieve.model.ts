@@ -2,18 +2,12 @@ import { prisma } from '../../../utils/prisma.util';
 import { INotification } from '../../../ts/notification.type';
 import { dbNotificationSelector } from './selector.model';
 
-async function retrieve(
-  userId: string
-): Promise<{ notifications: INotification[] | null } | null> {
-  return await prisma.user.findUnique({
+async function retrieve(userId: string): Promise<INotification[] | null> {
+  return await prisma.notification.findMany({
     where: {
-      id: userId
+      receiverId: userId
     },
-    select: {
-      notifications: {
-        select: dbNotificationSelector
-      }
-    }
+    select: dbNotificationSelector
   });
 }
 

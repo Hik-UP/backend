@@ -23,7 +23,8 @@ const publicProfile = {
 
 const secrets = {
   id: true,
-  password: true
+  password: true,
+  fcmToken: true
 };
 
 const hike = {

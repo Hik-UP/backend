@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { dbUser } from '../../../models/user/user.model';
+import { notification } from '../../../utils/notification.util';
 import { logger } from '../../../utils/logger.util';
 import { HttpError } from '../../../utils/error.util';
 
@@ -13,6 +14,13 @@ async function create(req: Request, res: Response): Promise<void> {
         throw new HttpError(400, 'Bad Request');
       }
     });
+    await notification.send({
+      receiversEmail: req.body.hike.guests?.map(
+        (value: { email: string }) => value.email
+      ),
+      title: 'Hike invitation',
+      body: "You've received an invitation to participate in a hike"
+    });
     await dbUser.hike.create({
       name: req.body.hike.name,
       description: req.body.hike.description,
@@ -23,6 +31,7 @@ async function create(req: Request, res: Response): Promise<void> {
         ? new Date(req.body.hike.schedule * 1000)
         : undefined
     });
+
     logger.info('User hike creation succeed');
     res.status(201).json({
       message: 'Created'

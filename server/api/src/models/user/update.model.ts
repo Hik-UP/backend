@@ -7,7 +7,8 @@ async function update(userId: string, user: IUpdateUserProfile): Promise<void> {
     data: {
       username: user.username,
       email: user.email,
-      picture: user.picture
+      picture: user.picture,
+      fcmToken: user.fcmToken
     }
   });
 }

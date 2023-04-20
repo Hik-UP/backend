@@ -22,12 +22,14 @@ interface IUserPublicProfile {
 interface IUserSecrets {
   id: string;
   password: string;
+  fcmToken: string;
 }
 
 interface IUpdateUserProfile {
   username?: string;
   email?: string;
   picture?: string;
+  fcmToken?: string;
 }
 
 export {

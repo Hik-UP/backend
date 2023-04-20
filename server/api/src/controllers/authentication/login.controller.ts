@@ -22,7 +22,7 @@ async function login(req: Request, res: Response): Promise<void> {
       expiresIn: '1h',
       algorithm: 'RS256'
     };
-    const user = await dbUser.findSecrets(req.body.user.email);
+    const user = await dbUser.findSecrets({ email: req.body.user.email });
     if (!user) {
       throw new HttpError(401, 'Unauthorized');
     }
