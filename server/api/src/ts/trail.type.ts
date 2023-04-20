@@ -59,4 +59,17 @@ interface ITrailComment {
   date: Date;
 }
 
-export { INewTrail, ITrail, ITrailWeather, INewTrailComment, ITrailComment };
+interface IUpdateTrailComment {
+  id: string;
+  body: string;
+  pictures: string[];
+}
+
+export {
+  INewTrail,
+  ITrail,
+  ITrailWeather,
+  INewTrailComment,
+  ITrailComment,
+  IUpdateTrailComment
+};

@@ -26,6 +26,16 @@ function createTrailRoutes(): express.Router {
     validator(trailJOI.comment.create),
     trailCtrl.comment.create
   );
+  trailRoutes.put(
+    '/comment/update',
+    validator(trailJOI.comment.update),
+    trailCtrl.comment.update
+  );
+  trailRoutes.delete(
+    '/comment/remove',
+    validator(trailJOI.comment.remove),
+    trailCtrl.comment.remove
+  );
   return trailRoutes;
 }
 
