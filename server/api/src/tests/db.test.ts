@@ -41,6 +41,7 @@ async function removeAllHikes(): Promise<void> {
 }
 
 async function removeAllTrails(): Promise<void> {
+  await prisma.trailComment.deleteMany();
   await prisma.trail.deleteMany();
 }
 

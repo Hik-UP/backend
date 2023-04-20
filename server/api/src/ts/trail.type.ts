@@ -1,5 +1,3 @@
-import { IComment } from './comment.type';
-
 interface INewTrail {
   name: string;
   address: string;
@@ -35,7 +33,7 @@ interface ITrail {
   relatedArticles: string[];
   labels: string[];
   geoJSON: string;
-  comments: IComment[];
+  comments: ITrailComment[];
 }
 
 interface ITrailWeather {
@@ -43,4 +41,35 @@ interface ITrailWeather {
   icon: string;
 }
 
-export { INewTrail, ITrail, ITrailWeather };
+interface INewTrailComment {
+  authorId: string;
+  trailId: string;
+  body: string;
+  pictures: string[];
+}
+
+interface ITrailComment {
+  id: string;
+  author: {
+    username: string;
+    picture: string;
+  };
+  body: string;
+  pictures: string[];
+  date: Date;
+}
+
+interface IUpdateTrailComment {
+  id: string;
+  body: string;
+  pictures: string[];
+}
+
+export {
+  INewTrail,
+  ITrail,
+  ITrailWeather,
+  INewTrailComment,
+  ITrailComment,
+  IUpdateTrailComment
+};
