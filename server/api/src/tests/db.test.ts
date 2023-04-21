@@ -40,9 +40,16 @@ async function removeAllHikes(): Promise<void> {
   await prisma.hike.deleteMany();
 }
 
-async function removeAllTrails(): Promise<void> {
+async function removeAllTrailComments(): Promise<void> {
   await prisma.trailComment.deleteMany();
+}
+
+async function removeAllTrails(): Promise<void> {
   await prisma.trail.deleteMany();
+}
+
+async function removeAllNotifications(): Promise<void> {
+  await prisma.notification.deleteMany();
 }
 
 async function removeAllUsers(): Promise<void> {
@@ -58,7 +65,9 @@ const db = {
   createDefaultSkin,
   removeAllPOI,
   removeAllHikes,
+  removeAllTrailComments,
   removeAllTrails,
+  removeAllNotifications,
   removeAllUsers,
   removeAllSkins
 };

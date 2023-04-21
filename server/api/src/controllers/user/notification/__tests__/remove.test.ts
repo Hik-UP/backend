@@ -3,10 +3,9 @@ import { randomUUID } from 'crypto';
 
 import { httpsServer } from '../../../../server/https';
 import { mainTest } from '../../../../tests/main.test';
-import { ITrailTest } from '../../../../tests/type.test';
 
 const method = 'delete';
-const route = '/api/trail/comment/remove';
+const route = '/api/user/notification/remove';
 const user = mainTest.vars.defaultUser;
 
 jest.setTimeout(60000);
@@ -20,7 +19,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        comment: {
+        notification: {
           id: randomUUID()
         }
       });
@@ -39,7 +38,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        comment: {
+        notification: {
           id: randomUUID()
         }
       });
@@ -58,7 +57,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        comment: {}
+        notification: {}
       });
 
     mainTest.verify.badRequest(res);
@@ -75,7 +74,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        comment: {
+        notification: {
           foo: 'bar'
         }
       });
@@ -105,17 +104,29 @@ describe(`${method.toUpperCase()} ${route}`, () => {
     await mainTest.req.setAdmin(user.email);
 
     const otherUser = await mainTest.req.createUser();
-    const { comment } = await mainTest.req.createTrailComment();
-    const res = await request(httpsServer)
-      [`${method}`](route)
+
+    await mainTest.req.createHike([{ email: otherUser.email }]);
+    let res = await request(httpsServer)
+      .post('/api/user/notification/retrieve')
       .set('Authorization', `Bearer ${otherUser.token}`)
       .send({
         user: {
           id: otherUser.id,
           roles: otherUser.roles
+        }
+      });
+    const notification = res.body.notifications[0];
+
+    res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles
         },
-        comment: {
-          id: comment.id
+        notification: {
+          id: notification.id
         }
       });
 
@@ -125,39 +136,50 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 
 describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 200', async () => {
-    await mainTest.db.removeAllTrailComments();
-    await mainTest.db.removeAllTrails();
+    const otherUser = await mainTest.req.createUser();
+
+    await mainTest.db.removeAllHikes();
+    await mainTest.db.removeAllNotifications();
 
     for (let i = 0; i < 10; i += 1) {
-      const { trail, comment } = await mainTest.req.createTrailComment();
+      await mainTest.req.createHike([{ email: otherUser.email }]);
+
       let res = await request(httpsServer)
-        [`${method}`](route)
-        .set('Authorization', `Bearer ${user.token}`)
+        .post('/api/user/notification/retrieve')
+        .set('Authorization', `Bearer ${otherUser.token}`)
         .send({
           user: {
-            id: user.id,
-            roles: user.roles
+            id: otherUser.id,
+            roles: otherUser.roles
+          }
+        });
+      const notification = res.body.notifications[0];
+
+      res = await request(httpsServer)
+        [`${method}`](route)
+        .set('Authorization', `Bearer ${otherUser.token}`)
+        .send({
+          user: {
+            id: otherUser.id,
+            roles: otherUser.roles
           },
-          comment: {
-            id: comment.id
+          notification: {
+            id: notification.id
           }
         });
 
       mainTest.verify.deleted(res);
 
       res = await request(httpsServer)
-        .post('/api/trail/retrieve')
-        .set('Authorization', `Bearer ${user.token}`)
+        .post('/api/user/notification/retrieve')
+        .set('Authorization', `Bearer ${otherUser.token}`)
         .send({
           user: {
-            id: user.id,
-            roles: user.roles
+            id: otherUser.id,
+            roles: otherUser.roles
           }
         });
-      const retrievedTrail: ITrailTest = res.body.trails.find(
-        (value: ITrailTest) => value.name === trail.name
-      );
-      expect(retrievedTrail.comments.length).toEqual(0);
+      expect(res.body.notifications.length).toEqual(0);
     }
   });
 });

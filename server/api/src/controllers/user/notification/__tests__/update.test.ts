@@ -1,10 +1,12 @@
 import request from 'supertest';
+import { randomUUID } from 'crypto';
 
 import { httpsServer } from '../../../../server/https';
 import { mainTest } from '../../../../tests/main.test';
+import { ITrailCommentTest } from '../../../../tests/type.test';
 
-const method = 'post';
-const route = '/api/user/hike/retrieve';
+const method = 'put';
+const route = '/api/user/notification/update';
 const user = mainTest.vars.defaultUser;
 
 jest.setTimeout(60000);
@@ -18,8 +20,9 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        hike: {
-          target: ['organizer', 'attendee', 'guest']
+        notification: {
+          id: randomUUID(),
+          read: true
         }
       });
 
@@ -36,6 +39,9 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         user: {
           id: user.id,
           roles: user.roles
+        },
+        notification: {
+          read: true
         }
       });
 
@@ -53,8 +59,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        hike: {
-          target: ['organized', 'attendee', 'foo']
+        notification: {
+          id: randomUUID()
         }
       });
 
@@ -72,8 +78,22 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        hike: {
-          target: ['organized', 'attendee', 'guest', 'guest']
+        notification: {}
+      });
+
+    mainTest.verify.badRequest(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles
         }
       });
 
@@ -91,8 +111,10 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        hike: {
-          target: []
+        notification: {
+          id: randomUUID(),
+          read: true,
+          foo: 'bar'
         }
       });
 
@@ -110,8 +132,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        hike: {
-          target: ['foo']
+        notification: {
+          foo: 'bar'
         }
       });
 
@@ -120,7 +142,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 200', async () => {
+  it('should return 500', async () => {
     const res = await request(httpsServer)
       [`${method}`](route)
       .set('Authorization', `Bearer ${user.token}`)
@@ -129,80 +151,68 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        hike: {
-          target: ['organized']
+        notification: {
+          id: randomUUID(),
+          read: true
         }
       });
 
-    mainTest.verify.ok(res);
-    expect(res.body).toMatchObject({ hikes: { organized: [] } });
+    mainTest.verify.internalServerError(res);
   });
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 200', async () => {
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send({
-        user: {
-          id: user.id,
-          roles: user.roles
-        },
-        hike: {
-          target: ['attendee']
-        }
-      });
-
-    mainTest.verify.ok(res);
-    expect(res.body).toMatchObject({ hikes: { attendee: [] } });
-  });
-});
-
-describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 200', async () => {
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send({
-        user: {
-          id: user.id,
-          roles: user.roles
-        },
-        hike: {
-          target: ['guest']
-        }
-      });
-
-    mainTest.verify.ok(res);
-    expect(res.body).toMatchObject({ hikes: { guest: [] } });
-  });
-});
-
-describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 200', async () => {
+  it('should return 201', async () => {
     await mainTest.req.setAdmin(user.email);
 
-    for (let i = 0; i < 10; i += 1) {
-      await mainTest.req.createHike();
+    const otherUser = await mainTest.req.createUser();
 
-      const res = await request(httpsServer)
-        [`${method}`](route)
-        .set('Authorization', `Bearer ${user.token}`)
+    for (let i = 0; i < 10; i += 1) {
+      await mainTest.req.createHike([{ email: otherUser.email }]);
+      const otherNotificationDetails = {
+        read: true
+      };
+      let res = await request(httpsServer)
+        .post('/api/user/notification/retrieve')
+        .set('Authorization', `Bearer ${otherUser.token}`)
         .send({
           user: {
-            id: user.id,
-            roles: user.roles
-          },
-          hike: {
-            target: ['organized', 'attendee', 'guest']
+            id: otherUser.id,
+            roles: otherUser.roles
           }
         });
+      const notification = res.body.notifications[0];
 
-      mainTest.verify.ok(res);
-      expect(res.body.hikes.organized.length).toEqual(i + 1);
-      expect(res.body.hikes.attendee.length).toEqual(i + 1);
-      expect(res.body.hikes.guest.length).toEqual(0);
+      res = await request(httpsServer)
+        [`${method}`](route)
+        .set('Authorization', `Bearer ${otherUser.token}`)
+        .send({
+          user: {
+            id: otherUser.id,
+            roles: otherUser.roles
+          },
+          notification: {
+            id: notification.id,
+            read: otherNotificationDetails.read
+          }
+        });
+      mainTest.verify.updated(res);
+      notification.read = otherNotificationDetails.read;
+
+      res = await request(httpsServer)
+        .post('/api/user/notification/retrieve')
+        .set('Authorization', `Bearer ${otherUser.token}`)
+        .send({
+          user: {
+            id: otherUser.id,
+            roles: otherUser.roles
+          }
+        });
+      const retrievedNotification: ITrailCommentTest =
+        res.body.notifications.find(
+          (value: ITrailCommentTest) => value.id === notification.id
+        );
+      expect(retrievedNotification).toEqual(notification);
     }
   });
 });

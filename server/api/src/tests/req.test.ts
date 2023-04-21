@@ -44,7 +44,8 @@ async function createDefaultUser(): Promise<void> {
       user: {
         id: vars.defaultUser.id,
         roles: vars.defaultUser.roles,
-        picture: vars.defaultUser.picture
+        picture: vars.defaultUser.picture,
+        fcmToken: vars.defaultUser.fcmToken
       }
     });
 }
@@ -328,6 +329,7 @@ async function createUser(): Promise<IUserTest> {
     email: `test@${crypto.randomString(8)}.com`,
     password: crypto.randomString(64),
     picture: `https://${crypto.randomString(20)}.com`,
+    fcmToken: crypto.randomString(64),
     sex: 'M',
     age: Math.floor(Math.random() * (100 - 20) + 20),
     tall: Math.floor(Math.random() * (200 - 90) + 90),
@@ -364,7 +366,8 @@ async function createUser(): Promise<IUserTest> {
       user: {
         id: user.id,
         roles: user.roles,
-        picture: user.picture
+        picture: user.picture,
+        fcmToken: user.fcmToken
       }
     });
 
