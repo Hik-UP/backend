@@ -6,8 +6,8 @@ import { mainTest } from '../../../../tests/main.test';
 import { crypto } from '../../../../utils/cryptography.util';
 import { ITrailTest } from '../../../../tests/type.test';
 
-const method = 'post';
-const route = '/api/trail/comment/create';
+const method = 'put';
+const route = '/api/trail/comment/update';
 const user = mainTest.vars.defaultUser;
 
 jest.setTimeout(60000);
@@ -21,12 +21,10 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
+        comment: {
           id: randomUUID(),
-          comment: {
-            body: `${crypto.randomString(20)}`,
-            pictures: [`https://${crypto.randomString(20)}.com`]
-          }
+          body: `${crypto.randomString(20)}`,
+          pictures: [`https://${crypto.randomString(20)}.com`]
         }
       });
 
@@ -44,11 +42,9 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          comment: {
-            body: `${crypto.randomString(20)}`,
-            pictures: [`https://${crypto.randomString(20)}.com`]
-          }
+        comment: {
+          body: `${crypto.randomString(20)}`,
+          pictures: [`https://${crypto.randomString(20)}.com`]
         }
       });
 
@@ -66,49 +62,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          id: randomUUID(),
-          comment: {
-            pictures: [`https://${crypto.randomString(20)}.com`]
-          }
-        }
-      });
-
-    mainTest.verify.badRequest(res);
-  });
-});
-
-describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send({
-        user: {
-          id: user.id,
-          roles: user.roles
-        },
-        trail: {
-          id: randomUUID(),
-          comment: {}
-        }
-      });
-
-    mainTest.verify.badRequest(res);
-  });
-});
-
-describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send({
-        user: {
-          id: user.id,
-          roles: user.roles
-        },
-        trail: {
+        comment: {
           id: randomUUID()
         }
       });
@@ -127,7 +81,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {}
+        comment: {}
       });
 
     mainTest.verify.badRequest(res);
@@ -151,6 +105,47 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles
+        },
+        comment: {
+          id: randomUUID(),
+          body: `${crypto.randomString(20)}`,
+          pictures: [`https://${crypto.randomString(20)}.com`],
+          foo: 'bar'
+        }
+      });
+
+    mainTest.verify.badRequest(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles
+        },
+        comment: {
+          foo: 'bar'
+        }
+      });
+
+    mainTest.verify.badRequest(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 500', async () => {
     const res = await request(httpsServer)
       [`${method}`](route)
@@ -160,12 +155,10 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
+        comment: {
           id: randomUUID(),
-          comment: {
-            body: `${crypto.randomString(20)}`,
-            pictures: [`https://${crypto.randomString(20)}.com`]
-          }
+          body: `${crypto.randomString(20)}`,
+          pictures: [`https://${crypto.randomString(20)}.com`]
         }
       });
 
@@ -178,16 +171,10 @@ describe(`${method.toUpperCase()} ${route}`, () => {
     await mainTest.req.setAdmin(user.email);
 
     for (let i = 0; i < 10; i += 1) {
-      const trail = await mainTest.req.createTrail();
-      const comment = {
-        id: '',
-        author: {
-          username: user.username,
-          picture: user.picture
-        },
+      const { comment, trail } = await mainTest.req.createTrailComment();
+      const otherCommentDetails = {
         body: `${crypto.randomString(20)}`,
-        pictures: [`https://${crypto.randomString(20)}.com`],
-        date: new Date()
+        pictures: [`https://${crypto.randomString(20)}.com`]
       };
       let res = await request(httpsServer)
         [`${method}`](route)
@@ -197,16 +184,16 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             id: user.id,
             roles: user.roles
           },
-          trail: {
-            id: trail.id,
-            comment: {
-              body: comment.body,
-              pictures: comment.pictures
-            }
+          comment: {
+            id: comment.id,
+            body: otherCommentDetails.body,
+            pictures: otherCommentDetails.pictures
           }
         });
 
-      mainTest.verify.created(res);
+      mainTest.verify.updated(res);
+      comment.body = otherCommentDetails.body;
+      comment.pictures = otherCommentDetails.pictures;
 
       res = await request(httpsServer)
         .post('/api/trail/retrieve')
@@ -220,8 +207,6 @@ describe(`${method.toUpperCase()} ${route}`, () => {
       const retrievedTrail: ITrailTest = res.body.trails.find(
         (value: ITrailTest) => value.name === trail.name
       );
-      comment.id = retrievedTrail.comments[0].id;
-      comment.date = retrievedTrail.comments[0].date;
       expect(retrievedTrail.comments).toContainEqual(comment);
     }
   });

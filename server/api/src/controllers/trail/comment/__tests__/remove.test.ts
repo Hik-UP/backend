@@ -3,11 +3,10 @@ import { randomUUID } from 'crypto';
 
 import { httpsServer } from '../../../../server/https';
 import { mainTest } from '../../../../tests/main.test';
-import { crypto } from '../../../../utils/cryptography.util';
 import { ITrailTest } from '../../../../tests/type.test';
 
-const method = 'post';
-const route = '/api/trail/comment/create';
+const method = 'delete';
+const route = '/api/trail/comment/remove';
 const user = mainTest.vars.defaultUser;
 
 jest.setTimeout(60000);
@@ -21,12 +20,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          id: randomUUID(),
-          comment: {
-            body: `${crypto.randomString(20)}`,
-            pictures: [`https://${crypto.randomString(20)}.com`]
-          }
+        comment: {
+          id: randomUUID()
         }
       });
 
@@ -35,7 +30,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 400', async () => {
+  it('should return 500', async () => {
     const res = await request(httpsServer)
       [`${method}`](route)
       .set('Authorization', `Bearer ${user.token}`)
@@ -44,75 +39,28 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {
-          comment: {
-            body: `${crypto.randomString(20)}`,
-            pictures: [`https://${crypto.randomString(20)}.com`]
-          }
-        }
-      });
-
-    mainTest.verify.badRequest(res);
-  });
-});
-
-describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send({
-        user: {
-          id: user.id,
-          roles: user.roles
-        },
-        trail: {
-          id: randomUUID(),
-          comment: {
-            pictures: [`https://${crypto.randomString(20)}.com`]
-          }
-        }
-      });
-
-    mainTest.verify.badRequest(res);
-  });
-});
-
-describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send({
-        user: {
-          id: user.id,
-          roles: user.roles
-        },
-        trail: {
-          id: randomUUID(),
-          comment: {}
-        }
-      });
-
-    mainTest.verify.badRequest(res);
-  });
-});
-
-describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 400', async () => {
-    const res = await request(httpsServer)
-      [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
-      .send({
-        user: {
-          id: user.id,
-          roles: user.roles
-        },
-        trail: {
+        comment: {
           id: randomUUID()
         }
       });
 
+    mainTest.verify.internalServerError(res);
+  });
+});
+
+describe(`${method.toUpperCase()} ${route}`, () => {
+  it('should return 400', async () => {
+    const res = await request(httpsServer)
+      [`${method}`](route)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send({
+        user: {
+          id: user.id,
+          roles: user.roles
+        },
+        comment: {}
+      });
+
     mainTest.verify.badRequest(res);
   });
 });
@@ -127,7 +75,9 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           id: user.id,
           roles: user.roles
         },
-        trail: {}
+        comment: {
+          foo: 'bar'
+        }
       });
 
     mainTest.verify.badRequest(res);
@@ -152,20 +102,20 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 
 describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 500', async () => {
+    await mainTest.req.setAdmin(user.email);
+
+    const otherUser = await mainTest.req.createUser();
+    const { comment } = await mainTest.req.createTrailComment();
     const res = await request(httpsServer)
       [`${method}`](route)
-      .set('Authorization', `Bearer ${user.token}`)
+      .set('Authorization', `Bearer ${otherUser.token}`)
       .send({
         user: {
-          id: user.id,
-          roles: user.roles
+          id: otherUser.id,
+          roles: otherUser.roles
         },
-        trail: {
-          id: randomUUID(),
-          comment: {
-            body: `${crypto.randomString(20)}`,
-            pictures: [`https://${crypto.randomString(20)}.com`]
-          }
+        comment: {
+          id: comment.id
         }
       });
 
@@ -174,21 +124,11 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-  it('should return 201', async () => {
-    await mainTest.req.setAdmin(user.email);
+  it('should return 200', async () => {
+    await mainTest.db.removeAllTrails();
 
     for (let i = 0; i < 10; i += 1) {
-      const trail = await mainTest.req.createTrail();
-      const comment = {
-        id: '',
-        author: {
-          username: user.username,
-          picture: user.picture
-        },
-        body: `${crypto.randomString(20)}`,
-        pictures: [`https://${crypto.randomString(20)}.com`],
-        date: new Date()
-      };
+      const { trail, comment } = await mainTest.req.createTrailComment();
       let res = await request(httpsServer)
         [`${method}`](route)
         .set('Authorization', `Bearer ${user.token}`)
@@ -197,16 +137,12 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             id: user.id,
             roles: user.roles
           },
-          trail: {
-            id: trail.id,
-            comment: {
-              body: comment.body,
-              pictures: comment.pictures
-            }
+          comment: {
+            id: comment.id
           }
         });
 
-      mainTest.verify.created(res);
+      mainTest.verify.deleted(res);
 
       res = await request(httpsServer)
         .post('/api/trail/retrieve')
@@ -220,9 +156,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
       const retrievedTrail: ITrailTest = res.body.trails.find(
         (value: ITrailTest) => value.name === trail.name
       );
-      comment.id = retrievedTrail.comments[0].id;
-      comment.date = retrievedTrail.comments[0].date;
-      expect(retrievedTrail.comments).toContainEqual(comment);
+      expect(retrievedTrail.comments.length).toEqual(0);
     }
   });
 });

@@ -29,6 +29,17 @@ interface ITrailTest {
   comments: ITrailComment[];
 }
 
+interface ITrailCommentTest {
+  id: string;
+  author: {
+    username: string;
+    picture: string;
+  };
+  body: string;
+  pictures: string[];
+  date: Date;
+}
+
 interface IPOITest {
   id: string;
   name: string;
@@ -68,4 +79,11 @@ interface IUserTest {
   token: string;
 }
 
-export { ISkinTest, ITrailTest, IPOITest, IHikeTest, IUserTest };
+export {
+  ISkinTest,
+  ITrailTest,
+  ITrailCommentTest,
+  IPOITest,
+  IHikeTest,
+  IUserTest
+};

@@ -6,6 +6,7 @@ import {
   IHikeTest,
   IPOITest,
   ISkinTest,
+  ITrailCommentTest,
   ITrailTest,
   IUserTest
 } from './type.test';
@@ -151,6 +152,56 @@ async function createTrail(): Promise<ITrailTest> {
   trail.id = retrievedTrail.id;
 
   return trail;
+}
+
+async function createTrailComment(): Promise<{
+  trail: ITrailTest;
+  comment: ITrailCommentTest;
+}> {
+  const trail = await createTrail();
+  const comment = {
+    id: '',
+    author: {
+      username: vars.defaultUser.username,
+      picture: vars.defaultUser.picture
+    },
+    body: `${crypto.randomString(20)}`,
+    pictures: [`https://${crypto.randomString(20)}.com`],
+    date: new Date()
+  };
+  let res = await request(httpsServer)
+    .post('/api/trail/comment/create')
+    .set('Authorization', `Bearer ${vars.defaultUser.token}`)
+    .send({
+      user: {
+        id: vars.defaultUser.id,
+        roles: vars.defaultUser.roles
+      },
+      trail: {
+        id: trail.id,
+        comment: {
+          body: comment.body,
+          pictures: comment.pictures
+        }
+      }
+    });
+
+  res = await request(httpsServer)
+    .post('/api/trail/retrieve')
+    .set('Authorization', `Bearer ${vars.defaultUser.token}`)
+    .send({
+      user: {
+        id: vars.defaultUser.id,
+        roles: vars.defaultUser.roles
+      }
+    });
+  const retrievedTrail: ITrailTest = res.body.trails.find(
+    (value: ITrailTest) => value.name === trail.name
+  );
+  comment.id = retrievedTrail.comments[0].id;
+  comment.date = retrievedTrail.comments[0].date;
+
+  return { trail: trail, comment: comment };
 }
 
 async function createPOI(sharedWith?: [{ email: string }]): Promise<IPOITest> {
@@ -341,6 +392,7 @@ const req = {
   createDefaultUser,
   createSkin,
   createTrail,
+  createTrailComment,
   createPOI,
   createHike,
   createUser,
