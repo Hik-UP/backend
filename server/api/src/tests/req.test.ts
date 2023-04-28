@@ -6,6 +6,7 @@ import {
   IHikeTest,
   IPOITest,
   ISkinTest,
+  ITrailCommentTest,
   ITrailTest,
   IUserTest
 } from './type.test';
@@ -43,7 +44,8 @@ async function createDefaultUser(): Promise<void> {
       user: {
         id: vars.defaultUser.id,
         roles: vars.defaultUser.roles,
-        picture: vars.defaultUser.picture
+        picture: vars.defaultUser.picture,
+        fcmToken: vars.defaultUser.fcmToken
       }
     });
 }
@@ -151,6 +153,56 @@ async function createTrail(): Promise<ITrailTest> {
   trail.id = retrievedTrail.id;
 
   return trail;
+}
+
+async function createTrailComment(): Promise<{
+  trail: ITrailTest;
+  comment: ITrailCommentTest;
+}> {
+  const trail = await createTrail();
+  const comment = {
+    id: '',
+    author: {
+      username: vars.defaultUser.username,
+      picture: vars.defaultUser.picture
+    },
+    body: `${crypto.randomString(20)}`,
+    pictures: [`https://${crypto.randomString(20)}.com`],
+    date: new Date()
+  };
+  let res = await request(httpsServer)
+    .post('/api/trail/comment/create')
+    .set('Authorization', `Bearer ${vars.defaultUser.token}`)
+    .send({
+      user: {
+        id: vars.defaultUser.id,
+        roles: vars.defaultUser.roles
+      },
+      trail: {
+        id: trail.id,
+        comment: {
+          body: comment.body,
+          pictures: comment.pictures
+        }
+      }
+    });
+
+  res = await request(httpsServer)
+    .post('/api/trail/retrieve')
+    .set('Authorization', `Bearer ${vars.defaultUser.token}`)
+    .send({
+      user: {
+        id: vars.defaultUser.id,
+        roles: vars.defaultUser.roles
+      }
+    });
+  const retrievedTrail: ITrailTest = res.body.trails.find(
+    (value: ITrailTest) => value.name === trail.name
+  );
+  comment.id = retrievedTrail.comments[0].id;
+  comment.date = retrievedTrail.comments[0].date;
+
+  return { trail: trail, comment: comment };
 }
 
 async function createPOI(sharedWith?: [{ email: string }]): Promise<IPOITest> {
@@ -277,6 +329,7 @@ async function createUser(): Promise<IUserTest> {
     email: `test@${crypto.randomString(8)}.com`,
     password: crypto.randomString(64),
     picture: `https://${crypto.randomString(20)}.com`,
+    fcmToken: crypto.randomString(64),
     sex: 'M',
     age: Math.floor(Math.random() * (100 - 20) + 20),
     tall: Math.floor(Math.random() * (200 - 90) + 90),
@@ -313,7 +366,8 @@ async function createUser(): Promise<IUserTest> {
       user: {
         id: user.id,
         roles: user.roles,
-        picture: user.picture
+        picture: user.picture,
+        fcmToken: user.fcmToken
       }
     });
 
@@ -341,6 +395,7 @@ const req = {
   createDefaultUser,
   createSkin,
   createTrail,
+  createTrailComment,
   createPOI,
   createHike,
   createUser,

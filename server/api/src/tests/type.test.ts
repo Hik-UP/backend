@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { IComment } from '../ts/comment.type';
+import { ITrailComment } from '../ts/trail.type';
 
 interface ISkinTest {
   id: string;
@@ -26,7 +26,18 @@ interface ITrailTest {
   relatedArticles: string[];
   labels: string[];
   geoJSON: string;
-  comments: IComment[];
+  comments: ITrailComment[];
+}
+
+interface ITrailCommentTest {
+  id: string;
+  author: {
+    username: string;
+    picture: string;
+  };
+  body: string;
+  pictures: string[];
+  date: Date;
 }
 
 interface IPOITest {
@@ -68,4 +79,11 @@ interface IUserTest {
   token: string;
 }
 
-export { ISkinTest, ITrailTest, IPOITest, IHikeTest, IUserTest };
+export {
+  ISkinTest,
+  ITrailTest,
+  ITrailCommentTest,
+  IPOITest,
+  IHikeTest,
+  IUserTest
+};

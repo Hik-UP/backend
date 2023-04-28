@@ -5,7 +5,7 @@ import { logger } from '../utils/logger.util';
 
 function createRateLimiterMemory(): RateLimiterMemory {
   const opts: IRateLimiterOptions = {
-    points: 100,
+    points: 1500,
     duration: 15 * 60
   };
 
@@ -25,6 +25,7 @@ function rateLimiter(req: Request, res: Response, next: NextFunction): void {
         error: 'Too Many Requests'
       });
     });
+  console.log(req.ip);
 }
 
 const rateLimiterMemory = createRateLimiterMemory();

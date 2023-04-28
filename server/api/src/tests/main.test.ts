@@ -8,7 +8,9 @@ import { verify } from './verify.test';
 beforeAll(async () => {
   await db.removeAllPOI();
   await db.removeAllHikes();
+  await db.removeAllTrailComments();
   await db.removeAllTrails();
+  await db.removeAllNotifications();
   await db.removeAllUsers();
   await db.removeAllSkins();
 
@@ -21,7 +23,9 @@ afterAll(async () => {
 
   await db.removeAllPOI();
   await db.removeAllHikes();
+  await db.removeAllTrailComments();
   await db.removeAllTrails();
+  await db.removeAllNotifications();
   await db.removeAllUsers();
   await db.removeAllSkins();
 });

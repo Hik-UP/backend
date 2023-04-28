@@ -6,6 +6,7 @@ datasource db {
 generator client {
     provider        = "prisma-client-js"
     binaryTargets   = ["native", "linux-musl", "debian-openssl-1.1.x", "linux-arm64-openssl-1.1.x"]
+    output          = "/usr/app/node_modules/.prisma/client"
 }
 
 model User {
@@ -13,15 +14,15 @@ model User {
     username            String              @unique @db.VarChar(24)
     email               String              @unique @db.VarChar(256)
     password            String              @db.VarChar(60)
-    //fcmToken          String
+    fcmToken            String              @default("")
     picture             String              @db.VarChar(1024)
 
     skinId              String              @db.VarChar(36)
     skin                Skin                @relation("User", fields: [skinId], references: [id])
     skins               Skin[]              @relation("Owner")
 
-    inbox               Notification[]
-    comments            Comment[]
+    notifications       Notification[]
+    trailComments       TrailComment[]
 
     organizerHikes      Hike[]              @relation("Organizer")
     attendeeHikes       Hike[]              @relation("Attendee")
@@ -72,12 +73,12 @@ model Trail {
     relatedArticles     String[]            @db.VarChar(1024)
     labels              String[]            @db.VarChar(32)
     geoJSON             String              @unique @db.VarChar(16384)
-    comments            Comment[]
+    comments            TrailComment[]
     hikes               Hike[]
     pointOfInterests    PointOfInterest[]
 }
 
-model Comment {
+model TrailComment {
     id                  String              @id @unique @default(uuid()) @db.VarChar(36)
     authorId            String              @db.VarChar(36)
     author              User                @relation(fields: [authorId], references: [id])

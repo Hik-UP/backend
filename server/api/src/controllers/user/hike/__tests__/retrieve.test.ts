@@ -2,7 +2,6 @@ import request from 'supertest';
 
 import { httpsServer } from '../../../../server/https';
 import { mainTest } from '../../../../tests/main.test';
-import { crypto } from '../../../../utils/cryptography.util';
 
 const method = 'post';
 const route = '/api/user/hike/retrieve';

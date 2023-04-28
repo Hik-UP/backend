@@ -61,3 +61,4 @@ dist
 .env.test.local
 .env.production
 .env.production.local
+firebaseKey.json

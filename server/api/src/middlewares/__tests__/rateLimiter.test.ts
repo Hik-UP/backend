@@ -26,7 +26,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 429', async () => {
     let res: any = undefined;
 
-    for (let i = 0; i < 100; i += 1) {
+    for (let i = 0; i < 1500; i += 1) {
       res = await request(httpsServer)
         [`${method}`](route)
         .send({

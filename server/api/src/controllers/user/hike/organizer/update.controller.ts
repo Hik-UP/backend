@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { dbUser } from '../../../../models/user/user.model';
+import { notification } from '../../../../utils/notification.util';
 import { logger } from '../../../../utils/logger.util';
 import { HttpError } from '../../../../utils/error.util';
 
@@ -21,6 +22,13 @@ async function update(req: Request, res: Response): Promise<void> {
       if (value.email === userEmail) {
         throw new HttpError(400, 'Bad Request');
       }
+    });
+    await notification.send({
+      receiversEmail: req.body.hike.guests?.add?.map(
+        (value: { email: string }) => value.email
+      ),
+      title: 'Hike invitation',
+      body: "You've received an invitation to participate in a hike"
     });
     await dbUser.hike.organizer.update(req.body.user.id, {
       id: req.body.hike.id,
