@@ -25,7 +25,6 @@ function rateLimiter(req: Request, res: Response, next: NextFunction): void {
         error: 'Too Many Requests'
       });
     });
-  console.log(req.ip);
 }
 
 const rateLimiterMemory = createRateLimiterMemory();
