@@ -26,6 +26,7 @@ jobs:
           TEST_ENV: ${{ secrets.TEST_ENV }}
         run: |
           printf "%s" "${TEST_ENV}" > ./server/api/config/.env.test
+          printf "%s" "${TEST_FIREBASE}" > ./server/api/config/firebaseKey.json
           sudo chown -R 1000:1000 $(pwd)
 
       - name: start database
