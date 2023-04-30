@@ -24,6 +24,7 @@ jobs:
         shell: bash
         env:
           TEST_ENV: ${{ secrets.TEST_ENV }}
+          TEST_FIREBASE: ${{ secrets.TEST_FIREBASE }}
         run: |
           printf "%s" "${TEST_ENV}" > ./server/api/config/.env.test
           printf "%s" "${TEST_FIREBASE}" > ./server/api/config/firebaseKey.json
