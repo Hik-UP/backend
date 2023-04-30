@@ -10,16 +10,9 @@ async function send(newNotification: {
 }): Promise<void> {
   try {
     const users = [];
-    const payload = {
-      data: {},
-      notification: {
-        title: newNotification.title,
-        body: newNotification.body
-      }
-    };
-    const options = {
-      priority: 'high',
-      timeToLive: 60 * 60 * 24
+    const notification = {
+      title: newNotification.title,
+      body: newNotification.body
     };
 
     for (const id of newNotification.receiversId || []) {
@@ -38,7 +31,9 @@ async function send(newNotification: {
       }
     }
     for (const user of users) {
-      //await firebase.messaging().sendToDevice(user.fcmToken, payload, options);
+      if (process.env.ENV !== 'TEST') {
+        await firebase.messaging().send({ token: user.fcmToken, notification });
+      }
       await dbUser.notification.create({
         receiverId: user.id,
         title: newNotification.title,
