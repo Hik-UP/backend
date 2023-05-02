@@ -20,6 +20,7 @@ async function create(newTrail: INewHike): Promise<void> {
       guests: {
         connect: newTrail.guests
       },
+      status: newTrail.status,
       schedule: newTrail.schedule
     }
   });

@@ -7,6 +7,7 @@ interface INewHike {
   organizerId: string;
   trailId: string;
   guests?: [{ email: string }];
+  status?: 'SCHEDULED' | 'IN_PROGRESS' | 'DONE';
   schedule?: Date;
 }
 
@@ -18,6 +19,7 @@ interface IHike {
   organizers: IUserPublicProfile[];
   attendees: IUserPublicProfile[];
   guests: IUserPublicProfile[];
+  status: 'SCHEDULED' | 'IN_PROGRESS' | 'DONE';
   schedule: Date;
   createdAt: Date;
 }
@@ -29,6 +31,7 @@ interface IUpdateHike {
   trailId?: string;
   attendees?: { remove?: [{ email: string }] };
   guests?: { add?: [{ email: string }]; remove?: [{ email: string }] };
+  status?: 'SCHEDULED' | 'IN_PROGRESS' | 'DONE';
   schedule?: Date;
 }
 

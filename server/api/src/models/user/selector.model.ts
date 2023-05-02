@@ -43,6 +43,7 @@ const hike = {
   guests: {
     select: publicProfile
   },
+  status: true,
   schedule: true,
   createdAt: true
 };

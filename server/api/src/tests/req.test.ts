@@ -276,6 +276,7 @@ async function createHike(guests?: [{ email: string }]): Promise<IHikeTest> {
     organizers: [{ username: '', picture: '' }],
     attendees: [{ username: '', picture: '' }],
     guests: [{ username: '', picture: '' }],
+    status: 'IN_PROGRESS',
     schedule: new Date(),
     createdAt: new Date()
   };

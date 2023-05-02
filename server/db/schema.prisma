@@ -99,6 +99,7 @@ model Hike {
     attendees           User[]              @relation("Attendee")
     guests              User[]              @relation("Guest")
     stats               Stats[]
+    status              HikeStatus          @default(IN_PROGRESS)
     schedule            DateTime            @default(now())
     createdAt           DateTime            @default(now())
 }
@@ -132,4 +133,10 @@ model PointOfInterest {
 enum Role {
     ADMIN
     USER
+}
+
+enum HikeStatus {
+    SCHEDULED
+    IN_PROGRESS
+    DONE
 }
