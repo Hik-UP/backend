@@ -224,6 +224,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
       organizers: [{ username: user.username, picture: user.picture }],
       attendees: [{ username: user.username, picture: user.picture }],
       guests: [{ username: otherUser.username, picture: otherUser.picture }],
+      status: 'IN_PROGRESS',
       schedule: new Date(),
       createdAt: new Date()
     };
@@ -283,6 +284,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         organizers: [{ username: user.username, picture: user.picture }],
         attendees: [{ username: user.username, picture: user.picture }],
         guests: [],
+        status: 'IN_PROGRESS',
         schedule: new Date(),
         createdAt: new Date()
       };

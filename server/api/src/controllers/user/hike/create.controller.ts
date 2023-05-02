@@ -27,6 +27,7 @@ async function create(req: Request, res: Response): Promise<void> {
       organizerId: req.body.user.id,
       trailId: req.body.trail.id,
       guests: req.body.hike.guests,
+      status: req.body.hike.schedule ? 'SCHEDULED' : undefined,
       schedule: req.body.hike.schedule
         ? new Date(req.body.hike.schedule * 1000)
         : undefined

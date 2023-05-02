@@ -24,6 +24,7 @@ async function findOne(hikeId: string): Promise<IHike | null> {
       guests: {
         select: dbUserSelector.publicProfile
       },
+      status: true,
       schedule: true,
       createdAt: true
     }
