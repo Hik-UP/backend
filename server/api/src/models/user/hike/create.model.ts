@@ -20,6 +20,15 @@ async function create(newTrail: INewHike): Promise<void> {
       guests: {
         connect: newTrail.guests
       },
+      stats: {
+        create: {
+          user: {
+            connect: {
+              id: newTrail.organizerId
+            }
+          }
+        }
+      },
       status: newTrail.status,
       schedule: newTrail.schedule
     }

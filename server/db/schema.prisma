@@ -111,7 +111,7 @@ model Stats {
     hikeId              String              @db.VarChar(36)
     hike                Hike                @relation(fields: [hikeId], references: [id])
     steps               Int                 @default(0)
-    distanceTravelled   Int                 @default(0)
+    distance            Int                 @default(0)
     completed           Boolean             @default(false)
 }
 
