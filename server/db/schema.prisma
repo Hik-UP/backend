@@ -72,7 +72,7 @@ model Trail {
     tools               String[]            @db.VarChar(256)
     relatedArticles     String[]            @db.VarChar(1024)
     labels              String[]            @db.VarChar(32)
-    geoJSON             String              @unique @db.VarChar(16384)
+    geoJSON             String              @db.Text
     comments            TrailComment[]
     hikes               Hike[]
     pointOfInterests    PointOfInterest[]
