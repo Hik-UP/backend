@@ -138,6 +138,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 200', async () => {
     const otherUser = await mainTest.req.createUser();
 
+    await mainTest.db.removeAllStats();
     await mainTest.db.removeAllHikes();
     await mainTest.db.removeAllNotifications();
 

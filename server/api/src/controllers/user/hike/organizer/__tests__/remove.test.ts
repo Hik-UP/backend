@@ -158,6 +158,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 
 describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 200', async () => {
+    await mainTest.db.removeAllStats();
     await mainTest.db.removeAllHikes();
 
     for (let i = 0; i < 10; i += 1) {

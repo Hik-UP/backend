@@ -36,6 +36,10 @@ async function removeAllPOI(): Promise<void> {
   await prisma.pointOfInterest.deleteMany();
 }
 
+async function removeAllStats(): Promise<void> {
+  await prisma.stats.deleteMany();
+}
+
 async function removeAllHikes(): Promise<void> {
   await prisma.hike.deleteMany();
 }
@@ -64,6 +68,7 @@ const db = {
   setAdmin,
   createDefaultSkin,
   removeAllPOI,
+  removeAllStats,
   removeAllHikes,
   removeAllTrailComments,
   removeAllTrails,
