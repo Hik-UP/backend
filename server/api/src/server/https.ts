@@ -2,6 +2,7 @@ import https from 'https';
 import fs from 'fs';
 
 import { app } from '../app';
+import { socket } from '../socket';
 import { normalizePort } from '../utils/normalizePort.util';
 import { logger } from '../utils/logger.util';
 
@@ -63,5 +64,12 @@ const httpsServer: https.Server = createHttpsServer(
   process.env.API_PORT,
   process.env.API_HOSTNAME
 );
+
+socket.attach(httpsServer, {
+  cors: {
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+  },
+  allowEIO3: true
+});
 
 export { httpsServer };
