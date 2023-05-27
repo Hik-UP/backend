@@ -15,13 +15,27 @@ function createSocket(): Server {
     });
     socket.onAny((eventName, ...args) => {
       console.log(eventName);
+      console.log(socket.data.hike);
     });
-    socket.on('joinHike', (data) => {
-      socket.join(data);
-      io.to(data).emit(
+    socket.on('joinHike', async (data) => {
+      const sockets = await io.in(data.data.hike.id).fetchSockets();
+      const hikers = sockets.map((socket) => {
+        return { hike: socket.data.hike, hiker: socket.data.hiker };
+      });
+
+      socket.join(data.data.hike.id);
+      io.to(data.data.hike.id).emit(
         'hikeJoined',
-        socket.handshake.query.id?.toString() || 'NULL'
+        JSON.stringify({
+          hiker: {
+            latitude: data.data.hiker.latitude,
+            longitude: data.data.hiker.longitude
+          }
+        })
       );
+      io.to(socket.id).emit('joinHikeSuccess', JSON.stringify(hikers));
+      socket.data.hike = data.data.hike;
+      socket.data.hiker = data.data.hiker;
     });
   });
   return io;

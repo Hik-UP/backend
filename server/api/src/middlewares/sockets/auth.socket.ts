@@ -14,16 +14,24 @@ async function auth(socket: Socket, next: any): Promise<void> {
     const verifyOptions: jwt.VerifyOptions = {
       algorithms: ['RS256']
     };
-    const queryUser: { id: string | undefined; roles: string[] | undefined } = {
+    const queryUser: {
+      token: string | undefined;
+      id: string | undefined;
+      roles: string[] | undefined;
+    } = {
+      token: socket.handshake.query.token?.toString(),
       id: socket.handshake.query.id?.toString(),
       roles: socket.handshake.query.roles?.toString().split(',')
     };
 
-    if (!socket.handshake.headers.token) {
+    if (!queryUser.token) {
       throw '';
     }
-    const token: string = socket.handshake.headers.token.toString();
-    const { user } = jwt.verify(token, publicKey, verifyOptions) as JwtPayload;
+    const { user } = jwt.verify(
+      queryUser.token,
+      publicKey,
+      verifyOptions
+    ) as JwtPayload;
 
     if (!queryUser.id || queryUser.id !== user.id) {
       throw '';
