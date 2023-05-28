@@ -10,14 +10,15 @@ function createSocket(): Server {
   io.on('connection', (socket) => {
     socket.emit('a new client connected');
     console.log('a user connected');
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-    });
     socket.onAny((eventName, ...args) => {
       console.log(eventName);
-      console.log(socket.data.hike);
     });
     socket.on('joinHike', async (data) => {
+      const hiker = {
+        id: socket.handshake.query.id?.toString(),
+        latitude: data.data.hiker.latitude,
+        longitude: data.data.hiker.longitude
+      };
       const sockets = await io.in(data.data.hike.id).fetchSockets();
       const hikers = sockets.map((socket) => {
         return { hike: socket.data.hike, hiker: socket.data.hiker };
@@ -27,15 +28,38 @@ function createSocket(): Server {
       io.to(data.data.hike.id).emit(
         'hikeJoined',
         JSON.stringify({
-          hiker: {
-            latitude: data.data.hiker.latitude,
-            longitude: data.data.hiker.longitude
-          }
+          hiker: hiker
         })
       );
       io.to(socket.id).emit('joinHikeSuccess', JSON.stringify(hikers));
       socket.data.hike = data.data.hike;
-      socket.data.hiker = data.data.hiker;
+      socket.data.hiker = hiker;
+    });
+    socket.on('move', async (data) => {
+      const hiker = {
+        id: socket.data.hiker.id,
+        latitude: data.data.hiker.latitude,
+        longitude: data.data.hiker.longitude
+      };
+      io.to(socket.data.hike.id).emit(
+        'hikerMoved',
+        JSON.stringify({
+          hiker: hiker
+        })
+      );
+      console.log(hiker);
+    });
+    socket.on('disconnect', () => {
+      const hiker = {
+        id: socket.data.hiker?.id
+      };
+      io.to(socket.data.hike?.id).emit(
+        'hikeLeaved',
+        JSON.stringify({
+          hiker: hiker
+        })
+      );
+      console.log('user disconnected');
     });
   });
   return io;
