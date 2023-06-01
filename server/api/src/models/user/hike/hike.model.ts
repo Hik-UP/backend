@@ -5,6 +5,7 @@ import { isUserInHike } from './isUserInHike.model';
 import { organizer } from './organizer/organizer.model';
 import { attendee } from './attendee/attendee.model';
 import { guest } from './guest/guest.model';
+import { stats } from './stats/stats.model';
 
 const hike = {
   create,
@@ -13,7 +14,8 @@ const hike = {
   isUserInHike,
   organizer,
   attendee,
-  guest
+  guest,
+  stats
 };
 
 export { hike };

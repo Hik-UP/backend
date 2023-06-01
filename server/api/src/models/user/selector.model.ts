@@ -83,6 +83,7 @@ const dbUserSelector = {
   privateProfile,
   publicProfile,
   secrets,
+  stats,
   hike,
   poi
 };

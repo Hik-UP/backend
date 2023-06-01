@@ -19,7 +19,7 @@ async function login(req: Request, res: Response): Promise<void> {
       passphrase: fs.readFileSync('/tmp/jwt.privkey.passphrase', 'utf8')
     };
     const signOptions: jwt.SignOptions = {
-      expiresIn: '1h',
+      expiresIn: '24h',
       algorithm: 'RS256'
     };
     const user = await dbUser.findSecrets({ email: req.body.user.email });
