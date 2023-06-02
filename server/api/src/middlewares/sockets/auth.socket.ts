@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import fs from 'fs';
 
 import { logger } from '../../utils/logger.util';
+import { authJOI } from './validator/auth/auth.validator';
 
 interface JwtPayload {
   user: { id: string; roles: string[] };
@@ -10,6 +11,10 @@ interface JwtPayload {
 
 async function auth(socket: Socket, next: any): Promise<void> {
   try {
+    if (authJOI.payload.validate(socket.handshake.auth).error) {
+      throw '';
+    }
+
     const publicKey: Buffer = fs.readFileSync('/tmp/jwt.pubkey.pem');
     const verifyOptions: jwt.VerifyOptions = {
       algorithms: ['RS256']
@@ -19,9 +24,9 @@ async function auth(socket: Socket, next: any): Promise<void> {
       id: string | undefined;
       roles: string[] | undefined;
     } = {
-      token: socket.handshake.query.token?.toString(),
-      id: socket.handshake.query.id?.toString(),
-      roles: socket.handshake.query.roles?.toString().split(',')
+      token: socket.handshake.auth.token?.toString(),
+      id: socket.handshake.auth.id?.toString(),
+      roles: socket.handshake.auth.roles?.toString().split(',')
     };
 
     if (!queryUser.token) {
@@ -51,7 +56,7 @@ async function auth(socket: Socket, next: any): Promise<void> {
     next();
   } catch {
     logger.warn('Socket:  User authentication failed');
-    next(new Error('invalid'));
+    next(new Error());
   }
 }
 
