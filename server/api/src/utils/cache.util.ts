@@ -18,9 +18,9 @@ async function setCache(req: Request, toCache: string) {
       EX: 180,
       NX: true
     });
-    logger.info('Set cache succeed');
+    logger.api.info('Set cache succeed');
   } catch (error) {
-    logger.error('Set cache failed\n' + error);
+    logger.api.error('Set cache failed\n' + error);
   }
 }
 

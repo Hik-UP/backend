@@ -39,10 +39,10 @@ async function auth(
       throw '';
     }
 
-    logger.info('User authentication succeed');
+    logger.api.info('User authentication succeed');
     next();
   } catch {
-    logger.warn('User authentication failed');
+    logger.api.warn('User authentication failed');
     res.status(401).json({
       error: 'Unauthorized'
     });

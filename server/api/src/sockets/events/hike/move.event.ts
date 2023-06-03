@@ -24,9 +24,9 @@ function move(socket: Socket) {
         })
       );
       socket.data.hiker = hiker;
-      logger.info('Socket: Hiker move succeed');
+      logger.socket.info('Hiker move succeed');
     } catch {
-      logger.error('Socket: Hiker move failed');
+      logger.socket.error('Hiker move failed');
     }
   };
 }

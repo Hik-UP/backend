@@ -42,9 +42,9 @@ function join(socket: Socket) {
       socket.data.hike = data.hike;
       socket.data.hiker = hiker;
       callback(JSON.stringify({ stats: stats[0], hikers: hikers }));
-      logger.info('Socket: Hiker join succeed');
+      logger.socket.info('Hiker join succeed');
     } catch {
-      logger.error('Socket: Hiker join failed');
+      logger.socket.error('Hiker join failed');
     }
   };
 }

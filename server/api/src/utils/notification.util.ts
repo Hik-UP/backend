@@ -40,10 +40,10 @@ async function send(newNotification: {
         body: newNotification.body
       });
 
-      logger.info('Notification sending succeed');
+      logger.api.info('Notification sending succeed');
     }
   } catch (error) {
-    logger.error('Notification sending failed\n' + error);
+    logger.api.error('Notification sending failed\n' + error);
   }
 }
 

@@ -16,11 +16,11 @@ function rateLimiter(req: Request, res: Response, next: NextFunction): void {
   rateLimiterMemory
     .consume(req.ip)
     .then(() => {
-      logger.info(`Request ${req.method} ${req.url} allowed`);
+      logger.api.info(`Request ${req.method} ${req.url} allowed`);
       next();
     })
     .catch(() => {
-      logger.warn(`Request ${req.method} ${req.url} blocked`);
+      logger.api.warn(`Request ${req.method} ${req.url} blocked`);
       res.status(429).json({
         error: 'Too Many Requests'
       });

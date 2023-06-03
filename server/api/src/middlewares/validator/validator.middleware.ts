@@ -11,16 +11,16 @@ function validator(schema: Joi.ObjectSchema<any>) {
         throw new HttpError(400, 'Bad Request');
       }
 
-      logger.info('Schema validation succeed');
+      logger.api.info('Schema validation succeed');
       next();
     } catch (error) {
       if (error instanceof HttpError) {
-        logger.warn('Schema validation failed');
+        logger.api.warn('Schema validation failed');
         res.status(error.statusCode).json({
           error: error.message
         });
       } else {
-        logger.error('Schema validation failed\n' + error);
+        logger.api.error('Schema validation failed\n' + error);
         res.status(500).json({
           error: 'Internal Server Error'
         });

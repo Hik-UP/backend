@@ -22,7 +22,7 @@ function createApp(): Express {
   app.use(cors({ methods: ['GET', 'POST', 'PUT', 'DELETE'] }));
 
   app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
-    logger.error('Failed to process request\n' + err);
+    logger.api.error('Failed to process request\n' + err);
     res.status(500).json({
       error: 'Internal Server Error'
     });

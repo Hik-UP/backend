@@ -16,10 +16,10 @@ function rolesCheck(allowRoles: string[]) {
         throw '';
       }
 
-      logger.info('User role verification succeed');
+      logger.api.info('User role verification succeed');
       next();
     } catch {
-      logger.warn('User role verification failed');
+      logger.api.warn('User role verification failed');
       res.status(401).json({
         error: 'Unauthorized'
       });

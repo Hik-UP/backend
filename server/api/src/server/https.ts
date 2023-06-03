@@ -47,14 +47,14 @@ function createHttpsServer(
 
   process.on('SIGTERM', () => {
     server.close(() => {
-      logger.info('Https server stopped');
+      logger.api.info('Https server stopped');
     });
   });
   server.on('error', (error: ErrnoException) => {
     throw error;
   });
   server.on('listening', () => {
-    logger.info('Https server started');
+    logger.api.info('Https server started');
   });
   server.listen(normalizePort(port), hostname);
   return server;

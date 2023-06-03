@@ -52,10 +52,10 @@ async function auth(socket: Socket, next: any): Promise<void> {
       throw '';
     }
 
-    logger.info('Socket:  User authentication succeed');
+    logger.socket.info('User authentication succeed');
     next();
   } catch {
-    logger.warn('Socket:  User authentication failed');
+    logger.socket.warn('User authentication failed');
     next(new Error());
   }
 }

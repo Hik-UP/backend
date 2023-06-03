@@ -8,12 +8,12 @@ async function retrieve(req: Request, res: Response): Promise<void> {
   try {
     const skins: ISkin[] | null = await dbSkin.retrieve();
 
-    logger.info('Skin recovery succeed');
+    logger.api.info('Skin recovery succeed');
     res.status(200).json({
       skins: skins
     });
   } catch (error) {
-    logger.error('Skin recovery failed\n' + error);
+    logger.api.error('Skin recovery failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

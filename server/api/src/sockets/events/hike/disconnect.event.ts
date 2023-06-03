@@ -19,9 +19,9 @@ function disconnect(socket: Socket) {
           hiker: hiker
         })
       );
-      logger.info('Socket: Hiker disconnect succeed');
+      logger.socket.info('Hiker disconnect succeed');
     } catch {
-      logger.error('Socket: Hiker disconnect failed');
+      logger.socket.error('Hiker disconnect failed');
     }
   };
 }
