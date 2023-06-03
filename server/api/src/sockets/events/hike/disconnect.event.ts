@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 
-import { dbUser } from '../../models/user/user.model';
-import { logger } from '../../utils/logger.util';
+import { dbUser } from '../../../models/user/user.model';
+import { logger } from '../../../utils/logger.util';
 
 function disconnect(socket: Socket) {
   return async function (...args: any[]) {
@@ -14,7 +14,7 @@ function disconnect(socket: Socket) {
         completed: hiker.stats.completed
       });
       socket.to(socket.data.hike?.id).emit(
-        'hikeLeaved',
+        'hike:hiker:leave',
         JSON.stringify({
           hiker: hiker
         })

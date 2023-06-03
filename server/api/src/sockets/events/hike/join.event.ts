@@ -1,11 +1,16 @@
 import { Socket } from 'socket.io';
 
-import { dbUser } from '../../models/user/user.model';
-import { logger } from '../../utils/logger.util';
+import { dbUser } from '../../../models/user/user.model';
+import { hikeJOI } from '../../middlewares/validator/hike/hike.validator';
+import { logger } from '../../../utils/logger.util';
 
 function join(socket: Socket) {
   return async function (req: any, callback: any) {
     try {
+      if (hikeJOI.join.validate(req.data).error) {
+        throw '';
+      }
+
       const { data } = req;
       const stats = (await dbUser.hike.stats.retrieve(
         socket.handshake.auth.id?.toString() || '',
@@ -28,7 +33,7 @@ function join(socket: Socket) {
 
       socket.join(data.hike.id);
       socket.to(data.hike.id).emit(
-        'hikeJoined',
+        'hike:hiker:join',
         JSON.stringify({
           hiker: hiker
         })

@@ -2,8 +2,8 @@ import { Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 
-import { logger } from '../../utils/logger.util';
 import { authJOI } from './validator/auth/auth.validator';
+import { logger } from '../../utils/logger.util';
 
 interface JwtPayload {
   user: { id: string; roles: string[] };
