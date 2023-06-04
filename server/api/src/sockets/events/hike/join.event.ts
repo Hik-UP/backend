@@ -2,6 +2,7 @@ import { Socket } from 'socket.io';
 
 import { dbUser } from '../../../models/user/user.model';
 import { hikeJOI } from '../../middlewares/validator/hike/hike.validator';
+import { hikeEvents } from './hike.event';
 import { logger } from '../../../utils/logger.util';
 
 function join(socket: Socket) {
@@ -10,14 +11,21 @@ function join(socket: Socket) {
       if (hikeJOI.join.validate(req.data).error) {
         throw '';
       }
+      if (socket.data.hike || socket.data.hiker) {
+        throw '';
+      }
 
       const { data } = req;
+      const { username: username, picture: picture } =
+        (await dbUser.findOne(socket.handshake.auth.id.toString())) || {};
       const stats = (await dbUser.hike.stats.retrieve(
-        socket.handshake.auth.id?.toString() || '',
+        socket.handshake.auth.id.toString() || '',
         data.hike.id
       )) || [{ steps: 0, distance: 0, completed: false }];
       const hiker = {
-        id: socket.handshake.auth.id?.toString(),
+        id: socket.handshake.auth.id.toString(),
+        username: username,
+        picture: picture,
         latitude: data.hiker.latitude,
         longitude: data.hiker.longitude,
         stats: {
@@ -39,12 +47,16 @@ function join(socket: Socket) {
         })
       );
 
+      socket.on('hike:hiker:move', hikeEvents.move(socket));
+      socket.on('disconnect', hikeEvents.disconnect(socket));
+
       socket.data.hike = data.hike;
       socket.data.hiker = hiker;
       callback(JSON.stringify({ stats: stats[0], hikers: hikers }));
       logger.socket.info('Hiker join succeed');
     } catch {
       logger.socket.error('Hiker join failed');
+      socket.disconnect();
     }
   };
 }

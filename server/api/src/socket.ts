@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
 
 import { auth } from './sockets/middlewares/auth.socket';
-import { hike } from './sockets/events/hike/hike.event';
+import { hikeEvents } from './sockets/events/hike/hike.event';
 
 function createSocket(): Server {
   const io = new Server();
@@ -12,7 +12,7 @@ function createSocket(): Server {
     socket.onAny((eventName, ...args) => {
       console.log(eventName);
     });
-    hike(socket);
+    socket.on('hike:hiker:join', hikeEvents.join(socket));
   });
   return io;
 }

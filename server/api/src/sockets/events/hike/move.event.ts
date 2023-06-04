@@ -12,12 +12,14 @@ function move(socket: Socket) {
 
       const { data } = req;
       const hiker = {
-        id: socket.data.hiker?.id,
-        latitude: data.hiker?.latitude,
-        longitude: data.hiker?.longitude,
-        stats: data.hiker?.stats
+        id: socket.data.hiker.id,
+        username: socket.data.hiker.username,
+        picture: socket.data.hiker.picture,
+        latitude: data.hiker.latitude,
+        longitude: data.hiker.longitude,
+        stats: data.hiker.stats
       };
-      socket.to(socket.data.hike?.id).emit(
+      socket.to(socket.data.hike.id).emit(
         'hike:hiker:move',
         JSON.stringify({
           hiker: hiker
@@ -27,6 +29,7 @@ function move(socket: Socket) {
       logger.socket.info('Hiker move succeed');
     } catch {
       logger.socket.error('Hiker move failed');
+      socket.disconnect();
     }
   };
 }

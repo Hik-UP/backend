@@ -8,6 +8,9 @@ function disconnect(socket: Socket) {
     try {
       const hiker = socket.data.hiker;
 
+      if (!hiker) {
+        throw '';
+      }
       await dbUser.hike.stats.update(hiker.id, socket.data.hike.id, {
         steps: hiker.stats.steps,
         distance: hiker.stats.distance,
