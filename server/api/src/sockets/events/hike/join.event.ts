@@ -16,8 +16,11 @@ function join(socket: Socket) {
       }
 
       const { data } = req;
-      const { username: username, picture: picture } =
-        (await dbUser.findOne(socket.handshake.auth.id.toString())) || {};
+      const {
+        username: username,
+        picture: picture,
+        skin: skin
+      } = (await dbUser.findOne(socket.handshake.auth.id.toString())) || {};
       const stats = (await dbUser.hike.stats.retrieve(
         socket.handshake.auth.id.toString() || '',
         data.hike.id
@@ -26,6 +29,7 @@ function join(socket: Socket) {
         id: socket.handshake.auth.id.toString(),
         username: username,
         picture: picture,
+        skin: skin?.model,
         latitude: data.hiker.latitude,
         longitude: data.hiker.longitude,
         stats: {

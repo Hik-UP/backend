@@ -15,6 +15,7 @@ function move(socket: Socket) {
         id: socket.data.hiker.id,
         username: socket.data.hiker.username,
         picture: socket.data.hiker.picture,
+        skin: socket.data.hiker.skin,
         latitude: data.hiker.latitude,
         longitude: data.hiker.longitude,
         stats: data.hiker.stats
