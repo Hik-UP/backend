@@ -68,8 +68,7 @@ const httpsServer: https.Server = createHttpsServer(
 socket.attach(httpsServer, {
   cors: {
     methods: ['GET', 'POST', 'PUT', 'DELETE']
-  },
-  allowEIO3: true
+  }
 });
 
 export { httpsServer };
