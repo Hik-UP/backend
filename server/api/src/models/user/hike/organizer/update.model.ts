@@ -1,4 +1,5 @@
 import { prisma } from '../../../../utils/prisma.util';
+import { dbUser } from '../../user.model';
 import { IUpdateHike } from '../../../../ts/hike.type';
 
 async function update(userId: string, hike: IUpdateHike): Promise<void> {
@@ -27,6 +28,9 @@ async function update(userId: string, hike: IUpdateHike): Promise<void> {
       }
     }
   });
+  for (const user of hike.attendees?.remove || []) {
+    await dbUser.hike.stats.remove(user.email, hike.id);
+  }
 }
 
 export { update };
