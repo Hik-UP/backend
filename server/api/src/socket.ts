@@ -9,9 +9,6 @@ function createSocket(): Server {
   io.use(auth);
 
   io.on('connection', (socket: Socket) => {
-    socket.onAny((eventName, ...args) => {
-      console.log(eventName);
-    });
     socket.on('hike:hiker:join', hikeEvents.join(socket));
   });
   return io;

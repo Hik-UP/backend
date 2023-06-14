@@ -46,15 +46,19 @@ function createHttpsServer(
   const server: https.Server = https.createServer(getSSLCertificates(), app);
 
   process.on('SIGTERM', () => {
-    server.close(() => {
-      logger.api.info('Https server stopped');
+    socket.close(() => {
+      logger.socket.info('Server stopped');
+    });
+    httpsServer.close(() => {
+      logger.api.info('Server stopped');
     });
   });
+
   server.on('error', (error: ErrnoException) => {
     throw error;
   });
   server.on('listening', () => {
-    logger.api.info('Https server started');
+    logger.api.info('Server started');
   });
   server.listen(normalizePort(port), hostname);
   return server;

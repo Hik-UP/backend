@@ -21,10 +21,14 @@ function join(socket: Socket) {
         picture: picture,
         skin: skin
       } = (await dbUser.findOne(socket.handshake.auth.id.toString())) || {};
-      const stats = (await dbUser.hike.stats.retrieve(
-        socket.handshake.auth.id.toString() || '',
-        data.hike.id
-      )) || [{ steps: 0, distance: 0, completed: false }];
+      const stats =
+        (await dbUser.hike.stats.retrieve(
+          socket.handshake.auth.id.toString() || '',
+          data.hike.id
+        )) || undefined;
+      if (!stats) {
+        throw '';
+      }
       const hiker = {
         id: socket.handshake.auth.id.toString(),
         username: username,
@@ -60,6 +64,7 @@ function join(socket: Socket) {
       logger.socket.info('Hiker join succeed');
     } catch {
       logger.socket.error('Hiker join failed');
+      callback(JSON.stringify({ error: 'Internal Server Error' }));
       socket.disconnect();
     }
   };
