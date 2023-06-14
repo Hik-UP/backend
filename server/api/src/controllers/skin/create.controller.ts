@@ -11,12 +11,12 @@ async function create(req: Request, res: Response): Promise<void> {
       pictures: req.body.skin.pictures,
       model: req.body.skin.model
     });
-    logger.info('Skin creation succeed');
+    logger.api.info('Skin creation succeed');
     res.status(201).json({
       message: 'Created'
     });
   } catch (error) {
-    logger.error('Skin creation failed\n' + error);
+    logger.api.error('Skin creation failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

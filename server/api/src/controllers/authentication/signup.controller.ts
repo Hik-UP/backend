@@ -13,12 +13,12 @@ async function signup(req: Request, res: Response): Promise<void> {
       email: req.body.user.email,
       password: hash
     });
-    logger.info('User creation succeed');
+    logger.api.info('User creation succeed');
     res.status(201).json({
       message: 'Created'
     });
   } catch (error) {
-    logger.error('User creation failed\n' + error);
+    logger.api.error('User creation failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

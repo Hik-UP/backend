@@ -224,6 +224,14 @@ describe(`${method.toUpperCase()} ${route}`, () => {
       organizers: [{ username: user.username, picture: user.picture }],
       attendees: [{ username: user.username, picture: user.picture }],
       guests: [{ username: otherUser.username, picture: otherUser.picture }],
+      stats: [
+        {
+          completed: false,
+          distance: 0,
+          steps: 0,
+          user: { username: user.username, picture: user.picture }
+        }
+      ],
       status: 'IN_PROGRESS',
       schedule: new Date(),
       createdAt: new Date()
@@ -272,6 +280,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 
 describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 201', async () => {
+    await mainTest.db.removeAllStats();
     await mainTest.db.removeAllHikes();
 
     for (let i = 0; i < 10; i += 1) {
@@ -284,6 +293,14 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         organizers: [{ username: user.username, picture: user.picture }],
         attendees: [{ username: user.username, picture: user.picture }],
         guests: [],
+        stats: [
+          {
+            completed: false,
+            distance: 0,
+            steps: 0,
+            user: { username: user.username, picture: user.picture }
+          }
+        ],
         status: 'IN_PROGRESS',
         schedule: new Date(),
         createdAt: new Date()

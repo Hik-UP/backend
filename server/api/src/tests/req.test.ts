@@ -276,6 +276,14 @@ async function createHike(guests?: [{ email: string }]): Promise<IHikeTest> {
     organizers: [{ username: '', picture: '' }],
     attendees: [{ username: '', picture: '' }],
     guests: [{ username: '', picture: '' }],
+    stats: [
+      {
+        completed: false,
+        distance: 0,
+        steps: 0,
+        user: { username: '', picture: '' }
+      }
+    ],
     status: 'IN_PROGRESS',
     schedule: new Date(),
     createdAt: new Date()
@@ -317,6 +325,7 @@ async function createHike(guests?: [{ email: string }]): Promise<IHikeTest> {
   hike.organizers = retrievedHike.organizers;
   hike.attendees = retrievedHike.attendees;
   hike.guests = retrievedHike.guests;
+  hike.stats = retrievedHike.stats;
   hike.schedule = retrievedHike.schedule;
   hike.createdAt = retrievedHike.createdAt;
 

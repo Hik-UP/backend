@@ -32,16 +32,16 @@ async function update(req: Request, res: Response): Promise<void> {
       sharedWith: req.body.poi.sharedWith
     });
 
-    logger.info('User POI update succeed');
+    logger.api.info('User POI update succeed');
     res.status(200).json({ message: 'Updated' });
   } catch (error) {
     if (error instanceof HttpError) {
-      logger.warn('User POI update failed');
+      logger.api.warn('User POI update failed');
       res.status(error.statusCode).json({
         error: error.message
       });
     } else {
-      logger.error('User POI update failed\n' + error);
+      logger.api.error('User POI update failed\n' + error);
       res.status(500).json({
         error: 'Internal Server Error'
       });

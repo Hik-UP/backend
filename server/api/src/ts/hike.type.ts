@@ -19,6 +19,7 @@ interface IHike {
   organizers: IUserPublicProfile[];
   attendees: IUserPublicProfile[];
   guests: IUserPublicProfile[];
+  stats: IHikeStats[];
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'DONE';
   schedule: Date;
   createdAt: Date;
@@ -33,6 +34,13 @@ interface IUpdateHike {
   guests?: { add?: [{ email: string }]; remove?: [{ email: string }] };
   status?: 'SCHEDULED' | 'IN_PROGRESS' | 'DONE';
   schedule?: Date;
+}
+
+interface IHikeStats {
+  user: IUserPublicProfile;
+  steps: number;
+  distance: number;
+  completed: boolean;
 }
 
 export { INewHike, IHike, IUpdateHike };

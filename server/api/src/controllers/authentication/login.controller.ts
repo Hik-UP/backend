@@ -19,7 +19,7 @@ async function login(req: Request, res: Response): Promise<void> {
       passphrase: fs.readFileSync('/tmp/jwt.privkey.passphrase', 'utf8')
     };
     const signOptions: jwt.SignOptions = {
-      expiresIn: '1h',
+      expiresIn: '24h',
       algorithm: 'RS256'
     };
     const user = await dbUser.findSecrets({ email: req.body.user.email });
@@ -40,18 +40,18 @@ async function login(req: Request, res: Response): Promise<void> {
       privateKeySecrets,
       signOptions
     );
-    logger.info('User login succeed');
+    logger.api.info('User login succeed');
     res.status(200).json({
       user: { id: user.id, roles: userRoles, token: token }
     });
   } catch (error) {
     if (error instanceof HttpError) {
-      logger.warn('User login failed');
+      logger.api.warn('User login failed');
       res.status(error.statusCode).json({
         error: error.message
       });
     } else {
-      logger.error('User login failed\n' + error);
+      logger.api.error('User login failed\n' + error);
       res.status(500).json({
         error: 'Internal Server Error'
       });

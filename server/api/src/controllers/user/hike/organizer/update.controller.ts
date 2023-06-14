@@ -40,16 +40,16 @@ async function update(req: Request, res: Response): Promise<void> {
       schedule: req.body.hike.schedule
     });
 
-    logger.info('User hike update succeed');
+    logger.api.info('User hike update succeed');
     res.status(200).json({ message: 'Updated' });
   } catch (error) {
     if (error instanceof HttpError) {
-      logger.warn('User hike update failed');
+      logger.api.warn('User hike update failed');
       res.status(error.statusCode).json({
         error: error.message
       });
     } else {
-      logger.error('User hike update failed\n' + error);
+      logger.api.error('User hike update failed\n' + error);
       res.status(500).json({
         error: 'Internal Server Error'
       });

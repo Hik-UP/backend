@@ -11,10 +11,10 @@ async function update(req: Request, res: Response): Promise<void> {
       pictures: req.body.comment.pictures
     });
 
-    logger.info('Trail comment update succeed');
+    logger.api.info('Trail comment update succeed');
     res.status(200).json({ message: 'Updated' });
   } catch (error) {
-    logger.error('Trail comment update failed\n' + error);
+    logger.api.error('Trail comment update failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

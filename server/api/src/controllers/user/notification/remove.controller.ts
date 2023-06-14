@@ -10,10 +10,10 @@ async function remove(req: Request, res: Response): Promise<void> {
       req.body.notification.id
     );
 
-    logger.info('User notification deletion succeed');
+    logger.api.info('User notification deletion succeed');
     res.status(200).json({ message: 'Deleted' });
   } catch (error) {
-    logger.error('User notification deletion failed\n' + error);
+    logger.api.error('User notification deletion failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

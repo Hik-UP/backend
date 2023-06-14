@@ -2,6 +2,7 @@ import https from 'https';
 import fs from 'fs';
 
 import { app } from '../app';
+import { socket } from '../socket';
 import { normalizePort } from '../utils/normalizePort.util';
 import { logger } from '../utils/logger.util';
 
@@ -45,15 +46,19 @@ function createHttpsServer(
   const server: https.Server = https.createServer(getSSLCertificates(), app);
 
   process.on('SIGTERM', () => {
-    server.close(() => {
-      logger.info('Https server stopped');
+    socket.close(() => {
+      logger.socket.info('Server stopped');
+    });
+    httpsServer.close(() => {
+      logger.api.info('Server stopped');
     });
   });
+
   server.on('error', (error: ErrnoException) => {
     throw error;
   });
   server.on('listening', () => {
-    logger.info('Https server started');
+    logger.api.info('Server started');
   });
   server.listen(normalizePort(port), hostname);
   return server;
@@ -63,5 +68,11 @@ const httpsServer: https.Server = createHttpsServer(
   process.env.API_PORT,
   process.env.API_HOSTNAME
 );
+
+socket.attach(httpsServer, {
+  cors: {
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+  }
+});
 
 export { httpsServer };

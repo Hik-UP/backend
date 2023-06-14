@@ -11,7 +11,7 @@ async function retrieve(req: Request, res: Response): Promise<void> {
       sharedPOI: IPOI[] | null;
     } | null = await dbUser.poi.retrieve(req.body.user.id);
 
-    logger.info('User POI recovery succeed');
+    logger.api.info('User POI recovery succeed');
     res.status(200).json({
       poi: {
         created: req.body.poi?.target.includes('created')
@@ -23,7 +23,7 @@ async function retrieve(req: Request, res: Response): Promise<void> {
       }
     });
   } catch (error) {
-    logger.error('User POI recovery failed\n' + error);
+    logger.api.error('User POI recovery failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

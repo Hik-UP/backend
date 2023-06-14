@@ -24,18 +24,18 @@ async function create(req: Request, res: Response): Promise<void> {
       latitude: req.body.poi.latitude,
       longitude: req.body.poi.longitude
     });
-    logger.info('User POI creation succeed');
+    logger.api.info('User POI creation succeed');
     res.status(201).json({
       message: 'Created'
     });
   } catch (error) {
     if (error instanceof HttpError) {
-      logger.warn('User POI creation failed');
+      logger.api.warn('User POI creation failed');
       res.status(error.statusCode).json({
         error: error.message
       });
     } else {
-      logger.error('User POI creation failed\n' + error);
+      logger.api.error('User POI creation failed\n' + error);
       res.status(500).json({
         error: 'Internal Server Error'
       });

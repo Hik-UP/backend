@@ -24,9 +24,11 @@ model User {
     notifications       Notification[]
     trailComments       TrailComment[]
 
+    hikerHikeId         String?             @unique @db.VarChar(36)
     organizerHikes      Hike[]              @relation("Organizer")
     attendeeHikes       Hike[]              @relation("Attendee")
     guestHikes          Hike[]              @relation("Guest")
+    hikerHike           Hike?               @relation("Hiker", fields: [hikerHikeId], references: [id])
     stats               Stats[]
 
     pointOfInterests    PointOfInterest[]
@@ -98,6 +100,7 @@ model Hike {
     organizers          User[]              @relation("Organizer")
     attendees           User[]              @relation("Attendee")
     guests              User[]              @relation("Guest")
+    hikers              User[]              @relation("Hiker")
     stats               Stats[]
     status              HikeStatus          @default(IN_PROGRESS)
     schedule            DateTime            @default(now())
@@ -111,7 +114,7 @@ model Stats {
     hikeId              String              @db.VarChar(36)
     hike                Hike                @relation(fields: [hikeId], references: [id])
     steps               Int                 @default(0)
-    distanceTravelled   Int                 @default(0)
+    distance            Int                 @default(0)
     completed           Boolean             @default(false)
 }
 

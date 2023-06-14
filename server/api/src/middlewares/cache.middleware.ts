@@ -20,13 +20,13 @@ async function cache(
     const cacheResults = await redis.get(route);
 
     if (cacheResults) {
-      logger.info('Get cache succeed');
+      logger.api.info('Get cache succeed');
       res.send(JSON.parse(cacheResults));
     } else {
       next();
     }
   } catch (error) {
-    logger.error('Get cache failed\n' + error);
+    logger.api.error('Get cache failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });
