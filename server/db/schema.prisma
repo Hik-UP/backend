@@ -133,6 +133,19 @@ model PointOfInterest {
     createdAt           DateTime            @default(now())
 }
 
+model Event {
+    id                  String              @id @unique @default(uuid()) @db.VarChar(36)
+    title               String              @db.VarChar(128)
+    description         String              @db.VarChar(1024)
+    coverUrl            String              @db.VarChar(1024)
+    participants        String[]            @db.VarChar(36)
+    invitedUser         String[]            @db.VarChar(256)
+    tags                String[]            @db.VarChar(10)
+    localisation        String              @db.VarChar(1024)
+    nbrParticipants     Int                 @default(0)
+    visibilityEvent     VisibilityEvent     @default(PUBLIC)
+}
+
 enum Role {
     ADMIN
     USER
@@ -142,4 +155,9 @@ enum HikeStatus {
     SCHEDULED
     IN_PROGRESS
     DONE
+}
+
+enum VisibilityEvent {
+    PUBLIC
+    PRIVATE
 }
