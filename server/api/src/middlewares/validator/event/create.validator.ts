@@ -15,7 +15,7 @@ const event = Joi.object({
 
 const create = Joi.object({
   user: authJOI.payload,
-  skin: event
+  event: event
 }).required();
 
 export { create };

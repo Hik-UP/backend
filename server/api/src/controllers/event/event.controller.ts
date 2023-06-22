@@ -1,6 +1,7 @@
 import create from './create.controller';
-import retrieve from '../../models/event/retrieve.model';
+import retrieve from './retrieve.controller';
+import participate from './participate.controller';
 
-const eventCtrl = { create, retrieve };
+const eventCtrl = { create, retrieve, participate };
 
 export default eventCtrl;

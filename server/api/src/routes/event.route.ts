@@ -3,6 +3,7 @@ import eventCtrl from '../controllers/event/event.controller';
 import { validator } from '../middlewares/validator/validator.middleware';
 import { rolesCheck } from '../middlewares/rolesCheck.middleware';
 import { eventJOI } from '../middlewares/validator/event/event.validator';
+import { userJOI } from '../middlewares/validator/user/user.validator';
 
 function createEventRoutes(): express.Router {
   const eventRoutes: express.Router = express.Router();
@@ -17,6 +18,12 @@ function createEventRoutes(): express.Router {
     '/retrieve',
     validator(eventJOI.retrieve),
     eventCtrl.retrieve
+  );
+  eventRoutes.post(
+    '/participate',
+    validator(userJOI.profile),
+    rolesCheck(['USER']),
+    eventCtrl.participate
   );
   return eventRoutes;
 }
