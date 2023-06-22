@@ -9,6 +9,8 @@ import { userRoutes } from './routes/user.route';
 import { skinRoutes } from './routes/skin.route';
 import { trailRoutes } from './routes/trail.route';
 import { logger } from './utils/logger.util';
+import eventCtrl from './controllers/event/event.controller';
+import eventRoutes from './routes/event.route';
 
 function createApp(): Express {
   const app: Express = express();
@@ -33,6 +35,7 @@ function createApp(): Express {
   app.use('/api/user/', auth, userRoutes);
   app.use('/api/skin/', auth, skinRoutes);
   app.use('/api/trail/', auth, trailRoutes);
+  app.use('/api/event', auth, eventRoutes);
 
   app.use(function (req: Request, res: Response) {
     res.status(404).json({
