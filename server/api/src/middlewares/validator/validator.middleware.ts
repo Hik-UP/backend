@@ -7,6 +7,7 @@ import { HttpError } from '../../utils/error.util';
 function validator(schema: Joi.ObjectSchema<any>) {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
+      console.log(schema.validate(req.body).error);
       if (schema.validate(req.body).error) {
         throw new HttpError(400, 'Bad Request');
       }

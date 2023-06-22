@@ -7,8 +7,8 @@ const event = Joi.object({
   description: Joi.string().max(1024).required(),
   coverUrl: Joi.string().uri().max(1024).required(),
   invitedUser: Joi.array().items(Joi.string().uri().max(256)),
-  tags: Joi.array().items(Joi.string().uri().max(10)).required(),
-  localisation: Joi.string().uri().max(1024).required(),
+  tags: Joi.array().items(Joi.string().max(10)).required(),
+  localisation: Joi.string().max(1024).required(),
   nbrParticipants: Joi.number(),
   visibilityEvent: Joi.allow('PRIVATE', 'PUBLIC')
 }).required();
