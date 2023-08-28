@@ -36,6 +36,25 @@ interface ITrail {
   comments: ITrailComment[];
 }
 
+interface IUpdateTrail {
+  id: string;
+  name?: string;
+  address?: string;
+  description?: string;
+  pictures?: string[];
+  latitude?: number;
+  longitude?: number;
+  difficulty?: number;
+  duration?: number;
+  distance?: number;
+  uphill?: number;
+  downhill?: number;
+  tools?: string[];
+  relatedArticles?: string[];
+  labels?: string[];
+  geoJSON?: string;
+}
+
 interface ITrailWeather {
   temperature: number;
   icon: string;
@@ -68,6 +87,7 @@ interface IUpdateTrailComment {
 export {
   INewTrail,
   ITrail,
+  IUpdateTrail,
   ITrailWeather,
   INewTrailComment,
   ITrailComment,

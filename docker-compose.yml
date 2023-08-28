@@ -7,6 +7,9 @@ services:
       context: .
       dockerfile: ./docker/db
     image: hikup/db
+    logging:
+      options:
+        max-size: "1m"
     environment:
       POSTGRES_USER_FILE: /tmp/.secrets/db/user
       POSTGRES_PASSWORD_FILE: /tmp/.secrets/db/passwd
@@ -27,6 +30,9 @@ services:
       context: .
       dockerfile: ./docker/redis
     image: hikup/redis
+    logging:
+      options:
+        max-size: "1m"
     ports:
       - "172.19.0.1:6379:6379"
     volumes:
@@ -45,6 +51,9 @@ services:
       context: .
       dockerfile: ./docker/api
     image: hikup/api
+    logging:
+      options:
+        max-size: "1m"
     command: [ "${API_CMD}" ]
     volumes:
       - ./server/api/src:/usr/app/src:ro
@@ -74,6 +83,9 @@ services:
       context: .
       dockerfile: ./docker/nginx
     image: hikup/nginx
+    logging:
+      options:
+        max-size: "1m"
     command: [ "${NGINX_CMD}" ]
     ports:
       - "443:443"

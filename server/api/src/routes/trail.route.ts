@@ -19,6 +19,12 @@ function createTrailRoutes(): express.Router {
     validator(trailJOI.retrieve),
     trailCtrl.retrieve
   );
+  trailRoutes.put(
+    '/update',
+    validator(trailJOI.update),
+    rolesCheck(['ADMIN']),
+    trailCtrl.update
+  );
   trailRoutes.post('/details', validator(trailJOI.details), trailCtrl.details);
 
   trailRoutes.post(
