@@ -61,6 +61,12 @@ interface IHikeTest {
   organizers: { username: string; picture: string }[];
   attendees: { username: string; picture: string }[];
   guests: { username: string; picture: string }[];
+  stats: {
+    completed: boolean;
+    distance: number;
+    steps: number;
+    user: { username: string; picture: string };
+  }[];
   schedule: Date;
   createdAt: Date;
 }

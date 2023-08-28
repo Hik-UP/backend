@@ -160,6 +160,20 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 
     for (let i = 0; i < 10; i += 1) {
       const hike = await mainTest.req.createHike([{ email: otherUser.email }]);
+      const stats = [
+        {
+          completed: false,
+          distance: 0,
+          steps: 0,
+          user: { username: user.username, picture: user.picture }
+        },
+        {
+          completed: false,
+          distance: 0,
+          steps: 0,
+          user: { username: otherUser.username, picture: otherUser.picture }
+        }
+      ];
       let res = await request(httpsServer)
         .post('/api/user/hike/retrieve')
         .set('Authorization', `Bearer ${otherUser.token}`)
@@ -220,6 +234,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
       expect(res.body.hikes.attendee[i].guests.length).toEqual(0);
       hike.attendees = res.body.hikes.attendee[i].attendees;
       hike.guests = [];
+      hike.stats = stats;
       expect(res.body.hikes.attendee).toContainEqual(hike);
     }
   });

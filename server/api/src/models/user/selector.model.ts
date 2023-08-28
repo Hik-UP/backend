@@ -27,6 +27,15 @@ const secrets = {
   fcmToken: true
 };
 
+const stats = {
+  user: {
+    select: publicProfile
+  },
+  steps: true,
+  distance: true,
+  completed: true
+};
+
 const hike = {
   id: true,
   name: true,
@@ -43,6 +52,10 @@ const hike = {
   guests: {
     select: publicProfile
   },
+  stats: {
+    select: stats
+  },
+  status: true,
   schedule: true,
   createdAt: true
 };
@@ -70,6 +83,7 @@ const dbUserSelector = {
   privateProfile,
   publicProfile,
   secrets,
+  stats,
   hike,
   poi
 };

@@ -27,23 +27,24 @@ async function create(req: Request, res: Response): Promise<void> {
       organizerId: req.body.user.id,
       trailId: req.body.trail.id,
       guests: req.body.hike.guests,
+      status: req.body.hike.schedule ? 'SCHEDULED' : undefined,
       schedule: req.body.hike.schedule
         ? new Date(req.body.hike.schedule * 1000)
         : undefined
     });
 
-    logger.info('User hike creation succeed');
+    logger.api.info('User hike creation succeed');
     res.status(201).json({
       message: 'Created'
     });
   } catch (error) {
     if (error instanceof HttpError) {
-      logger.warn('User hike creation failed');
+      logger.api.warn('User hike creation failed');
       res.status(error.statusCode).json({
         error: error.message
       });
     } else {
-      logger.error('User hike creation failed\n' + error);
+      logger.api.error('User hike creation failed\n' + error);
       res.status(500).json({
         error: 'Internal Server Error'
       });

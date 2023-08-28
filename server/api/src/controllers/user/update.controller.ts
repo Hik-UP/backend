@@ -12,10 +12,10 @@ async function update(req: Request, res: Response): Promise<void> {
       fcmToken: req.body.user.fcmToken
     });
 
-    logger.info('User profile update succeed');
+    logger.api.info('User profile update succeed');
     res.status(200).json({ message: 'Updated' });
   } catch (error) {
-    logger.error('User profile update failed\n' + error);
+    logger.api.error('User profile update failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

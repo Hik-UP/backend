@@ -11,12 +11,12 @@ async function create(req: Request, res: Response): Promise<void> {
       body: req.body.trail.comment.body,
       pictures: req.body.trail.comment.pictures
     });
-    logger.info('Trail comment creation succeed');
+    logger.api.info('Trail comment creation succeed');
     res.status(201).json({
       message: 'Created'
     });
   } catch (error) {
-    logger.error('Trail comment creation failed\n' + error);
+    logger.api.error('Trail comment creation failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

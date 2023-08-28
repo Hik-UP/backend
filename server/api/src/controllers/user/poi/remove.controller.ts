@@ -15,16 +15,16 @@ async function remove(req: Request, res: Response): Promise<void> {
 
     await dbUser.poi.remove(req.body.user.id, req.body.poi.id, isCreator);
 
-    logger.info('User POI deletion succeed');
+    logger.api.info('User POI deletion succeed');
     res.status(200).json({ message: 'Deleted' });
   } catch (error) {
     if (error instanceof HttpError) {
-      logger.warn('User POI update failed');
+      logger.api.warn('User POI update failed');
       res.status(error.statusCode).json({
         error: error.message
       });
     } else {
-      logger.error('User POI deletion failed\n' + error);
+      logger.api.error('User POI deletion failed\n' + error);
       res.status(500).json({
         error: 'Internal Server Error'
       });

@@ -13,10 +13,10 @@ async function update(req: Request, res: Response): Promise<void> {
       }
     );
 
-    logger.info('User notification update succeed');
+    logger.api.info('User notification update succeed');
     res.status(200).json({ message: 'Updated' });
   } catch (error) {
-    logger.error('User notification update failed\n' + error);
+    logger.api.error('User notification update failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

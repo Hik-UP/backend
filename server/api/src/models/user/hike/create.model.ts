@@ -1,26 +1,36 @@
 import { prisma } from '../../../utils/prisma.util';
 import { INewHike } from '../../../ts/hike.type';
 
-async function create(newTrail: INewHike): Promise<void> {
+async function create(newHike: INewHike): Promise<void> {
   await prisma.hike.create({
     data: {
-      name: newTrail.name,
-      description: newTrail.description,
-      trailId: newTrail.trailId,
+      name: newHike.name,
+      description: newHike.description,
+      trailId: newHike.trailId,
       organizers: {
         connect: {
-          id: newTrail.organizerId
+          id: newHike.organizerId
         }
       },
       attendees: {
         connect: {
-          id: newTrail.organizerId
+          id: newHike.organizerId
         }
       },
       guests: {
-        connect: newTrail.guests
+        connect: newHike.guests
       },
-      schedule: newTrail.schedule
+      stats: {
+        create: {
+          user: {
+            connect: {
+              id: newHike.organizerId
+            }
+          }
+        }
+      },
+      status: newHike.status,
+      schedule: newHike.schedule
     }
   });
 }

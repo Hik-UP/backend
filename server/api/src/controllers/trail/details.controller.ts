@@ -19,7 +19,7 @@ async function getWheater(
       icon: `${process.env.WEATHER_BASE_ICON_URL}/${jsonData.weather[0].icon}@2x.png`
     };
   } catch (error) {
-    logger.error('Trail weather recovery failed\n' + error);
+    logger.api.error('Trail weather recovery failed\n' + error);
   }
 }
 
@@ -59,7 +59,7 @@ async function details(req: Request, res: Response): Promise<void> {
     if (weatherResult === undefined) {
       throw '';
     }
-    logger.info('Trail details recovery succeed');
+    logger.api.info('Trail details recovery succeed');
     res.status(200).json({
       weather: weatherResult,
       tools: Trail.tools,
@@ -67,7 +67,7 @@ async function details(req: Request, res: Response): Promise<void> {
       calories
     });
   } catch (error) {
-    logger.error('Trail details recovery failed\n' + error);
+    logger.api.error('Trail details recovery failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

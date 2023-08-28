@@ -8,6 +8,11 @@ async function leave(userId: string, hikeId: string): Promise<void> {
         disconnect: {
           id: hikeId
         }
+      },
+      stats: {
+        deleteMany: {
+          hikeId: hikeId
+        }
       }
     }
   });

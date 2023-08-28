@@ -22,16 +22,16 @@ async function leave(req: Request, res: Response): Promise<void> {
     }
     await dbUser.hike.attendee.leave(req.body.user.id, req.body.hike.id);
 
-    logger.info('User hike leaving succeed');
+    logger.api.info('User hike leaving succeed');
     res.status(200).json({ message: 'Updated' });
   } catch (error) {
     if (error instanceof HttpError) {
-      logger.warn('User hike leaving failed');
+      logger.api.warn('User hike leaving failed');
       res.status(error.statusCode).json({
         error: error.message
       });
     } else {
-      logger.error('User hike leaving failed\n' + error);
+      logger.api.error('User hike leaving failed\n' + error);
       res.status(500).json({
         error: 'Internal Server Error'
       });

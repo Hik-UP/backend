@@ -23,12 +23,12 @@ async function update(req: Request, res: Response): Promise<void> {
       labels: req.body.trail.labels,
       geoJSON: req.body.trail.geoJSON
     });
-    logger.info('Trail update succeed');
+    logger.api.info('Trail update succeed');
     res.status(200).json({
       message: 'Updated'
     });
   } catch (error) {
-    logger.error('Trail update failed\n' + error);
+    logger.api.error('Trail update failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });

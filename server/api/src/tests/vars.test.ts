@@ -1,4 +1,6 @@
 /* istanbul ignore file */
+import { Socket } from 'socket.io-client';
+
 import { crypto } from '../utils/cryptography.util';
 
 const defaultSkin = {

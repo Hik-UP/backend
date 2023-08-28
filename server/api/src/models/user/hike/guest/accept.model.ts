@@ -16,6 +16,15 @@ async function accept(userId: string, hikeId: string): Promise<void> {
               connect: {
                 id: userId
               }
+            },
+            stats: {
+              create: {
+                user: {
+                  connect: {
+                    id: userId
+                  }
+                }
+              }
             }
           }
         },

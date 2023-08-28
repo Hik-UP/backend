@@ -22,12 +22,12 @@ async function create(req: Request, res: Response): Promise<void> {
       labels: req.body.trail.labels,
       geoJSON: req.body.trail.geoJSON
     });
-    logger.info('Trail creation succeed');
+    logger.api.info('Trail creation succeed');
     res.status(201).json({
       message: 'Created'
     });
   } catch (error) {
-    logger.error('Trail creation failed\n' + error);
+    logger.api.error('Trail creation failed\n' + error);
     res.status(500).json({
       error: 'Internal Server Error'
     });
