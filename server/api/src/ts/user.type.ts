@@ -30,6 +30,7 @@ interface IUpdateUserProfile {
   email?: string;
   picture?: string;
   fcmToken?: string;
+  skinId?: string;
 }
 
 interface ISkinOwner {

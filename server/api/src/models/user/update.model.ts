@@ -8,7 +8,8 @@ async function update(userId: string, user: IUpdateUserProfile): Promise<void> {
       username: user.username,
       email: user.email,
       picture: user.picture,
-      fcmToken: user.fcmToken
+      fcmToken: user.fcmToken,
+      skinId: user.skinId
     }
   });
 }

@@ -4,7 +4,8 @@ const dbSkinSelector = {
   description: true,
   pictures: true,
   model: true,
-  owners: { select: { id: true, username: true } }
+  owners: { select: { id: true, username: true } },
+  price: true
 };
 
 export { dbSkinSelector };

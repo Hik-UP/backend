@@ -9,7 +9,8 @@ async function create(req: Request, res: Response): Promise<void> {
       name: req.body.skin.name,
       description: req.body.skin.description,
       pictures: req.body.skin.pictures,
-      model: req.body.skin.model
+      model: req.body.skin.model,
+      price: req.body.skin.price
     });
     logger.api.info('Skin creation succeed');
     res.status(201).json({

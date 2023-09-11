@@ -15,6 +15,11 @@ function createSkinRoutes(): express.Router {
     skinCtrl.create
   );
   skinRoutes.post('/retrieve', validator(skinJOI.retrieve), skinCtrl.retrieve);
+  skinRoutes.put(
+    '/update-current-skin',
+    validator(skinJOI.updateCurrentSkin),
+    skinCtrl.updateCurrentSkin
+  );
   return skinRoutes;
 }
 

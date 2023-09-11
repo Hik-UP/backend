@@ -14,6 +14,7 @@ interface ISkin {
   description: string;
   pictures: string[];
   model: string;
+  price: number;
   owners: ISkinOwner[];
 }
 

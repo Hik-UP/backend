@@ -9,7 +9,8 @@ async function update(req: Request, res: Response): Promise<void> {
       username: req.body.user.username,
       email: req.body.user.email,
       picture: req.body.user.picture,
-      fcmToken: req.body.user.fcmToken
+      fcmToken: req.body.user.fcmToken,
+      skin: req.body.user.skin
     });
 
     logger.api.info('User profile update succeed');
