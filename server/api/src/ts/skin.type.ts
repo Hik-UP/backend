@@ -1,8 +1,11 @@
+import { ISkinOwner } from './user.type';
+
 interface INewSkin {
   name: string;
   description: string;
   pictures: string[];
   model: string;
+  price: number;
 }
 
 interface ISkin {
@@ -11,6 +14,7 @@ interface ISkin {
   description: string;
   pictures: string[];
   model: string;
+  owners: ISkinOwner[];
 }
 
 export { INewSkin, ISkin };

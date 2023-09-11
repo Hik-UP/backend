@@ -3,7 +3,8 @@ const dbSkinSelector = {
   name: true,
   description: true,
   pictures: true,
-  model: true
+  model: true,
+  owners: { select: { id: true, username: true } }
 };
 
 export { dbSkinSelector };

@@ -32,10 +32,16 @@ interface IUpdateUserProfile {
   fcmToken?: string;
 }
 
+interface ISkinOwner {
+  id: string;
+  username: string;
+}
+
 export {
   INewUser,
   IUserProfile,
   IUserPublicProfile,
   IUserSecrets,
-  IUpdateUserProfile
+  IUpdateUserProfile,
+  ISkinOwner
 };
