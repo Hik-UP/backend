@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { dbSkin } from '../../models/skin/skin.model';
 import { logger } from '../../utils/logger.util';
 import { dbUser } from '../../models/user/user.model';
-import { ISkin } from '../../ts/skin.type';
 
 export async function updateCurrentSkin(
   req: Request,
