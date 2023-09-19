@@ -20,6 +20,7 @@ function createSkinRoutes(): express.Router {
     validator(skinJOI.updateCurrentSkin),
     skinCtrl.updateCurrentSkin
   );
+  skinRoutes.put('/unlock', validator(skinJOI.unlock), skinCtrl.unlock);
   return skinRoutes;
 }
 
