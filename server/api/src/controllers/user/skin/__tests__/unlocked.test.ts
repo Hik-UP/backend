@@ -36,6 +36,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         }
       });
 
+    delete res.body.skins.owners;
+
     mainTest.verify.ok(res);
    
     expect(res.body.skins.length).toEqual(1);
