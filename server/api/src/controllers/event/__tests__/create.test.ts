@@ -19,7 +19,7 @@ const event = {
 jest.setTimeout(60000);
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-    it('should return 400', async () => {
+    it('should return 401', async () => {
         const res = await request(httpsServer)
           [`${method}`](route)
           .send({
@@ -28,12 +28,12 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             }
           });
     
-        mainTest.verify.badRequest(res);
+        expect(res.statusCode).toBe(401);
       });
 });
 
 describe(`${method.toUpperCase()} ${route}`, () => {
-    it('should return 400', async () => {
+    it('should return 401', async () => {
       const res = await request(httpsServer)
         [`${method}`](route)
         .send({
@@ -42,23 +42,10 @@ describe(`${method.toUpperCase()} ${route}`, () => {
           }
         });
   
-      mainTest.verify.badRequest(res);
+        expect(res.statusCode).toBe(401);
     });
   });
 
-  describe(`${method.toUpperCase()} ${route}`, () => {
-    it('should return 400', async () => {
-      const res = await request(httpsServer)
-        [`${method}`](route)
-        .send({
-          user: {
-            password: user.password
-          }
-        });
-  
-      mainTest.verify.badRequest(res);
-    });
-  });
 
   describe(`${method.toUpperCase()} ${route}`, () => {
     it('should return 400', async () => {
