@@ -200,7 +200,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         name: crypto.randomString(20),
         description: crypto.randomString(20),
         pictures: [`https://${crypto.randomString(20)}.com`],
-        model: `https://${crypto.randomString(20)}.com`
+        model: `https://${crypto.randomString(20)}.com`,
+        price: 200,
       };
       let res = await request(httpsServer)
         [`${method}`](route)
@@ -214,7 +215,9 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             name: skin.name,
             description: skin.description,
             pictures: skin.pictures,
-            model: skin.model
+            model: skin.model,
+            price: skin.price
+            
           }
         });
 
