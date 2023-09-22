@@ -217,7 +217,6 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             pictures: skin.pictures,
             model: skin.model,
             price: skin.price
-            
           }
         });
 

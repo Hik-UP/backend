@@ -9,7 +9,8 @@ const defaultSkin = {
   description: crypto.randomString(20),
   pictures: [`https://${crypto.randomString(20)}.com`],
   model: `https://${crypto.randomString(20)}.com`,
-  price: 100
+  price: 100,
+  owners: [{id: '', username: crypto.randomString(20)}],
 };
 
 const defaultUser = {

@@ -37,8 +37,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
       });
 
     mainTest.verify.ok(res);
-    console.log(res.body.skins, "SKIN");
-    console.log(mainTest.vars.defaultSkin, "Default Skin");
+   
     expect(res.body.skins.length).toEqual(1);
     expect(res.body.skins).toContainEqual(mainTest.vars.defaultSkin);
   });
