@@ -56,7 +56,9 @@ async function createSkin(): Promise<ISkinTest> {
     name: crypto.randomString(20),
     description: crypto.randomString(20),
     pictures: [`https://${crypto.randomString(20)}.com`],
-    model: `https://${crypto.randomString(20)}.com`
+    model: `https://${crypto.randomString(20)}.com`,
+    price: 0,
+    owners: [{ id: '', username: '' }]
   };
   let res = await request(httpsServer)
     .post('/api/skin/create')
@@ -70,7 +72,8 @@ async function createSkin(): Promise<ISkinTest> {
         name: skin.name,
         description: skin.description,
         pictures: skin.pictures,
-        model: skin.model
+        model: skin.model,
+        price: skin.price
       }
     });
 
