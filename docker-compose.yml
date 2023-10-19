@@ -21,24 +21,6 @@ services:
     stdin_open: true
     tty: true
 
-  redis:
-    container_name: redis
-    build:
-      context: .
-      dockerfile: ./docker/redis
-    image: hikup/redis
-    ports:
-      - "172.19.0.1:6379:6379"
-    volumes:
-      - redis:/data
-    networks:
-      network:
-        ipv4_address: 172.19.0.3
-    stdin_open: true
-    tty: true
-    depends_on:
-      - db
-
   api:
     container_name: api
     build:
@@ -66,7 +48,6 @@ services:
     tty: true
     depends_on:
       - db
-      - redis
 
   nginx:
     container_name: nginx
@@ -84,7 +65,6 @@ services:
     tty: true
     depends_on:
       - db
-      - redis
       - api
 
 networks:
@@ -98,5 +78,4 @@ networks:
 
 volumes:
   postgres:
-  redis:
   prisma:

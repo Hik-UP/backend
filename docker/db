@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM postgres:alpine
 
 COPY --chown=postgres:postgres ./server/db/.user	/tmp/.secrets/db/user
 COPY --chown=postgres:postgres ./server/db/.passwd	/tmp/.secrets/db/passwd
