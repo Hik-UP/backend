@@ -6,8 +6,12 @@ import { VisibilityEvent } from '@prisma/client';
 
 async function retrieve(req: Request, res: Response): Promise<void> {
   try {
-    const visibility =
-      req.body['event']['visibility'] || VisibilityEvent.PUBLIC;
+    let visibility;
+    if (req.body['event'] && req.body['event']['visibility']) {
+      visibility = req.body['event']['visibility'];
+    } else {
+      visibility = VisibilityEvent.PUBLIC;
+    }
     const events: IEvent[] | null = await dbEvent.retrieve(visibility);
 
     logger.api.info('Event recovery succeed');

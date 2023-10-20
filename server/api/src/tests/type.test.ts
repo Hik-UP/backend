@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 import { ITrailComment } from '../ts/trail.type';
+import { ISkinOwner } from '../ts/user.type';
 
 interface ISkinTest {
   id: string;
@@ -7,6 +8,7 @@ interface ISkinTest {
   description: string;
   pictures: string[];
   model: string;
+  owners: ISkinOwner[];
 }
 
 interface ITrailTest {

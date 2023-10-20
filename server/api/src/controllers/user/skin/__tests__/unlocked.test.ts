@@ -26,6 +26,10 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 
 describe(`${method.toUpperCase()} ${route}`, () => {
   it('should return 200', async () => {
+    const defaultUserSkin = {
+      ...mainTest.vars.defaultSkin,
+      owners: [{ id: user.id, username: user.username }]
+    };
     const res = await request(httpsServer)
       [`${method}`](route)
       .set('Authorization', `Bearer ${user.token}`)
@@ -37,7 +41,8 @@ describe(`${method.toUpperCase()} ${route}`, () => {
       });
 
     mainTest.verify.ok(res);
+
     expect(res.body.skins.length).toEqual(1);
-    expect(res.body.skins).toContainEqual(mainTest.vars.defaultSkin);
+    expect(res.body.skins).toContainEqual(defaultUserSkin);
   });
 });

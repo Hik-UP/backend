@@ -1,6 +1,8 @@
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /usr/app
+
+RUN apk --no-cache add bash openssl
 
 COPY --chown=node:node ./server/db/schema.prisma	/usr/prisma/schema.prisma
 

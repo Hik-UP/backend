@@ -7,7 +7,7 @@ export default async function create(
   res: Response
 ): Promise<void> {
   try {
-    await dbEvent.create({ ...req.body });
+    await dbEvent.create({ ...req.body['event'] });
     logger.api.info('Event creation succeed');
     res.status(201).json({
       message: 'Created'

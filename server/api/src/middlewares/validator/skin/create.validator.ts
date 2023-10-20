@@ -6,7 +6,8 @@ const skin = Joi.object({
   name: Joi.string().max(128).required(),
   description: Joi.string().max(1024).required(),
   pictures: Joi.array().items(Joi.string().uri().max(1024)).required(),
-  model: Joi.string().uri().max(1024).required()
+  model: Joi.string().uri().max(1024).required(),
+  price: Joi.number().required()
 }).required();
 
 const create = Joi.object({

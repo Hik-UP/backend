@@ -30,6 +30,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 
     for (let i = 0; i < 10; i += 1) {
       const skin = await mainTest.req.createSkin();
+      skin['owners'] = [];
       let res = await request(httpsServer)
         .post('/api/user/skin/unlocked')
         .set('Authorization', `Bearer ${user.token}`)
@@ -39,9 +40,13 @@ describe(`${method.toUpperCase()} ${route}`, () => {
             roles: user.roles
           }
         });
+      const defaulSkin = {
+        ...mainTest.vars.defaultSkin,
+        owners: [{ id: user.id, username: user.username }]
+      };
 
       expect(res.body.skins.length).toEqual(1);
-      expect(res.body.skins).toContainEqual(mainTest.vars.defaultSkin);
+      expect(res.body.skins).toContainEqual(defaulSkin);
 
       res = await request(httpsServer)
         [`${method}`](route)

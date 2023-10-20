@@ -30,6 +30,12 @@ interface IUpdateUserProfile {
   email?: string;
   picture?: string;
   fcmToken?: string;
+  skinId?: string;
+}
+
+interface ISkinOwner {
+  id: string;
+  username: string;
 }
 
 export {
@@ -37,5 +43,6 @@ export {
   IUserProfile,
   IUserPublicProfile,
   IUserSecrets,
-  IUpdateUserProfile
+  IUpdateUserProfile,
+  ISkinOwner
 };

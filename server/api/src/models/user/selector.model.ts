@@ -10,7 +10,9 @@ const privateProfile = {
       name: true,
       description: true,
       pictures: true,
-      model: true
+      model: true,
+      price: true,
+      owners: true
     }
   },
   roles: true

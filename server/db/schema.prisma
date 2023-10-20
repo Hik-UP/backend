@@ -46,6 +46,7 @@ model Skin {
     model               String              @db.VarChar(1024)
     users               User[]              @relation("User")
     owners              User[]              @relation("Owner")
+    price               Float
 }
 
 model Notification {

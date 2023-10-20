@@ -7,7 +7,8 @@ async function create(newSkin: INewSkin): Promise<void> {
       name: newSkin.name,
       description: newSkin.description,
       pictures: newSkin.pictures,
-      model: newSkin.model
+      model: newSkin.model,
+      price: newSkin.price
     }
   });
 }

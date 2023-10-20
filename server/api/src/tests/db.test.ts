@@ -19,7 +19,8 @@ async function createDefaultSkin(): Promise<void> {
       name: vars.defaultSkin.name,
       description: vars.defaultSkin.description,
       pictures: vars.defaultSkin.pictures,
-      model: vars.defaultSkin.model
+      model: vars.defaultSkin.model,
+      price: vars.defaultSkin.price
     }
   });
 

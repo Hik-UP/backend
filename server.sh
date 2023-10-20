@@ -9,7 +9,6 @@ readonly WORKDIR="$(dirname $(readlink -f "${BASH_SOURCE[0]}"))"
 
 source "${WORKDIR}/scripts/global.sh"
 source "${WORKDIR}/scripts/db.sh"
-source "${WORKDIR}/scripts/redis.sh"
 source "${WORKDIR}/scripts/api.sh"
 source "${WORKDIR}/scripts/nginx.sh"
 
@@ -34,12 +33,6 @@ help() {
   echo './server.sh	db		gui		stop'
   echo './server.sh	db		gui		restart'
   echo
-  echo './server.sh	redis				start'
-  echo './server.sh	redis				stop'
-  echo './server.sh	redis				restart'
-  echo './server.sh	redis				shell'
-  echo './server.sh	redis				logs'
-  echo
   echo './server.sh	api				dev'
   echo './server.sh	api				deploy'
   echo './server.sh	api				build'
@@ -63,14 +56,12 @@ help() {
 
 dev() {
   start_db
-  start_redis
   dev_api
   dev_nginx
 }
 
 deploy() {
   start_db
-  start_redis
   deploy_api
   deploy_nginx
 }
@@ -78,7 +69,6 @@ deploy() {
 stop() {
   stop_nginx
   stop_api
-  stop_redis
   stop_db
 }
 
@@ -98,7 +88,6 @@ restart() {
 
 install() {
   install_db
-  install_redis
   install_api
   install_nginx
 }
@@ -106,7 +95,6 @@ install() {
 uninstall() {
   uninstall_nginx
   uninstall_api
-  uninstall_redis
   uninstall_db
   docker network rm "${FOLDER_NAME}_network"
   docker builder prune --all --force
@@ -122,11 +110,6 @@ parse() {
     db)
       shift
       parse_db "$@"
-      exit $?
-      ;;
-    redis)
-      shift
-      parse_redis "$@"
       exit $?
       ;;
     api)
