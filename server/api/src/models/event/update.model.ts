@@ -17,7 +17,6 @@ export async function removeParticipant(
   const newParticipants = participants.filter((value) => {
     return value != userId;
   });
-  console.log(newParticipants);
   await prisma.event.update({
     data: { participants: { set: newParticipants } },
     where: {

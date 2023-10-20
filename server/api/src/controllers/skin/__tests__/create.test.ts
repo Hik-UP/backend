@@ -224,19 +224,6 @@ describe(`${method.toUpperCase()} ${route}`, () => {
 
       mainTest.verify.created(res);
 
-      try {
-        res = await request(httpsServer)
-          .post('/api/skin/retrieve')
-          .set('Authorization', `Bearer ${user.token}`)
-          .send({
-            user: {
-              id: user.id,
-              roles: user.roles
-            }
-          });
-      } catch (e) {
-        console.log(e, 'ERROR');
-      }
       const retrievedSkin: ISkinTest = res.body.skins.find(
         (value: ISkinTest) => value.name === skin.name
       );

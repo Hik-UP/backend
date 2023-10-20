@@ -99,7 +99,6 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         event: { ...event }
       });
 
-    console.log(res.error);
     expect(res.statusCode).toBe(201);
   });
 });
