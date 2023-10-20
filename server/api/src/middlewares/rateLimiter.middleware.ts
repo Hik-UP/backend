@@ -13,6 +13,7 @@ function createRateLimiterMemory(): RateLimiterMemory {
 }
 
 function rateLimiter(req: Request, res: Response, next: NextFunction): void {
+  if (req.ip) {
   rateLimiterMemory
     .consume(req.ip)
     .then(() => {
@@ -25,6 +26,7 @@ function rateLimiter(req: Request, res: Response, next: NextFunction): void {
         error: 'Too Many Requests'
       });
     });
+  }
 }
 
 const rateLimiterMemory = createRateLimiterMemory();
