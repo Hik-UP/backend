@@ -53,6 +53,11 @@ function createUserRoutes(): express.Router {
     validator(userJOI.hike.organizer.update),
     userCtrl.hike.organizer.update
   );
+  userRoutes.put(
+    '/hike/organizer/leave',
+    validator(userJOI.hike.organizer.leave),
+    userCtrl.hike.organizer.leave
+  );
   userRoutes.delete(
     '/hike/organizer/remove',
     validator(userJOI.hike.organizer.remove),
@@ -63,6 +68,11 @@ function createUserRoutes(): express.Router {
     '/hike/attendee/leave',
     validator(userJOI.hike.attendee.leave),
     userCtrl.hike.attendee.leave
+  );
+  userRoutes.delete(
+    '/hike/attendee/remove',
+    validator(userJOI.hike.attendee.remove),
+    userCtrl.hike.attendee.remove
   );
 
   userRoutes.put(

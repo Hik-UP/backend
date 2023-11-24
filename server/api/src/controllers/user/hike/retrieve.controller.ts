@@ -9,6 +9,7 @@ async function retrieve(req: Request, res: Response): Promise<void> {
     const hikes: {
       organizerHikes: IHike[] | null;
       attendeeHikes: IHike[] | null;
+      leavedHikes: IHike[] | null;
       guestHikes: IHike[] | null;
     } | null = await dbUser.hike.retrieve(req.body.user.id);
 
@@ -20,6 +21,9 @@ async function retrieve(req: Request, res: Response): Promise<void> {
           : undefined,
         attendee: req.body.hike?.target.includes('attendee')
           ? hikes?.attendeeHikes
+          : undefined,
+        leaved: req.body.hike?.target.includes('leaved')
+          ? hikes?.leavedHikes
           : undefined,
         guest: req.body.hike?.target.includes('guest')
           ? hikes?.guestHikes

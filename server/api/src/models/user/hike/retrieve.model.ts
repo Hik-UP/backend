@@ -5,6 +5,7 @@ import { dbUserSelector } from '../selector.model';
 async function retrieve(userId: string): Promise<{
   organizerHikes: IHike[] | null;
   attendeeHikes: IHike[] | null;
+  leavedHikes: IHike[] | null;
   guestHikes: IHike[] | null;
 } | null> {
   return await prisma.user.findUnique({
@@ -16,6 +17,9 @@ async function retrieve(userId: string): Promise<{
         select: dbUserSelector.hike
       },
       attendeeHikes: {
+        select: dbUserSelector.hike
+      },
+      leavedHikes: {
         select: dbUserSelector.hike
       },
       guestHikes: {

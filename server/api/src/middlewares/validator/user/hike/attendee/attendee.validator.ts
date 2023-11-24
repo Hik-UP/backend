@@ -1,7 +1,9 @@
 import { leave } from './leave.validator';
+import { remove } from './remove.validator';
 
 const attendee = {
-  leave
+  leave,
+  remove
 };
 
 export { attendee };

@@ -20,7 +20,7 @@ const trail = Joi.object({
     .max(16)
     .required(),
   labels: Joi.array().items(Joi.string().max(256)).max(16).required(),
-  geoJSON: Joi.string().max(16384).required()
+  geoJSON: Joi.string().max(1000000).required()
 }).required();
 
 const create = Joi.object({

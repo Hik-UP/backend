@@ -1,7 +1,9 @@
 import { leave } from './leave.model';
+import { remove } from './remove.model';
 
 const attendee = {
-  leave
+  leave,
+  remove
 };
 
 export { attendee };

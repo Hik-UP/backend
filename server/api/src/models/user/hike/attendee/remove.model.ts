@@ -1,6 +1,6 @@
 import { prisma } from '../../../../utils/prisma.util';
 
-async function leave(userId: string, hikeId: string): Promise<void> {
+async function remove(userId: string, hikeId: string): Promise<void> {
   await prisma.user.update({
     where: { id: userId },
     data: {
@@ -9,13 +9,13 @@ async function leave(userId: string, hikeId: string): Promise<void> {
           id: hikeId
         }
       },
-      leavedHikes: {
-        connect: {
-          id: hikeId
+      stats: {
+        deleteMany: {
+          hikeId: hikeId
         }
       }
     }
   });
 }
 
-export { leave };
+export { remove };

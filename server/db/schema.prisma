@@ -28,6 +28,7 @@ model User {
     organizerHikes      Hike[]              @relation("Organizer")
     attendeeHikes       Hike[]              @relation("Attendee")
     guestHikes          Hike[]              @relation("Guest")
+    leavedHikes         Hike[]              @relation("Leaved")
     hikerHike           Hike?               @relation("Hiker", fields: [hikerHikeId], references: [id])
     stats               Stats[]
 
@@ -101,6 +102,7 @@ model Hike {
     organizers          User[]              @relation("Organizer")
     attendees           User[]              @relation("Attendee")
     guests              User[]              @relation("Guest")
+    leaved              User[]              @relation("Leaved")
     hikers              User[]              @relation("Hiker")
     stats               Stats[]
     status              HikeStatus          @default(IN_PROGRESS)

@@ -1,7 +1,9 @@
 import { leave } from './leave.controller';
+import { remove } from './remove.controller';
 
 const attendee = {
-  leave
+  leave,
+  remove
 };
 
 export { attendee };
