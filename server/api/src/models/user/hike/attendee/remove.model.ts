@@ -9,6 +9,11 @@ async function remove(userId: string, hikeId: string): Promise<void> {
           id: hikeId
         }
       },
+      leavedHikes: {
+        disconnect: {
+          id: hikeId
+        }
+      },
       stats: {
         deleteMany: {
           hikeId: hikeId
