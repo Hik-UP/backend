@@ -42,6 +42,13 @@ const hike = {
   id: true,
   name: true,
   description: true,
+  coins: {
+    select: {
+      id: true,
+      latitude: true,
+      longitude: true
+    }
+  },
   trail: {
     select: dbTrailSelector
   },

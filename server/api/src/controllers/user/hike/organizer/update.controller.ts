@@ -37,6 +37,7 @@ async function update(req: Request, res: Response): Promise<void> {
       trailId: req.body.trail?.id,
       attendees: req.body.hike.attendees,
       guests: req.body.hike.guests,
+      status: req.body.hike.status,
       schedule: req.body.hike.schedule
     });
 

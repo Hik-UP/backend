@@ -37,6 +37,7 @@ function join(socket: Socket) {
         latitude: data.hiker.latitude,
         longitude: data.hiker.longitude,
         stats: {
+          coins: stats[0].coins,
           steps: stats[0].steps,
           distance: stats[0].distance,
           completed: stats[0].completed
@@ -60,11 +61,17 @@ function join(socket: Socket) {
 
       socket.data.hike = data.hike;
       socket.data.hiker = hiker;
-      callback(JSON.stringify({ stats: stats[0], hikers: hikers }));
+
+      if (callback) {
+        callback(JSON.stringify({ stats: stats[0], hikers: hikers }));
+      }
       logger.socket.info('Hiker join succeed');
     } catch {
       logger.socket.error('Hiker join failed');
-      callback(JSON.stringify({ error: 'Internal Server Error' }));
+
+      if (callback) {
+        callback(JSON.stringify({ error: 'Internal Server Error' }));
+      }
       socket.disconnect();
     }
   };

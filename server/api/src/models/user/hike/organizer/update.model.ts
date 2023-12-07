@@ -22,6 +22,7 @@ async function update(userId: string, hike: IUpdateHike): Promise<void> {
               connect: hike.guests?.add,
               disconnect: hike.guests?.remove
             },
+            status: hike.status,
             schedule: hike.schedule
           }
         }

@@ -6,6 +6,11 @@ async function create(newHike: INewHike): Promise<void> {
     data: {
       name: newHike.name,
       description: newHike.description,
+      coins: {
+        createMany: {
+          data: newHike.coins
+        }
+      },
       trailId: newHike.trailId,
       organizers: {
         connect: {

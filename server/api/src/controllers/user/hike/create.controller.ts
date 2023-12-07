@@ -4,10 +4,27 @@ import { dbUser } from '../../../models/user/user.model';
 import { notification } from '../../../utils/notification.util';
 import { logger } from '../../../utils/logger.util';
 import { HttpError } from '../../../utils/error.util';
+import { dbTrail } from '../../../models/trail/trail.model';
+
+async function generateCoins(trailId: string): Promise<{ latitude: number, longitude: number }[]> {
+  const trailGeoJSON = JSON.parse((await dbTrail.findOne(trailId))?.geoJSON || '');
+  const hikeCoins: { latitude: number, longitude: number }[] = [];
+  const coinsNumber = Math.floor(Math.random() * trailGeoJSON.features[0].geometry.coordinates.length);
+
+  for (var i = 0; i < coinsNumber; i += 1) {
+    const position = Math.floor(Math.random() * trailGeoJSON.features[0].geometry.coordinates.length);
+    const coordinate: number[] = trailGeoJSON.features[0].geometry.coordinates[position];
+
+    hikeCoins.push({ latitude: coordinate[1], longitude: coordinate[0] });
+  }
+
+  return hikeCoins;
+}
 
 async function create(req: Request, res: Response): Promise<void> {
   try {
     const { email: userEmail } = (await dbUser.findOne(req.body.user.id)) || {};
+    const hikeCoins = await generateCoins(req.body.trail.id);
 
     req.body.hike.guests?.forEach((value: { email: string }) => {
       if (value.email === userEmail) {
@@ -24,6 +41,7 @@ async function create(req: Request, res: Response): Promise<void> {
     await dbUser.hike.create({
       name: req.body.hike.name,
       description: req.body.hike.description,
+      coins: hikeCoins,
       organizerId: req.body.user.id,
       trailId: req.body.trail.id,
       guests: req.body.hike.guests,

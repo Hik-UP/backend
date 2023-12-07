@@ -4,6 +4,10 @@ import { ITrail } from './trail.type';
 interface INewHike {
   name: string;
   description: string;
+  coins: {
+    latitude: number;
+    longitude: number;
+  }[]
   organizerId: string;
   trailId: string;
   guests?: [{ email: string }];
@@ -15,6 +19,7 @@ interface IHike {
   id: string;
   name: string;
   description: string;
+  coins: IHikeCoins[];
   trail: ITrail;
   organizers: IUserPublicProfile[];
   attendees: IUserPublicProfile[];
@@ -41,6 +46,12 @@ interface IHikeStats {
   steps: number;
   distance: number;
   completed: boolean;
+}
+
+interface IHikeCoins {
+  id: string;
+  latitude: number;
+  longitude: number;
 }
 
 export { INewHike, IHike, IUpdateHike };

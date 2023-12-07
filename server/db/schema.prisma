@@ -17,6 +17,8 @@ model User {
     fcmToken            String              @default("")
     picture             String              @db.VarChar(1024)
 
+    coins               Int                 @default(0)
+
     skinId              String              @db.VarChar(36)
     skin                Skin                @relation("User", fields: [skinId], references: [id])
     skins               Skin[]              @relation("Owner")
@@ -97,6 +99,7 @@ model Hike {
     id                  String              @id @unique @default(uuid()) @db.VarChar(36)
     name                String              @db.VarChar(128)
     description         String              @db.VarChar(1024)
+    coins               Coins[]             @relation("Hike")
     trailId             String              @db.VarChar(36)
     trail               Trail               @relation(fields: [trailId], references: [id])
     organizers          User[]              @relation("Organizer")
@@ -110,12 +113,21 @@ model Hike {
     createdAt           DateTime            @default(now())
 }
 
+model Coins {
+    id                  String              @id @unique @default(uuid()) @db.VarChar(36)
+    latitude            Float               @db.DoublePrecision
+    longitude           Float               @db.DoublePrecision
+    hikeId              String              @db.VarChar(36)
+    hike                Hike                @relation("Hike", fields: [hikeId], references: [id])
+}
+
 model Stats {
     id                  String              @id @unique @default(uuid()) @db.VarChar(36)
     userId              String              @db.VarChar(36)
     user                User                @relation(fields: [userId], references: [id])
     hikeId              String              @db.VarChar(36)
     hike                Hike                @relation(fields: [hikeId], references: [id])
+    coins               Int                 @default(0)
     steps               Int                 @default(0)
     distance            Int                 @default(0)
     completed           Boolean             @default(false)
