@@ -7,7 +7,7 @@ interface INewHike {
   coins: {
     latitude: number;
     longitude: number;
-  }[]
+  }[];
   organizerId: string;
   trailId: string;
   guests?: [{ email: string }];

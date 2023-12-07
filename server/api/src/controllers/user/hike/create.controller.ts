@@ -6,14 +6,23 @@ import { logger } from '../../../utils/logger.util';
 import { HttpError } from '../../../utils/error.util';
 import { dbTrail } from '../../../models/trail/trail.model';
 
-async function generateCoins(trailId: string): Promise<{ latitude: number, longitude: number }[]> {
-  const trailGeoJSON = JSON.parse((await dbTrail.findOne(trailId))?.geoJSON || '');
-  const hikeCoins: { latitude: number, longitude: number }[] = [];
-  const coinsNumber = Math.floor(Math.random() * trailGeoJSON.features[0].geometry.coordinates.length);
+async function generateCoins(
+  trailId: string
+): Promise<{ latitude: number; longitude: number }[]> {
+  const trailGeoJSON = JSON.parse(
+    (await dbTrail.findOne(trailId))?.geoJSON || ''
+  );
+  const hikeCoins: { latitude: number; longitude: number }[] = [];
+  const coinsNumber = Math.floor(
+    Math.random() * trailGeoJSON.features[0].geometry.coordinates.length
+  );
 
   for (var i = 0; i < coinsNumber; i += 1) {
-    const position = Math.floor(Math.random() * trailGeoJSON.features[0].geometry.coordinates.length);
-    const coordinate: number[] = trailGeoJSON.features[0].geometry.coordinates[position];
+    const position = Math.floor(
+      Math.random() * trailGeoJSON.features[0].geometry.coordinates.length
+    );
+    const coordinate: number[] =
+      trailGeoJSON.features[0].geometry.coordinates[position];
 
     hikeCoins.push({ latitude: coordinate[1], longitude: coordinate[0] });
   }

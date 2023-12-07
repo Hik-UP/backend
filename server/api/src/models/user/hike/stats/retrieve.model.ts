@@ -5,7 +5,7 @@ async function retrieve(
   hikeId: string
 ): Promise<
   | {
-      coins: number,
+      coins: number;
       steps: number;
       distance: number;
       completed: boolean;

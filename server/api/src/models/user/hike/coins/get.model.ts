@@ -1,6 +1,10 @@
 import { prisma } from '../../../../utils/prisma.util';
 
-async function get(userId: string, hikeId: string, coinId: string): Promise<void> {
+async function get(
+  userId: string,
+  hikeId: string,
+  coinId: string
+): Promise<void> {
   await prisma.user.update({
     where: {
       id: userId

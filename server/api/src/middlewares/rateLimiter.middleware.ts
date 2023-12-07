@@ -14,18 +14,18 @@ function createRateLimiterMemory(): RateLimiterMemory {
 
 function rateLimiter(req: Request, res: Response, next: NextFunction): void {
   if (req.ip) {
-  rateLimiterMemory
-    .consume(req.ip)
-    .then(() => {
-      logger.api.info(`Request ${req.method} ${req.url} allowed`);
-      next();
-    })
-    .catch(() => {
-      logger.api.warn(`Request ${req.method} ${req.url} blocked`);
-      res.status(429).json({
-        error: 'Too Many Requests'
+    rateLimiterMemory
+      .consume(req.ip)
+      .then(() => {
+        logger.api.info(`Request ${req.method} ${req.url} allowed`);
+        next();
+      })
+      .catch(() => {
+        logger.api.warn(`Request ${req.method} ${req.url} blocked`);
+        res.status(429).json({
+          error: 'Too Many Requests'
+        });
       });
-    });
   }
 }
 
