@@ -14,6 +14,11 @@ async function remove(userId: string, hikeId: string): Promise<void> {
               deleteMany: {
                 hikeId: hikeId
               }
+            },
+            coins: {
+              deleteMany: {
+                hikeId: hikeId
+              }
             }
           }
         },

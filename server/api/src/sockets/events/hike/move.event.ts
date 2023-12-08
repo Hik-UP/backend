@@ -11,11 +11,11 @@ function calcCrow(
   if (pos1.lat == pos2.lat && pos1.long == pos2.long) {
     return 0;
   } else {
-    var radlat1 = (Math.PI * pos1.lat) / 180;
-    var radlat2 = (Math.PI * pos2.lat) / 180;
-    var theta = pos1.long - pos2.long;
-    var radtheta = (Math.PI * theta) / 180;
-    var dist =
+    const radlat1 = (Math.PI * pos1.lat) / 180;
+    const radlat2 = (Math.PI * pos2.lat) / 180;
+    const theta = pos1.long - pos2.long;
+    const radtheta = (Math.PI * theta) / 180;
+    let dist =
       Math.sin(radlat1) * Math.sin(radlat2) +
       Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
     if (dist > 1) {
@@ -48,10 +48,10 @@ function move(socket: Socket) {
       };
       const { coins } =
         (await dbUser.hike.coins.retrieve(socket.data.hike.id)) || {};
-      var coinId = null;
-      var isEnded = false;
+      let coinId = null;
+      let isEnded = false;
 
-      for (var i = 0; coins !== undefined && i < coins.length; i += 1) {
+      for (let i = 0; coins !== undefined && i < coins.length; i += 1) {
         const distance = calcCrow(
           { lat: data.hiker.latitude, long: data.hiker.longitude },
           { lat: coins[i].latitude, long: coins[i].longitude }
