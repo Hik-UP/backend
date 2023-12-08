@@ -39,12 +39,13 @@ function move(socket: Socket) {
       const { data } = req;
       const hiker = {
         id: socket.data.hiker.id,
-        username: socket.data.hiker.username,
-        picture: socket.data.hiker.picture,
-        skin: socket.data.hiker.skin,
         latitude: data.hiker.latitude,
         longitude: data.hiker.longitude,
-        stats: data.hiker.stats
+        stats: {
+          steps: data.hiker.stats.steps,
+          distance: data.hiker.stats.distance,
+          completed: data.hiker.stats.completed
+        }
       };
       const { coins } =
         (await dbUser.hike.coins.retrieve(socket.data.hike.id)) || {};
@@ -85,6 +86,7 @@ function move(socket: Socket) {
               coin: { id: coinId }
             })
           );
+          socket.data.hiker.stats.coins = socket.data.hiker.stats.coins + 1;
           logger.socket.info('Hiker coin transfer succeed');
           break;
         }
@@ -95,7 +97,11 @@ function move(socket: Socket) {
           hiker: hiker
         })
       );
-      socket.data.hiker = hiker;
+      socket.data.hiker.latitude = data.hiker.latitude,
+      socket.data.hiker.longitude = data.hiker.longitude,
+      socket.data.hiker.stats.steps = data.hiker.stats.steps,
+      socket.data.hiker.stats.distance = data.hiker.stats.distance,
+      socket.data.hiker.stats.completed = data.hiker.stats.completed
 
       if (callback) {
         callback(JSON.stringify({ coin: coinId, end: isEnded }));

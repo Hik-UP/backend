@@ -33,7 +33,8 @@ function join(socket: Socket) {
         id: socket.handshake.auth.id.toString(),
         username: username,
         picture: picture,
-        skin: skin?.model,
+        skin: skin?.pictures,
+        skinState: 0,
         latitude: data.hiker.latitude,
         longitude: data.hiker.longitude,
         stats: {
@@ -57,6 +58,7 @@ function join(socket: Socket) {
       );
 
       socket.on('hike:hiker:move', hikeEvents.move(socket));
+      socket.on('hike:hiker:animate', hikeEvents.animate(socket));
       socket.on('disconnect', hikeEvents.disconnect(socket));
 
       socket.data.hike = data.hike;
