@@ -13,16 +13,17 @@ async function generateCoins(
     (await dbTrail.findOne(trailId))?.geoJSON || ''
   );
   const hikeCoins: { latitude: number; longitude: number }[] = [];
-  const coinsNumber = Math.floor(
-    Math.random() * trailGeoJSON.features[0].geometry.coordinates.length
-  );
+  const coinsNumber = Math.floor(Math.random() * (trailGeoJSON.features[0].geometry.coordinates.length - 6) + 6);
+  const coinsPosition: number[] = [];
 
   for (var i = 0; i < coinsNumber; i += 1) {
-    const position = Math.floor(
-      Math.random() * trailGeoJSON.features[0].geometry.coordinates.length
-    );
+    const position = Math.floor(Math.random() * (trailGeoJSON.features[0].geometry.coordinates.length - 1) + 1);
+
+    coinsPosition.indexOf(position) === -1 ? coinsPosition.push(position) : null;
+  }
+  for (var i = 0; i < coinsPosition.length; i += 1) {
     const coordinate: number[] =
-      trailGeoJSON.features[0].geometry.coordinates[position];
+      trailGeoJSON.features[0].geometry.coordinates[coinsPosition[i]];
 
     hikeCoins.push({ latitude: coordinate[1], longitude: coordinate[0] });
   }
