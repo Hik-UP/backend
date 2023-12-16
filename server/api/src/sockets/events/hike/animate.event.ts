@@ -13,7 +13,7 @@ function animate(socket: Socket) {
       const { data } = req;
       const hiker = {
         id: socket.data.hiker.id,
-        skinState: data.hiker.skinState,
+        skinState: data.hiker.skinState
       };
 
       socket.to(socket.data.hike.id).emit(

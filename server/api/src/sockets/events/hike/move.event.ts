@@ -103,11 +103,11 @@ function move(socket: Socket) {
           hiker: hiker
         })
       );
-      socket.data.hiker.latitude = data.hiker.latitude,
-      socket.data.hiker.longitude = data.hiker.longitude,
-      socket.data.hiker.stats.steps = data.hiker.stats.steps,
-      socket.data.hiker.stats.distance = data.hiker.stats.distance,
-      socket.data.hiker.stats.completed = data.hiker.stats.completed
+      (socket.data.hiker.latitude = data.hiker.latitude),
+        (socket.data.hiker.longitude = data.hiker.longitude),
+        (socket.data.hiker.stats.steps = data.hiker.stats.steps),
+        (socket.data.hiker.stats.distance = data.hiker.stats.distance),
+        (socket.data.hiker.stats.completed = data.hiker.stats.completed);
 
       if (callback) {
         callback(JSON.stringify({ coin: coinId, end: isEnded }));
