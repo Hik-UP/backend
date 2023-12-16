@@ -1,6 +1,5 @@
 import { Socket } from 'socket.io';
 
-import { dbUser } from '../../../models/user/user.model';
 import { hikeJOI } from '../../middlewares/validator/hike/hike.validator';
 import { logger } from '../../../utils/logger.util';
 

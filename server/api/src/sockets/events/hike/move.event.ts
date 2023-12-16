@@ -65,6 +65,7 @@ function move(socket: Socket) {
             socket.data.hike.id,
             coinId
           );
+          socket.data.hiker.stats.coins = socket.data.hiker.stats.coins + 1;
 
           if (coins.length - 1 === 0) {
             isEnded = true;
@@ -83,10 +84,15 @@ function move(socket: Socket) {
           socket.to(socket.data.hike.id).emit(
             'hike:coin:get',
             JSON.stringify({
+              hiker: {
+                id: socket.data.hiker.id,
+                stats: {
+                  coins: socket.data.hiker.stats.coins
+                }
+              },
               coin: { id: coinId }
             })
           );
-          socket.data.hiker.stats.coins = socket.data.hiker.stats.coins + 1;
           logger.socket.info('Hiker coin transfer succeed');
           break;
         }
