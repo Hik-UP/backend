@@ -25,7 +25,7 @@ async function generateCoins(
     const coordinate: number[] =
       trailGeoJSON.features[0].geometry.coordinates[coinsPosition[i]];
 
-    hikeCoins.push({ latitude: coordinate[1], longitude: coordinate[0] });
+    hikeCoins.indexOf({ latitude: coordinate[1], longitude: coordinate[0] }) === -1 ? hikeCoins.push({ latitude: coordinate[1], longitude: coordinate[0] }) : null;
   }
 
   return hikeCoins;
