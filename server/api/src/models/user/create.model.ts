@@ -3,7 +3,7 @@ import { INewUser } from '../../ts/user.type';
 import { dbSkin } from '../skin/skin.model';
 
 async function create(newUser: INewUser): Promise<void> {
-  const { id: skinId } = ((await dbSkin.retrieve()) || [])[0] || {};
+  const { id: skinId } = ((await dbSkin.retrieve()) || []).find(item => item.price === 0) || { id: "" };
   const pictures = [
     'https://firebasestorage.googleapis.com/v0/b/hikup-app.appspot.com/o/avatars%2F1.jpg?alt=media&token=dbbe270d-d558-413e-a0b4-9c87771df510',
     'https://firebasestorage.googleapis.com/v0/b/hikup-app.appspot.com/o/avatars%2F2.jpg?alt=media&token=893f091f-fe0e-4956-af07-877f35c3599a',
