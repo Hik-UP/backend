@@ -2,6 +2,7 @@ import { create } from './create.model';
 import { retrieve } from './retrieve.model';
 import { update } from './update.model';
 import { findOne } from './findOne.model';
+import { findAttendees } from './findAttendees';
 import { isUserInHike } from './isUserInHike.model';
 import { organizer } from './organizer/organizer.model';
 import { attendee } from './attendee/attendee.model';
@@ -14,6 +15,7 @@ const hike = {
   retrieve,
   update,
   findOne,
+  findAttendees,
   isUserInHike,
   organizer,
   attendee,

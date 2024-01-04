@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { CronJob } from 'cron';
 
 import { dbUser } from '../../../models/user/user.model';
 import { notification } from '../../../utils/notification.util';
@@ -19,7 +20,7 @@ async function generateCoins(
   );
   const coinsPosition: number[] = [];
 
-  for (var i = 0; i < coinsNumber; i += 1) {
+  for (let i = 0; i < coinsNumber; i += 1) {
     const position = Math.floor(
       Math.random() *
         (trailGeoJSON.features[0].geometry.coordinates.length - 1) +
@@ -30,7 +31,7 @@ async function generateCoins(
       ? coinsPosition.push(position)
       : null;
   }
-  for (var i = 0; i < coinsPosition.length; i += 1) {
+  for (let i = 0; i < coinsPosition.length; i += 1) {
     const coordinate: number[] =
       trailGeoJSON.features[0].geometry.coordinates[coinsPosition[i]];
 
@@ -41,6 +42,30 @@ async function generateCoins(
   }
 
   return hikeCoins;
+}
+
+async function scheduleHike(hikeId: string) {
+  try {
+    const hike = await dbUser.hike.findOne(hikeId);
+    const hikeAttendees = await dbUser.hike.findAttendees(hikeId);
+
+    await dbUser.hike.update({
+      id: hikeId,
+      status: 'IN_PROGRESS'
+    });
+
+    await notification.send({
+      receiversEmail: hikeAttendees?.attendees?.map(
+        (value: { email: string }) => value.email
+      ),
+      title: hike?.trail.name || 'Randonnée commencé',
+      body: 'La randonnée à commencé !'
+    });
+
+    logger.api.info('User hike schedule succeed');
+  } catch (error) {
+    logger.api.error('User hike schedule failed\n' + error);
+  }
 }
 
 async function create(req: Request, res: Response): Promise<void> {
@@ -57,10 +82,10 @@ async function create(req: Request, res: Response): Promise<void> {
       receiversEmail: req.body.hike.guests?.map(
         (value: { email: string }) => value.email
       ),
-      title: 'Hike invitation',
-      body: "You've received an invitation to participate in a hike"
+      title: 'Invitation à une randonnée',
+      body: 'Vous avez reçu une invitation pour participer à une randonnée !'
     });
-    await dbUser.hike.create({
+    const newHike = await dbUser.hike.create({
       name: req.body.hike.name,
       description: req.body.hike.description,
       coins: hikeCoins,
@@ -72,6 +97,15 @@ async function create(req: Request, res: Response): Promise<void> {
         ? new Date(req.body.hike.schedule * 1000)
         : undefined
     });
+
+    if (newHike !== undefined && newHike.status === 'SCHEDULED') {
+      CronJob.from({
+        cronTime: new Date(req.body.hike.schedule * 1000),
+        onTick: () => scheduleHike(newHike.id),
+        start: true,
+        timeZone: 'Europe/Paris'
+      });
+    }
 
     logger.api.info('User hike creation succeed');
     res.status(201).json({

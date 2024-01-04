@@ -30,6 +30,16 @@ interface IHike {
   createdAt: Date;
 }
 
+interface IHikeResult {
+  id: string;
+  name: string;
+  description: string;
+  trailId: string;
+  status: 'SCHEDULED' | 'IN_PROGRESS' | 'DONE';
+  schedule: Date;
+  createdAt: Date;
+}
+
 interface IUpdateHike {
   id: string;
   name?: string;
@@ -54,4 +64,4 @@ interface IHikeCoins {
   longitude: number;
 }
 
-export { INewHike, IHike, IUpdateHike };
+export { INewHike, IHike, IHikeResult, IUpdateHike };

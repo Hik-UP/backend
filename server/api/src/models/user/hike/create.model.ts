@@ -1,8 +1,8 @@
 import { prisma } from '../../../utils/prisma.util';
-import { INewHike } from '../../../ts/hike.type';
+import { INewHike, IHikeResult } from '../../../ts/hike.type';
 
-async function create(newHike: INewHike): Promise<void> {
-  await prisma.hike.create({
+async function create(newHike: INewHike): Promise<IHikeResult | undefined> {
+  const hike = await prisma.hike.create({
     data: {
       name: newHike.name,
       description: newHike.description,
@@ -38,6 +38,8 @@ async function create(newHike: INewHike): Promise<void> {
       schedule: newHike.schedule
     }
   });
+
+  return hike;
 }
 
 export { create };
