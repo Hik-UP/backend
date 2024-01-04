@@ -14,7 +14,6 @@ async function send(newNotification: {
       title: newNotification.title,
       body: newNotification.body
     };
-    console.log(newNotification);
 
     for (const id of newNotification.receiversId || []) {
       const fcmToken = (await dbUser.findSecrets({ id: id }))?.fcmToken;
