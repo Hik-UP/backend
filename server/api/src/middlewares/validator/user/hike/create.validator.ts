@@ -16,7 +16,7 @@ const hike = Joi.object({
       })
     )
     .max(10),
-  schedule: Joi.date().timestamp('unix').greater('now')
+  schedule: Joi.date().timestamp('unix')
 }).required();
 
 const create = Joi.object({
