@@ -5,6 +5,14 @@ async function leave(userId: string, hikeId: string): Promise<void> {
     where: { id: userId },
     data: {
       attendeeHikes: {
+        update: {
+          where: {
+            id: hikeId
+          },
+          data: {
+            status: 'DONE'
+          }
+        },
         disconnect: {
           id: hikeId
         }
