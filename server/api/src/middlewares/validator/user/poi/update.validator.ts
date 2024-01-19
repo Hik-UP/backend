@@ -11,14 +11,14 @@ const poi = Joi.object({
     add: Joi.array()
       .items(
         Joi.object({
-          email: Joi.string().email().max(256)
+          email: Joi.string().max(256)
         })
       )
       .max(10),
     remove: Joi.array()
       .items(
         Joi.object({
-          email: Joi.string().email().max(256)
+          email: Joi.string().max(256)
         })
       )
       .max(10)
