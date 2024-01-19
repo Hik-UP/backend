@@ -44,7 +44,7 @@ async function auth(
   } catch {
     logger.api.warn('User authentication failed');
     res.status(401).json({
-      error: 'Unauthorized'
+      error: 'Token expired or invalid'
     });
   }
 }
