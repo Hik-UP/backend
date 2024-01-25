@@ -1,4 +1,7 @@
+import nodemailer from 'nodemailer';
+import Mail from 'nodemailer/lib/mailer';
 import { google } from 'googleapis';
+
 
 const OAuth2 = google.auth.OAuth2;
 
@@ -32,12 +35,14 @@ const createTransporter = async () => {
       clientSecret: process.env.EMAIL_CLIENT_SECRET,
       refreshToken: process.env.EMAIL_REFRESH_TOKEN
     }
-  });
+  } as nodemailer.TransportOptions);
 
   return transporter;
 };
 
-const sendEmail = async (emailOptions) => {
+const sendEmail = async (emailOptions: Mail.Options) => {
   const emailTransporter = await createTransporter();
   await emailTransporter.sendMail(emailOptions);
 };
+
+export { sendEmail };

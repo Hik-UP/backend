@@ -20,7 +20,7 @@ async function create(newUser: INewUser): Promise<void> {
     data: {
       username: newUser.username,
       email: newUser.email,
-      mailToken: newUser.token,
+      token: newUser.token,
       password: newUser.password,
       picture: picture,
       skinId: skinId,

@@ -23,6 +23,7 @@ interface IUserPublicProfile {
 interface IUserSecrets {
   id: string;
   isVerified: boolean;
+  token: string | null;
   password: string;
   fcmToken: string;
 }

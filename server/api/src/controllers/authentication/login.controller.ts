@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 
+import { IUserSecrets } from '../../ts/user.type';
 import { dbUser } from '../../models/user/user.model';
 import { logger } from '../../utils/logger.util';
 import { HttpError } from '../../utils/error.util';
@@ -10,6 +11,14 @@ import { HttpError } from '../../utils/error.util';
 interface PrivateKeySecrets {
   key: Buffer;
   passphrase: string;
+}
+
+function verify(user: IUserSecrets, token: string): boolean {
+  if (user.token === token) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 async function login(req: Request, res: Response): Promise<void> {
@@ -34,8 +43,20 @@ async function login(req: Request, res: Response): Promise<void> {
     if (!(await bcrypt.compare(req.body.user.password, user.password))) {
       throw new HttpError(401, 'Unauthorized');
     }
-    if (!user.isVerified) {
+    if (!user.isVerified && req.body.verify === undefined) {
       throw new HttpError(403, 'Forbidden');
+    } else if (
+      !user.isVerified &&
+      req.body.verify !== undefined &&
+      !verify(user, req.body.verify.token)
+    ) {
+      throw new HttpError(401, 'Unauthorized');
+    } else if (
+      !user.isVerified &&
+      req.body.verify !== undefined &&
+      verify(user, req.body.verify.token)
+    ) {
+      await dbUser.verify(user.id);
     }
 
     const token = jwt.sign(
@@ -63,7 +84,8 @@ async function login(req: Request, res: Response): Promise<void> {
 }
 
 const loginCtrl = {
-  login
+  login,
+  verify
 };
 
 export { loginCtrl };

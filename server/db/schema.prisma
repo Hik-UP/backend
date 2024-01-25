@@ -14,7 +14,7 @@ model User {
     username            String              @unique @db.VarChar(24)
     email               String              @unique @db.VarChar(256)
     isVerified          Boolean             @default(false)
-    mailToken           String?             @db.VarChar(6)
+    token               String?             @db.VarChar(6)
     password            String              @db.VarChar(60)
     fcmToken            String              @default("")
     picture             String              @db.VarChar(1024)
