@@ -3,6 +3,7 @@ import { ISkin } from './skin.type';
 interface INewUser {
   username: string;
   email: string;
+  token: string;
   password: string;
 }
 
@@ -21,6 +22,7 @@ interface IUserPublicProfile {
 
 interface IUserSecrets {
   id: string;
+  isVerified: boolean;
   password: string;
   fcmToken: string;
 }

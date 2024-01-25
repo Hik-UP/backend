@@ -34,6 +34,9 @@ async function login(req: Request, res: Response): Promise<void> {
     if (!(await bcrypt.compare(req.body.user.password, user.password))) {
       throw new HttpError(401, 'Unauthorized');
     }
+    if (!user.isVerified) {
+      throw new HttpError(403, 'Forbidden');
+    }
 
     const token = jwt.sign(
       { user: { id: user.id, roles: userRoles } },
