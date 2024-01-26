@@ -9,8 +9,13 @@ const user = Joi.object({
   fcmToken: Joi.string().max(512)
 });
 
+const verify = Joi.object({
+  token: Joi.string().min(6).max(6).alphanum().required()
+});
+
 const update = Joi.object({
-  user: authJOI.payload.concat(user).min(3).required()
+  user: authJOI.payload.concat(user).min(3).required(),
+  verify: verify
 }).required();
 
 export { update };

@@ -28,9 +28,17 @@ interface IUserSecrets {
   fcmToken: string;
 }
 
+interface IUserToken {
+  type: number;
+  value: string;
+  email: string;
+  creation: number;
+}
+
 interface IUpdateUserProfile {
   username?: string;
   email?: string;
+  token?: string;
   picture?: string;
   fcmToken?: string;
   skinId?: string;
@@ -46,6 +54,7 @@ export {
   IUserProfile,
   IUserPublicProfile,
   IUserSecrets,
+  IUserToken,
   IUpdateUserProfile,
   ISkinOwner
 };

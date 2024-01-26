@@ -3,22 +3,15 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 
-import { IUserSecrets } from '../../ts/user.type';
+import { IUserToken } from '../../ts/user.type';
 import { dbUser } from '../../models/user/user.model';
+import { verify } from '../../utils/verify.util';
 import { logger } from '../../utils/logger.util';
 import { HttpError } from '../../utils/error.util';
 
 interface PrivateKeySecrets {
   key: Buffer;
   passphrase: string;
-}
-
-function verify(user: IUserSecrets, token: string): boolean {
-  if (user.token === token) {
-    return true;
-  } else {
-    return false;
-  }
 }
 
 async function login(req: Request, res: Response): Promise<void> {
@@ -32,8 +25,12 @@ async function login(req: Request, res: Response): Promise<void> {
       algorithm: 'RS256'
     };
     const user = await dbUser.findSecrets({ email: req.body.user.email });
+    let mailToken: IUserToken | null = null;
     if (!user) {
       throw new HttpError(401, 'Unauthorized');
+    }
+    if (user.token) {
+      mailToken = JSON.parse(user.token);
     }
     const { roles: userRoles } = (await dbUser.findOne(user.id)) || {};
     if (!userRoles) {
@@ -48,25 +45,27 @@ async function login(req: Request, res: Response): Promise<void> {
     } else if (
       !user.isVerified &&
       req.body.verify !== undefined &&
-      !verify(user, req.body.verify.token)
+      mailToken &&
+      !verify.token(mailToken, req.body.verify.token)
     ) {
       throw new HttpError(401, 'Unauthorized');
     } else if (
       !user.isVerified &&
       req.body.verify !== undefined &&
-      verify(user, req.body.verify.token)
+      mailToken &&
+      verify.token(mailToken, req.body.verify.token)
     ) {
-      await dbUser.verify(user.id);
+      await verify.success(user.id);
     }
 
-    const token = jwt.sign(
+    const jwToken = jwt.sign(
       { user: { id: user.id, roles: userRoles } },
       privateKeySecrets,
       signOptions
     );
     logger.api.info('User login succeed');
     res.status(200).json({
-      user: { id: user.id, roles: userRoles, token: token }
+      user: { id: user.id, roles: userRoles, token: jwToken }
     });
   } catch (error) {
     if (error instanceof HttpError) {
