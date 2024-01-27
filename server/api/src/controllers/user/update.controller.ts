@@ -61,6 +61,7 @@ async function update(req: Request, res: Response): Promise<void> {
       });
       verify.success(secrets.id);
     } else if (
+      req.body.user.email &&
       req.body.user.email !== user?.email &&
       ((req.body.verify &&
         token !== null &&
