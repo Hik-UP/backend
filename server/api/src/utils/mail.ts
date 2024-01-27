@@ -2,7 +2,6 @@ import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { google } from 'googleapis';
 
-
 const OAuth2 = google.auth.OAuth2;
 
 const createTransporter = async () => {

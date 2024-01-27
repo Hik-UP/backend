@@ -46,12 +46,12 @@ async function update(req: Request, res: Response): Promise<void> {
       });
       throw new HttpError(403, 'Forbidden');
     } else if (
-      (secrets && token !== null && req.body.user.email === user?.email) || (
-      req.body.user.email !== user?.email &&
-      req.body.verify &&
-      token !== null &&
-      secrets &&
-      verify.token(token, req.body.verify.token))
+      (secrets && token !== null && req.body.user.email === user?.email) ||
+      (req.body.user.email !== user?.email &&
+        req.body.verify &&
+        token !== null &&
+        secrets &&
+        verify.token(token, req.body.verify.token))
     ) {
       await dbUser.update(req.body.user.id, {
         username: req.body.user.username,
