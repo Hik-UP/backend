@@ -62,6 +62,13 @@ async function update(req: Request, res: Response): Promise<void> {
       verify.success(secrets.id);
     } else if (
       req.body.user.email &&
+      token !== null &&
+      req.body.user.email !== user?.email &&
+      req.body.user.email === token?.email
+    ) {
+      throw new HttpError(403, 'Forbidden');
+    } else if (
+      req.body.user.email &&
       req.body.user.email !== user?.email &&
       ((req.body.verify &&
         token !== null &&
