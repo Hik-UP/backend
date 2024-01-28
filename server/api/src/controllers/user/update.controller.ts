@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { IUserToken } from '../../ts/user.type';
-import { token } from './token/token.util';
+import { token } from './token/token.controller';
 import { sendEmail } from '../../utils/mail';
 import { crypto } from '../../utils/cryptography.util';
 import { dbUser } from '../../models/user/user.model';

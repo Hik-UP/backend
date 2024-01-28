@@ -1,6 +1,6 @@
 import { profile } from './profile.controller';
 import { update } from './update.controller';
-import { token } from './token/token.util';
+import { token } from './token/token.controller';
 import { notification } from './notification/notification.controller';
 import { skin } from './skin/skin.controller';
 import { hike } from './hike/hike.controller';

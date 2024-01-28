@@ -51,6 +51,10 @@ interface IUpdateUserProfile {
   skinId?: string;
 }
 
+interface IUpdateUserSecrets {
+  password?: string;
+}
+
 interface ISkinOwner {
   id: string;
   username: string;
@@ -64,5 +68,6 @@ export {
   IUserSecrets,
   IUserToken,
   IUpdateUserProfile,
+  IUpdateUserSecrets,
   ISkinOwner
 };

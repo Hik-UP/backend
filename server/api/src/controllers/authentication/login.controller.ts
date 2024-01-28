@@ -5,7 +5,7 @@ import fs from 'fs';
 
 import { IUserToken } from '../../ts/user.type';
 import { dbUser } from '../../models/user/user.model';
-import { token } from '../user/token/token.util';
+import { token } from '../user/token/token.controller';
 import { logger } from '../../utils/logger.util';
 import { HttpError } from '../../utils/error.util';
 
