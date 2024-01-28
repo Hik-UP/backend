@@ -14,7 +14,7 @@ model User {
     username            String              @unique @db.VarChar(24)
     email               String              @unique @db.VarChar(256)
     isVerified          Boolean             @default(false)
-    token               String?             @db.VarChar(1024)
+    tokens              Token[]             @relation("Tokens")
     password            String              @db.VarChar(60)
     fcmToken            String              @default("")
     picture             String              @db.VarChar(1024)
@@ -40,6 +40,16 @@ model User {
     sharedPOI           PointOfInterest[]   @relation("SharedPOI")
 
     roles               Role[]              @default([USER])
+    createdAt           DateTime            @default(now())
+}
+
+model Token {
+    id                  String              @unique @id @default(uuid()) @db.VarChar(36)
+    type                Int
+    value               String              @db.VarChar(6)
+    email               String              @db.VarChar(256)
+    user                User                @relation("Tokens", fields: [email], references: [email])
+    store               String?             @db.VarChar(1024)
     createdAt           DateTime            @default(now())
 }
 

@@ -26,7 +26,7 @@ const publicProfile = {
 const secrets = {
   id: true,
   isVerified: true,
-  token: true,
+  tokens: true,
   password: true,
   fcmToken: true
 };

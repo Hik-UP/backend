@@ -5,7 +5,7 @@ import fs from 'fs';
 
 import { IUserToken } from '../../ts/user.type';
 import { dbUser } from '../../models/user/user.model';
-import { verify } from '../../utils/verify.util';
+import { token } from '../user/token/token.util';
 import { logger } from '../../utils/logger.util';
 import { HttpError } from '../../utils/error.util';
 
@@ -25,13 +25,11 @@ async function login(req: Request, res: Response): Promise<void> {
       algorithm: 'RS256'
     };
     const user = await dbUser.findSecrets({ email: req.body.user.email });
-    let mailToken: IUserToken | null = null;
+    let mailToken: IUserToken | undefined = undefined;
     if (!user) {
       throw new HttpError(401, 'Unauthorized');
     }
-    if (user.token) {
-      mailToken = JSON.parse(user.token);
-    }
+    mailToken = user.tokens.find((value) => value.type === 0);
     const { roles: userRoles } = (await dbUser.findOne(user.id)) || {};
     if (!userRoles) {
       throw new HttpError(401, 'Unauthorized');
@@ -45,17 +43,17 @@ async function login(req: Request, res: Response): Promise<void> {
     } else if (
       !user.isVerified &&
       req.body.verify !== undefined &&
-      mailToken &&
-      !verify.token(mailToken, req.body.verify.token)
+      mailToken !== undefined &&
+      !token.type0.verify(mailToken, req.body.verify.token)
     ) {
       throw new HttpError(401, 'Unauthorized');
     } else if (
       !user.isVerified &&
       req.body.verify !== undefined &&
-      mailToken &&
-      verify.token(mailToken, req.body.verify.token)
+      mailToken !== undefined &&
+      token.type0.verify(mailToken, req.body.verify.token)
     ) {
-      await verify.success(user.id);
+      await token.type0.success(user.id, mailToken.id);
     }
 
     const jwToken = jwt.sign(
@@ -83,8 +81,7 @@ async function login(req: Request, res: Response): Promise<void> {
 }
 
 const loginCtrl = {
-  login,
-  verify
+  login
 };
 
 export { loginCtrl };

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 
-import { IUserToken } from '../../ts/user.type';
+import { INewUserToken } from '../../ts/user.type';
 import { dbUser } from '../../models/user/user.model';
 import { logger } from '../../utils/logger.util';
 import { crypto } from '../../utils/cryptography.util';
@@ -10,17 +10,16 @@ import { sendEmail } from '../../utils/mail';
 async function signup(req: Request, res: Response): Promise<void> {
   try {
     const hash = await bcrypt.hash(req.body.user.password, 12);
-    const token: IUserToken | null = {
+    const token: INewUserToken | null = {
       type: 0,
       value: crypto.randomString(6),
-      email: req.body.user.email,
-      creation: Date.now()
+      store: null
     };
 
     await dbUser.create({
       username: req.body.user.username,
       email: req.body.user.email,
-      token: JSON.stringify(token),
+      token: token,
       password: hash
     });
     await sendEmail({

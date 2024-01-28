@@ -3,8 +3,14 @@ import { ISkin } from './skin.type';
 interface INewUser {
   username: string;
   email: string;
-  token: string;
+  token: INewUserToken;
   password: string;
+}
+
+interface INewUserToken {
+  type: number;
+  value: string;
+  store: string | null;
 }
 
 interface IUserProfile {
@@ -23,22 +29,23 @@ interface IUserPublicProfile {
 interface IUserSecrets {
   id: string;
   isVerified: boolean;
-  token: string | null;
+  tokens: IUserToken[];
   password: string;
   fcmToken: string;
 }
 
 interface IUserToken {
+  id: string;
   type: number;
   value: string;
   email: string;
-  creation: number;
+  store: string | null;
+  createdAt: Date;
 }
 
 interface IUpdateUserProfile {
   username?: string;
   email?: string;
-  token?: string;
   picture?: string;
   fcmToken?: string;
   skinId?: string;
@@ -51,6 +58,7 @@ interface ISkinOwner {
 
 export {
   INewUser,
+  INewUserToken,
   IUserProfile,
   IUserPublicProfile,
   IUserSecrets,
