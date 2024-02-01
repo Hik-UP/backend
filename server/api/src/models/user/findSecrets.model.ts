@@ -8,7 +8,11 @@ async function findSecrets(user: {
   username?: string;
 }): Promise<IUserSecrets | null> {
   return await prisma.user.findUnique({
-    where: user.id ? { id: user.id } : user.email ? { email: user.email } : { username: user.username },
+    where: user.id
+      ? { id: user.id }
+      : user.email
+      ? { email: user.email }
+      : { username: user.username },
     select: dbUserSelector.secrets
   });
 }
