@@ -15,9 +15,15 @@ async function update(req: Request, res: Response): Promise<void> {
       id: req.body.user.id
     });
 
-    if (req.body.user.email && await dbUser.isExisting({ email: req.body.user.email }) === true) {
+    if (
+      req.body.user.email &&
+      (await dbUser.isExisting({ email: req.body.user.email })) === true
+    ) {
       throw new HttpError(409, 'Email');
-    } else if (req.body.user.username && await dbUser.isExisting({ username: req.body.user.username }) === true) {
+    } else if (
+      req.body.user.username &&
+      (await dbUser.isExisting({ username: req.body.user.username })) === true
+    ) {
       throw new HttpError(409, 'Username');
     }
 
