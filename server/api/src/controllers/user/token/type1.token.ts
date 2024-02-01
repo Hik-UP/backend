@@ -9,14 +9,12 @@ function verify(token: IUserToken, reqToken: string): boolean {
   }
 }
 
-async function success(userId: string, tokenId: string): Promise<void> {
+async function success(userId: string): Promise<void> {
   await prisma.user.update({
     where: { id: userId },
     data: {
       tokens: {
-        delete: {
-          id: tokenId
-        }
+        deleteMany: {}
       }
     }
   });

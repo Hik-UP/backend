@@ -22,9 +22,23 @@ async function success(userId: string, tokenId: string): Promise<void> {
   });
 }
 
+async function remove(userId: string, tokenId: string): Promise<void> {
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      tokens: {
+        delete: {
+          id: tokenId
+        }
+      }
+    }
+  });
+}
+
 const type2 = {
   verify,
-  success
+  success,
+  remove
 };
 
 export { type2 };
