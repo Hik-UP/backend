@@ -205,7 +205,7 @@ describe(`${method.toUpperCase()} ${route}`, () => {
         price: 200,
         owners: []
       };
-      let res = await request(httpsServer)
+      const res = await request(httpsServer)
         [`${method}`](route)
         .set('Authorization', `Bearer ${user.token}`)
         .send({
