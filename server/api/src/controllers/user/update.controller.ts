@@ -15,8 +15,12 @@ async function update(req: Request, res: Response): Promise<void> {
       id: req.body.user.id
     });
 
+    if (!user || !secrets) {
+      throw '';
+    }
     if (
       req.body.user.email &&
+      req.body.user.email !== user.email &&
       (await dbUser.isExisting({ email: req.body.user.email })) === true
     ) {
       throw new HttpError(409, 'Email');
@@ -27,9 +31,6 @@ async function update(req: Request, res: Response): Promise<void> {
       throw new HttpError(409, 'Username');
     }
 
-    if (!user || !secrets) {
-      throw '';
-    }
     const mailToken: IUserToken | undefined = secrets.tokens.find(
       (value) => value.type === 1
     );
