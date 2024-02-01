@@ -2,6 +2,7 @@ import { create } from './create.model';
 import { findOne } from './findOne.model';
 import { findSecrets } from './findSecrets.model';
 import { update } from './update.model';
+import { isExisting } from './isExisting.model';
 import { secrets } from './secrets/secrets.model';
 import { tokens } from './tokens/tokens.model';
 import { notification } from './notification/notification.model';
@@ -14,6 +15,7 @@ const dbUser = {
   findOne,
   findSecrets,
   update,
+  isExisting,
   secrets,
   tokens,
   notification,

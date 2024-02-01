@@ -10,7 +10,6 @@ import { HttpError } from '../../utils/error.util';
 
 async function signup(req: Request, res: Response): Promise<void> {
   try {
-    const isUserExist = await dbUser.findSecrets({ email: req.body.user.email });
     const hash = await bcrypt.hash(req.body.user.password, 12);
     const token: INewUserToken | null = {
       type: 0,
@@ -18,13 +17,16 @@ async function signup(req: Request, res: Response): Promise<void> {
       store: null
     };
 
-    if (isUserExist !== null) {
-      throw new HttpError(409, 'Conflict');
+    if (req.body.user.email && await dbUser.isExisting({ email: req.body.user.email }) === true) {
+      throw new HttpError(409, 'Email');
+    } else if (req.body.user.username && await dbUser.isExisting({ username: req.body.user.username }) === true) {
+      throw new HttpError(409, 'Username');
     }
 
     await dbUser.create({
       username: req.body.user.username,
       email: req.body.user.email,
+      token: token,
       password: hash
     });
     await sendEmail({

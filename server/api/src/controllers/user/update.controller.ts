@@ -11,14 +11,16 @@ import { HttpError } from '../../utils/error.util';
 async function update(req: Request, res: Response): Promise<void> {
   try {
     const user = await dbUser.findOne(req.body.user.id);
-    const isUserExist = await dbUser.findSecrets({ email: req.body.user.email });
     const secrets = await dbUser.findSecrets({
       id: req.body.user.id
     });
-    console.log(isUserExist);
-    if (isUserExist !== null) {
-      throw new HttpError(409, 'Conflict');
+
+    if (req.body.user.email && await dbUser.isExisting({ email: req.body.user.email }) === true) {
+      throw new HttpError(409, 'Email');
+    } else if (req.body.user.username && await dbUser.isExisting({ username: req.body.user.username }) === true) {
+      throw new HttpError(409, 'Username');
     }
+
     if (!user || !secrets) {
       throw '';
     }

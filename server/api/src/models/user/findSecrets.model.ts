@@ -5,9 +5,10 @@ import { dbUserSelector } from './selector.model';
 async function findSecrets(user: {
   id?: string;
   email?: string;
+  username?: string;
 }): Promise<IUserSecrets | null> {
   return await prisma.user.findUnique({
-    where: user.id ? { id: user.id } : { email: user.email },
+    where: user.id ? { id: user.id } : user.email ? { email: user.email } : { username: user.username },
     select: dbUserSelector.secrets
   });
 }

@@ -11,7 +11,7 @@ generator client {
 
 model User {
     id                  String              @unique @id @default(uuid()) @db.VarChar(36)
-    username            String              @db.VarChar(24)
+    username            String              @unique @db.VarChar(24)
     email               String              @unique @db.VarChar(256)
     isVerified          Boolean             @default(false)
     tokens              Token[]             @relation("Tokens")
