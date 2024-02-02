@@ -26,6 +26,7 @@ async function update(req: Request, res: Response): Promise<void> {
       throw new HttpError(409, 'Email');
     } else if (
       req.body.user.username &&
+      req.body.user.username !== user.username &&
       (await dbUser.isExisting({ username: req.body.user.username })) === true
     ) {
       throw new HttpError(409, 'Username');
@@ -35,17 +36,24 @@ async function update(req: Request, res: Response): Promise<void> {
       (value) => value.type === 1
     );
 
+    let tokenStore: { email: string; count: number } | undefined = undefined;
+
+    if (mailToken !== undefined && mailToken.store !== null) {
+      tokenStore = JSON.parse(mailToken.store);
+    }
+
     if (
       req.body.user.email !== user?.email &&
       ((req.body.user.email && mailToken == undefined) ||
         (mailToken !== undefined &&
+          tokenStore !== undefined &&
           req.body.user.email &&
-          mailToken.store !== req.body.user.email))
+          tokenStore.email !== req.body.user.email))
     ) {
       const newMailToken = {
         type: 1,
         value: crypto.randomString(6),
-        store: req.body.user.email
+        store: JSON.stringify({ email: req.body.user.email, count: 1 })
       };
       await sendEmail({
         subject: "Vérifiez votre nouvelle adresse Email Hik'UP",
@@ -77,8 +85,9 @@ async function update(req: Request, res: Response): Promise<void> {
     } else if (
       req.body.user.email &&
       mailToken !== undefined &&
+      tokenStore !== undefined &&
       req.body.user.email !== user.email &&
-      req.body.user.email === mailToken.store &&
+      req.body.user.email === tokenStore.email &&
       !req.body.verify
     ) {
       throw new HttpError(403, 'Forbidden');

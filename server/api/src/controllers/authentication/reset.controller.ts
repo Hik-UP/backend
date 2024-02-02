@@ -24,7 +24,7 @@ async function password(req: Request, res: Response): Promise<void> {
       const newMailToken = {
         type: 2,
         value: crypto.randomString(6),
-        store: null
+        store: JSON.stringify({ count: 1 })
       };
       await sendEmail({
         subject: "Réinitialisez votre mot de passe Hik'UP",

@@ -14,7 +14,7 @@ async function signup(req: Request, res: Response): Promise<void> {
     const token: INewUserToken | null = {
       type: 0,
       value: crypto.randomString(6),
-      store: null
+      store: JSON.stringify({ count: 1 })
     };
 
     if (

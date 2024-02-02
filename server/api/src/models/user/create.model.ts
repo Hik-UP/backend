@@ -23,7 +23,8 @@ async function create(newUser: INewUser): Promise<void> {
       tokens: {
         create: {
           type: newUser.token.type,
-          value: newUser.token.value
+          value: newUser.token.value,
+          store: newUser.token.store
         }
       },
       password: newUser.password,
