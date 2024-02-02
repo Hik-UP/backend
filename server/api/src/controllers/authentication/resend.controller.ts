@@ -61,7 +61,7 @@ async function resend(req: Request, res: Response): Promise<void> {
     });
 
     logger.api.info('Authentication token resend succeed');
-    res.status(200).json({ message: 'OK' });
+    res.status(200).json({ message: 'OK', delay: tokenStore.count * 30 });
   } catch (error) {
     if (error instanceof TokenHttpError) {
       logger.api.warn('Authentication token resend failed');
