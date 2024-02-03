@@ -9,6 +9,7 @@ function createUserRoutes(): express.Router {
 
   userRoutes.post('/profile', validator(userJOI.profile), userCtrl.profile);
   userRoutes.put('/profile/update', validator(userJOI.update), userCtrl.update);
+  userRoutes.post('/check', validator(userJOI.check), userCtrl.check);
 
   userRoutes.post(
     '/notification/retrieve',
