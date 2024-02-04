@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { dbUser } from '../../models/user/user.model';
 import { logger } from '../../utils/logger.util';
 import { HttpError } from '../../utils/error.util';
-import { sendEmail } from '../../utils/mail';
+import { mailBody, sendEmail } from '../../utils/mail';
 import { crypto } from '../../utils/cryptography.util';
 import { IUserToken } from '../../ts/user.type';
 import { token } from '../user/token/token.controller';
@@ -28,7 +28,7 @@ async function password(req: Request, res: Response): Promise<void> {
       };
       await sendEmail({
         subject: "Réinitialisez votre mot de passe Hik'UP",
-        text: `Voici votre code de vérification: ${newMailToken.value}`,
+        html: mailBody(newMailToken.value),
         to: req.body.user.email,
         from: process.env.EMAIL
       });

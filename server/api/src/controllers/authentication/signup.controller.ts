@@ -5,7 +5,7 @@ import { INewUserToken } from '../../ts/user.type';
 import { dbUser } from '../../models/user/user.model';
 import { logger } from '../../utils/logger.util';
 import { crypto } from '../../utils/cryptography.util';
-import { sendEmail } from '../../utils/mail';
+import { mailBody, sendEmail } from '../../utils/mail';
 import { HttpError } from '../../utils/error.util';
 
 async function signup(req: Request, res: Response): Promise<void> {
@@ -37,7 +37,7 @@ async function signup(req: Request, res: Response): Promise<void> {
     });
     await sendEmail({
       subject: "Vérifiez votre compte Hik'UP",
-      text: `Voici votre code de vérification: ${token.value}`,
+      html: mailBody(token.value),
       to: req.body.user.email,
       from: process.env.EMAIL
     });

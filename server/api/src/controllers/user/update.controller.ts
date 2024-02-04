@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { IUserToken } from '../../ts/user.type';
 import { token } from './token/token.controller';
-import { sendEmail } from '../../utils/mail';
+import { mailBody, sendEmail } from '../../utils/mail';
 import { crypto } from '../../utils/cryptography.util';
 import { dbUser } from '../../models/user/user.model';
 import { logger } from '../../utils/logger.util';
@@ -57,7 +57,7 @@ async function update(req: Request, res: Response): Promise<void> {
       };
       await sendEmail({
         subject: "Vérifiez votre nouvelle adresse Email Hik'UP",
-        text: `Voici votre code de vérification: ${newMailToken.value}`,
+        html: mailBody(newMailToken.value),
         to: req.body.user.email,
         from: process.env.EMAIL
       });

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { dbUser } from '../../models/user/user.model';
 import { logger } from '../../utils/logger.util';
-import { sendEmail } from '../../utils/mail';
+import { mailBody, sendEmail } from '../../utils/mail';
 import { crypto } from '../../utils/cryptography.util';
 
 class TokenHttpError extends Error {
@@ -48,7 +48,7 @@ async function resend(req: Request, res: Response): Promise<void> {
           : token[0].type === 1
           ? "Vérifiez votre nouvelle adresse Email Hik'UP"
           : "Réinitialisez votre mot de passe Hik'UP",
-      text: `Voici votre code de vérification: ${newMailToken}`,
+      html: mailBody(newMailToken),
       to: tokenStore.email ?? req.body.user.email,
       from: process.env.EMAIL
     });
